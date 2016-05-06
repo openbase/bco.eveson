@@ -9,6 +9,9 @@ import com.softsynth.shared.time.TimeStamp;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.JFrame;
 
 /**
@@ -16,23 +19,22 @@ import javax.swing.JFrame;
  *
  * @author mgao
  */
-public class SampleTest implements KeyListener {
+public class SampleTest implements KeyListener, TestEventListener {
 
     private final Synthesizer synth;
     private static final String SAMPLE_PATH = "src/resources/samples/";
-    private static final int MAX_VOICES = 50;
+    private static final int MAX_VOICES = 30;
     LineOut lineOut;
     VoiceAllocator voiceAllocator;
     VoiceAllocator voiceAllocator2;
     UnitVoice[] voices;
     UnitVoice[] voices2;
     int notenumber = 0;
+    private List listeners = new ArrayList();
 
     public SampleTest() throws IOException, InterruptedException {
         synth = JSyn.createSynthesizer();
         synth.add(lineOut = new LineOut());
-        synth.start();
-        lineOut.start();
 
         voices = new UnitVoice[MAX_VOICES];
         for (int i = 0; i < MAX_VOICES; i++) {
@@ -48,33 +50,19 @@ public class SampleTest implements KeyListener {
         }
         voiceAllocator2 = new VoiceAllocator(voices2);
 
-//        File sampleFile;
-//        sampleFile = new File(SAMPLE_PATH + "violin" + "/" + "01" + ".wav");
-//        FloatSample s = SampleLoader.loadFloatSample(sampleFile);
-//        SampleVoice voice2 = new SampleVoice("violin");
-//        synth.add(voice2.getSamplePlayer());
-//        voice2.getOutput().connect(0,lineOut.input,0);
-//        voice2.getOutput().connect(1,lineOut.input,1);
-//        voice2.getSamplePlayer().dataQueue.queue(s);
+        synth.start();
+        lineOut.start();
         JFrame window = new JFrame();
         window.setSize(100, 100);
         window.setVisible(true);
         window.addKeyListener(this);
+        this.addEventListener(this);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 
     public static void main(String args[]) throws IOException, InterruptedException {
         SampleTest s = new SampleTest();
-        s.loop(s.voiceAllocator, 1, 1, 4);
-        s.loop(s.voiceAllocator, 4, 2, 5);
-        s.loop(s.voiceAllocator, 8, 5, 7);
-        s.loop(s.voiceAllocator2, 1, 1, 1);
-
-    }
-
-    private void loop(VoiceAllocator voiceAllocator, int pitch,
-            double mintime, double maxtime) {
 
     }
 
@@ -84,24 +72,65 @@ public class SampleTest implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        char k = e.getKeyChar();
-            notenumber++;
-        if (Character.isDigit(k)) {
-            //System.out.println("key pressed: " + e.getKeyChar());
-//            voices[0].noteOn(1, 0, synth.createTimeStamp());
-            System.out.println(notenumber);
-            voiceAllocator.noteOn(notenumber,
-                    Character.getNumericValue(k), 0, synth.createTimeStamp());
-        } else if (Character.isAlphabetic(e.getKeyChar())) {
-            int char_num = Character.toLowerCase(k) - 'a' + 1;
-            if(char_num > 12) return; // we only have 12 samples
-            TimeStamp timeStamp = new TimeStamp(synth.getCurrentTime());
-            voiceAllocator2.noteOn(notenumber, char_num, 0, synth.createTimeStamp());
-        }
+        System.out.println("key");
+        fireEvent(e.getKeyChar());
+//        char k = e.getKeyChar();
+//        notenumber++;
+//        if (Character.isDigit(k)) {
+//            voiceAllocator.noteOn(notenumber,
+//                    Character.getNumericValue(k), 0, synth.createTimeStamp());
+//        } else if (Character.isAlphabetic(e.getKeyChar())) {
+//            int char_num = Character.toLowerCase(k) - 'a' + 1;
+//            if (char_num > 12) {
+//                return; // we only have 12 samples
+//            }
+//            TimeStamp timeStamp = new TimeStamp(synth.getCurrentTime());
+//            voiceAllocator2.noteOn(notenumber, char_num, 0, synth.createTimeStamp());
+//        } else {
+//            return;
+//        }
+//        System.out.println(notenumber);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+
+    public synchronized void addEventListener(TestEventListener listener) {
+        listeners.add(listener);
+    }
+
+    public synchronized void fireEvent(char ch) {
+        System.out.println("fireEvent");
+        System.out.println(ch);
+        TestEvent newEvent = new TestEvent(this, ch);
+        Iterator l = listeners.iterator();
+        while( l.hasNext() ) {
+            ((TestEventListener) l.next()).eventReceived(newEvent);
+        }
+    }
+
+    @Override
+    public synchronized void eventReceived(TestEvent event) {
+        System.out.println("event received");
+        
+        char k = event.getCh();
+        System.out.println(k);
+        notenumber++;
+        if (Character.isDigit(k)) {
+            voiceAllocator.noteOn(notenumber,
+                    Character.getNumericValue(k), 0, synth.createTimeStamp());
+        } else if (Character.isAlphabetic(k)) {
+            int char_num = Character.toLowerCase(k) - 'a' + 1;
+            if (char_num > 12) {
+                return; // we only have 12 samples
+            }
+            TimeStamp timeStamp = new TimeStamp(synth.getCurrentTime());
+            voiceAllocator2.noteOn(notenumber, char_num, 0, synth.createTimeStamp());
+        } else {
+            return;
+        }
+        System.out.println(notenumber);
     }
 
 }

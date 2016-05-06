@@ -8,22 +8,18 @@ package isy.eveson.eveson;
 import com.jsyn.Synthesizer;
 import com.jsyn.data.FloatSample;
 import com.jsyn.ports.UnitOutputPort;
-import com.jsyn.unitgen.FixedRateStereoReader;
 import com.jsyn.unitgen.LineOut;
 import com.jsyn.unitgen.UnitGenerator;
 import com.jsyn.unitgen.UnitVoice;
 import com.jsyn.unitgen.VariableRateDataReader;
-import com.jsyn.unitgen.VariableRateMonoReader;
 import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * Implementation of UnitVoice for Samples, so they can be allocated using a VoiceAllocator.
  * @author mgao
  */
 public class SampleVoice implements UnitVoice {
@@ -36,9 +32,9 @@ public class SampleVoice implements UnitVoice {
 
     /**
      * 
-     * @param instrument
-     * @param s
-     * @param l 
+     * @param instrument folder for samples
+     * @param s Synthesizer
+     * @param l LineOut
      */
     public SampleVoice(String instrument, Synthesizer s, LineOut l) {
         this.instrument = instrument;
@@ -66,7 +62,7 @@ public class SampleVoice implements UnitVoice {
             //System.out.println("queueOn the sample");
             samplePlayer.dataQueue.queue(sample);
         } catch (IOException io) {
-
+            // TODO
         }
     }
 
