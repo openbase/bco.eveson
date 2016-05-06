@@ -66,7 +66,7 @@ public class Eveson implements KeyListener {
         }
         allocator2 = new VoiceAllocator(voices2);
         
-
+       
         // Start synthesizer using default stereo output at 44100 Hz.
         synth.start();
         // We only need to start the LineOut. It will pull data from the
