@@ -32,7 +32,6 @@ public class PlaySample {
     private static final String SAMPLE_PATH = "src/resources/samples/";
 
     private void test() {
-
         File sampleFile,sampleFile2;
         sampleFile = new File(SAMPLE_PATH + "violin" + "/" + "1" + ".wav");
         sampleFile2 = new File(SAMPLE_PATH + "violin" + "/" + "4" + ".wav");
@@ -94,10 +93,8 @@ public class PlaySample {
 
             synth.sleepFor(0.5);
 
-        } catch (IOException e1) {
+        } catch (IOException | InterruptedException e1) {
             e1.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
         // Stop everything.
         synth.stop();
@@ -105,7 +102,7 @@ public class PlaySample {
         
     }
 
-    public static void main(String[] args) {
-        new PlaySample().test();
-    }
+//    public static void main(String[] args) {
+//        new PlaySample().test();
+//    }
 }

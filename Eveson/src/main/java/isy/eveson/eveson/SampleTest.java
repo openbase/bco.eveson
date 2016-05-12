@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
 
@@ -22,7 +21,6 @@ import javax.swing.JFrame;
 public class SampleTest implements KeyListener, TestEventListener {
 
     private final Synthesizer synth;
-    private static final String SAMPLE_PATH = "src/resources/samples/";
     private static final int MAX_VOICES = 30;
     LineOut lineOut;
     VoiceAllocator voiceAllocator;
@@ -31,8 +29,10 @@ public class SampleTest implements KeyListener, TestEventListener {
     UnitVoice[] voices2;
     int notenumber = 0;
     private List listeners = new ArrayList();
+    EventGenerator testEventGenerator;
 
     public SampleTest() throws IOException, InterruptedException {
+        testEventGenerator = new EventGenerator();
         synth = JSyn.createSynthesizer();
         synth.add(lineOut = new LineOut());
 
@@ -56,7 +56,7 @@ public class SampleTest implements KeyListener, TestEventListener {
         window.setSize(100, 100);
         window.setVisible(true);
         window.addKeyListener(this);
-        this.addEventListener(this);
+        testEventGenerator.addEventListener(this);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
@@ -67,53 +67,15 @@ public class SampleTest implements KeyListener, TestEventListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
     public void keyPressed(KeyEvent e) {
         System.out.println("key");
-        fireEvent(e.getKeyChar());
-//        char k = e.getKeyChar();
-//        notenumber++;
-//        if (Character.isDigit(k)) {
-//            voiceAllocator.noteOn(notenumber,
-//                    Character.getNumericValue(k), 0, synth.createTimeStamp());
-//        } else if (Character.isAlphabetic(e.getKeyChar())) {
-//            int char_num = Character.toLowerCase(k) - 'a' + 1;
-//            if (char_num > 12) {
-//                return; // we only have 12 samples
-//            }
-//            TimeStamp timeStamp = new TimeStamp(synth.getCurrentTime());
-//            voiceAllocator2.noteOn(notenumber, char_num, 0, synth.createTimeStamp());
-//        } else {
-//            return;
-//        }
-//        System.out.println(notenumber);
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
-
-    public synchronized void addEventListener(TestEventListener listener) {
-        listeners.add(listener);
-    }
-
-    public synchronized void fireEvent(char ch) {
-        System.out.println("fireEvent");
-        System.out.println(ch);
-        TestEvent newEvent = new TestEvent(this, ch);
-        Iterator l = listeners.iterator();
-        while( l.hasNext() ) {
-            ((TestEventListener) l.next()).eventReceived(newEvent);
-        }
+        testEventGenerator.fireEvent(e.getKeyChar());
     }
 
     @Override
     public synchronized void eventReceived(TestEvent event) {
         System.out.println("event received");
-        
+
         char k = event.getCh();
         System.out.println(k);
         notenumber++;
@@ -131,6 +93,16 @@ public class SampleTest implements KeyListener, TestEventListener {
             return;
         }
         System.out.println(notenumber);
+    }
+
+    // the following methods are unused
+    
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 
 }

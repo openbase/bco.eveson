@@ -11,10 +11,52 @@
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
     <dependencies>
-      <dependency>
-	<groupId>com.jsyn</groupId>
-	<artifactId>jsyn</artifactId>
-	<version>16.7.3</version>
-      </dependency>
+        <dependency>
+            <groupId>com.jsyn</groupId>
+            <artifactId>jsyn</artifactId>
+            <version>16.7.3</version>
+        </dependency>
     </dependencies>
+    <build> 
+        <resources>
+            <resource>
+                <directory>src/resources</directory>
+            </resource>
+        </resources>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>lib/</classpathPrefix> 
+                                <mainClass>isy.eveson.eveson.SampleTest</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>copy</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>
+                                    ${project.build.directory}/lib
+                                </outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+    </build>
+    
 </project>

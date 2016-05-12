@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package isy.eveson.eveson;
 
 import com.jsyn.Synthesizer;
@@ -15,8 +10,8 @@ import com.jsyn.unitgen.VariableRateDataReader;
 import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Implementation of UnitVoice for Samples, so they can be allocated using a VoiceAllocator.
@@ -24,14 +19,14 @@ import java.io.IOException;
  */
 public class SampleVoice implements UnitVoice {
 
-    private static final String SAMPLE_PATH = "src/resources/samples/";
+    private static final String SAMPLE_PATH = "/samples/";
     private static final int MAX_VOICES = 30;
-    private VariableRateDataReader samplePlayer;
-    private String instrument;
+    private final VariableRateDataReader samplePlayer;
+    private final String instrument;
     private FloatSample sample;
 
     /**
-     * 
+     * Constructor for setting up the voice and connecting its output.
      * @param instrument folder for samples
      * @param s Synthesizer
      * @param l LineOut
@@ -45,21 +40,18 @@ public class SampleVoice implements UnitVoice {
     }
 
     /**
-     *
-     * @param d
-     * @param d1
-     * @param ts
+     * Playing a sample until the end.
+     * @param d Filename (typically pitch - where 1 = G, 2 = G#..)
+     * @param d1 unused
+     * @param ts unused
      */
     @Override
     public void noteOn(double d, double d1, TimeStamp ts) {
-        //System.out.println("samplevoice: noteOn");
-        File sampleFile;
-        sampleFile = new File(SAMPLE_PATH + instrument + "/" + Math.round(d) + ".wav");
-        System.out.println(sampleFile.getAbsoluteFile());
+        URL sampleFile = this.getClass().getResource(SAMPLE_PATH + instrument + "/" + Math.round(d) + ".wav");
+        System.out.println(sampleFile.getPath());
         try {
             sample = SampleLoader.loadFloatSample(sampleFile);
             samplePlayer.rate.set(sample.getFrameRate());
-            //System.out.println("queueOn the sample");
             samplePlayer.dataQueue.queue(sample);
         } catch (IOException io) {
             // TODO
