@@ -12,13 +12,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
+import rsb.AbstractEventHandler;
+import rsb.Event;
+import rsb.Factory;
+import rsb.Listener;
 
 /**
  * This class is a test! It plays multiple samples at a time.
  *
  * @author mgao
  */
-public class SampleTest implements KeyListener, TestEventListener {
+public class SampleTest extends AbstractEventHandler implements KeyListener, TestEventListener {
 
     private final Synthesizer synth;
     private static final int MAX_VOICES = 30;
@@ -31,37 +35,54 @@ public class SampleTest implements KeyListener, TestEventListener {
     private List listeners = new ArrayList();
     EventGenerator testEventGenerator;
 
-    public SampleTest() throws IOException, InterruptedException {
-        testEventGenerator = new EventGenerator();
-        synth = JSyn.createSynthesizer();
-        synth.add(lineOut = new LineOut());
+    // todo: remove            vvv
+    public SampleTest() throws Throwable {
+        // RSB test
+        final Factory factory = Factory.getInstance();
+        final Listener listener = factory.createListener("/example/informer");
+        listener.activate();
+        try {
+            listener.addHandler(this, true);
 
-        voices = new UnitVoice[MAX_VOICES];
-        for (int i = 0; i < MAX_VOICES; i++) {
-            SampleVoice voice = new SampleVoice("violin", synth, lineOut);
-            voices[i] = voice;
-        }
-        voiceAllocator = new VoiceAllocator(voices);
-        // Test sound output
-        voices2 = new UnitVoice[MAX_VOICES];
-        for (int i = 0; i < MAX_VOICES; i++) {
-            SampleVoice voice = new SampleVoice("piano", synth, lineOut);
-            voices2[i] = voice;
-        }
-        voiceAllocator2 = new VoiceAllocator(voices2);
+            testEventGenerator = new EventGenerator();
+            synth = JSyn.createSynthesizer();
+            synth.add(lineOut = new LineOut());
 
-        synth.start();
-        lineOut.start();
-        JFrame window = new JFrame();
-        window.setSize(100, 100);
-        window.setVisible(true);
-        window.addKeyListener(this);
-        testEventGenerator.addEventListener(this);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            voices = new UnitVoice[MAX_VOICES];
+            for (int i = 0; i < MAX_VOICES; i++) {
+                SampleVoice voice = new SampleVoice("violin", synth, lineOut);
+                voices[i] = voice;
+            }
+            voiceAllocator = new VoiceAllocator(voices);
+            // Test sound output
+            voices2 = new UnitVoice[MAX_VOICES];
+            for (int i = 0; i < MAX_VOICES; i++) {
+                SampleVoice voice = new SampleVoice("piano", synth, lineOut);
+                voices2[i] = voice;
+            }
+            voiceAllocator2 = new VoiceAllocator(voices2);
+
+            synth.start();
+            lineOut.start();
+            JFrame window = new JFrame();
+            window.setSize(100, 100);
+            window.setVisible(true);
+            window.addKeyListener(this);
+            testEventGenerator.addEventListener(this);
+            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        } finally {
+            listener.deactivate();
+        }
 
     }
 
-    public static void main(String args[]) throws IOException, InterruptedException {
+    @Override
+    public void handleEvent(Event event) {
+        System.out.println("Event");
+    }
+
+    // todo ------------------------------------- vv remove
+    public static void main(String args[]) throws Throwable {
         SampleTest s = new SampleTest();
 
     }
@@ -96,11 +117,10 @@ public class SampleTest implements KeyListener, TestEventListener {
     }
 
     // the following methods are unused
-    
     @Override
     public void keyTyped(KeyEvent e) {
     }
-    
+
     @Override
     public void keyReleased(KeyEvent e) {
     }
