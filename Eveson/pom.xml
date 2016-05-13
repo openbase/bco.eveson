@@ -9,12 +9,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+        <dependency.bco.dal.version>[1.1,1.2-SNAPSHOT)</dependency.bco.dal.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.jsyn</groupId>
             <artifactId>jsyn</artifactId>
             <version>16.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dc.bco</groupId>
+            <artifactId>dal.remote</artifactId>
+            <version>${dependency.bco.dal.version}</version>
         </dependency>
     </dependencies>
     <build> 
