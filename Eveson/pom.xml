@@ -15,7 +15,9 @@
         <dependency>
             <groupId>com.jsyn</groupId>
             <artifactId>jsyn</artifactId>
-            <version>16.7.3</version>
+            <version>16.7.3</version>	
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jsyn-beta-16.5.14.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.dc.bco</groupId>
