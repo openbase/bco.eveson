@@ -8,14 +8,24 @@ import com.jsyn.util.VoiceAllocator;
 import com.softsynth.shared.time.TimeStamp;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
+import org.dc.bco.dal.remote.unit.MotionSensorRemote;
+import org.dc.bco.registry.device.lib.DeviceRegistry;
+import org.dc.bco.registry.device.remote.DeviceRegistryRemote;
+import org.dc.jul.pattern.Observable;
+import org.dc.jul.pattern.Observer;
 import rsb.AbstractEventHandler;
 import rsb.Event;
 import rsb.Factory;
 import rsb.Listener;
+import rsb.converter.DefaultConverterRepository;
+import rsb.converter.ProtocolBufferConverter;
+import rst.homeautomation.state.MotionStateType;
+import rst.homeautomation.unit.MotionSensorType;
+import rst.homeautomation.unit.UnitConfigType;
+import rst.homeautomation.unit.UnitTemplateType;
 
 /**
  * This class is a test! It plays multiple samples at a time.
@@ -39,10 +49,34 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
     public SampleTest() throws Throwable {
         // RSB test
         final Factory factory = Factory.getInstance();
-        final Listener listener = factory.createListener("/example/informer");
-        listener.activate();
+
+        DeviceRegistryRemote deviceRegistryRemote = new DeviceRegistryRemote();
+        //final Listener listener = factory.createListener("/home/sports/motionsensor");
         try {
-            listener.addHandler(this, true);
+            //listener.activate();
+
+            deviceRegistryRemote.init();
+            deviceRegistryRemote.activate();
+
+            List<UnitConfigType.UnitConfig> motionSensors = deviceRegistryRemote.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.MOTION_SENSOR);
+            List<MotionSensorRemote> motionSensorRemotes = new ArrayList<>();
+
+            MotionSensorRemote remote;
+            for (UnitConfigType.UnitConfig motionSensorConfig : motionSensors) {
+                remote = new MotionSensorRemote();
+                remote.init(motionSensorConfig);
+                remote.activate();
+                motionSensorRemotes.add(remote);
+                remote.addObserver(new Observer<MotionSensorType.MotionSensor>() {
+
+                    @Override
+                    public void update(Observable<MotionSensorType.MotionSensor> source, MotionSensorType.MotionSensor data) throws Exception {
+                        testEventGenerator.fireEvent('a');
+                    }
+                });
+            }
+
+            //listener.addHandler(this, true);
 
             testEventGenerator = new EventGenerator();
             synth = JSyn.createSynthesizer();
@@ -70,15 +104,21 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
             window.addKeyListener(this);
             testEventGenerator.addEventListener(this);
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            while (!Thread.currentThread().isInterrupted()) {
+                Thread.sleep(100);
+            }
+
         } finally {
-            listener.deactivate();
+            //listener.deactivate();
+            deviceRegistryRemote.shutdown();
         }
 
     }
 
     @Override
     public void handleEvent(Event event) {
-        System.out.println("Event");
+        testEventGenerator.fireEvent('a');
     }
 
     // todo ------------------------------------- vv remove

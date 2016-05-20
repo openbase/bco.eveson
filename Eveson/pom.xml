@@ -12,17 +12,22 @@
         <dependency.bco.dal.version>[1.1,1.2-SNAPSHOT)</dependency.bco.dal.version>
     </properties>
     <dependencies>
-        <dependency>
+<!--        <dependency>
             <groupId>com.jsyn</groupId>
             <artifactId>jsyn</artifactId>
             <version>16.7.3</version>	
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/jsyn-beta-16.5.14.jar</systemPath>
-        </dependency>
+            <systemPath>${project.basedir}/lib/jsyn_16_7_3.jar</systemPath>
+        </dependency>-->
         <dependency>
             <groupId>org.dc.bco</groupId>
             <artifactId>dal.remote</artifactId>
             <version>${dependency.bco.dal.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jsyn</groupId>
+            <artifactId>jsyn</artifactId>
+            <version>16.7.3</version>
         </dependency>
     </dependencies>
     <build> 
