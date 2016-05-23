@@ -20,15 +20,19 @@ import rsb.converter.WireContents;
  */
 public class RSBGenericConverterConfig {
 
+    private ConverterRepository repository = new DefaultConverterRepository<ByteBuffer>();
+    
     public ParticipantConfig generateConfig() {
-        ParticipantConfig config = Factory.getInstance().getDefaultParticipantConfig();
+        ParticipantConfig config = Factory.getInstance().getDefaultParticipantConfig().copy();
 
         for (TransportConfig name : config.getTransports().values()) {
             ConverterRepository<?> converters = new ConverterRepository<ByteBuffer>() {
+                
+                
 
                 @Override
                 public ConverterSelectionStrategy<ByteBuffer> getConvertersForSerialization() {
-                    return new DefaultConverterRepository<ByteBuffer>().getConvertersForSerialization();
+                    return repository.getConvertersForSerialization();
                 }
 
                 @Override
@@ -37,8 +41,11 @@ public class RSBGenericConverterConfig {
 
                         @Override
                         public Converter<ByteBuffer> getConverter(String string) {
+                            
+                            
+                            System.out.println("get converter for key"+string);
+                            
 //                            System.out.println("Searching for: " + string);
-
                             return new Converter<ByteBuffer>() {
 
                                 @Override
@@ -61,11 +68,13 @@ public class RSBGenericConverterConfig {
                             };
                         }
                     };
-
                 }
 
                 @Override
-                public void addConverter(Converter<ByteBuffer> cnvrtr) {
+                public void addConverter(Converter<ByteBuffer> converter) {
+                    repository.addConverter(converter);
+//                    converter.getSignature().getDataType().get
+                    System.out.println("Registering converter for 1");
 //                    System.out.println("Adding converter.");
                 }
             };
