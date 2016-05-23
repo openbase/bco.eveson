@@ -11,7 +11,6 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
-import org.dc.bco.dal.remote.unit.MotionSensorRemote;
 import org.dc.bco.registry.device.lib.DeviceRegistry;
 import org.dc.bco.registry.device.remote.DeviceRegistryRemote;
 import org.dc.jul.pattern.Observable;
@@ -24,8 +23,14 @@ import rsb.converter.DefaultConverterRepository;
 import rsb.converter.ProtocolBufferConverter;
 import rst.homeautomation.state.MotionStateType;
 import rst.homeautomation.unit.MotionSensorType;
+import rst.homeautomation.unit.TemperatureSensorType;
 import rst.homeautomation.unit.UnitConfigType;
 import rst.homeautomation.unit.UnitTemplateType;
+
+import org.dc.bco.dal.remote.unit.MotionSensorRemote;
+import org.dc.bco.dal.remote.unit.LightRemote;
+import org.dc.bco.dal.remote.unit.TemperatureSensorRemote;
+import rst.homeautomation.unit.LightType;
 
 /**
  * This class is a test! It plays multiple samples at a time.
@@ -48,7 +53,8 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
     // todo: remove            vvv
     public SampleTest() throws Throwable {
         // RSB test
-        final Factory factory = Factory.getInstance();
+        //final Factory factory = Factory.getInstance();
+        testEventGenerator = new EventGenerator();
 
         DeviceRegistryRemote deviceRegistryRemote = new DeviceRegistryRemote();
         //final Listener listener = factory.createListener("/home/sports/motionsensor");
@@ -77,8 +83,44 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
             }
 
             //listener.addHandler(this, true);
+            
+            List<UnitConfigType.UnitConfig> temperatureSensors = deviceRegistryRemote.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.TEMPERATURE_SENSOR);
+            List<TemperatureSensorRemote> temperatureSensorRemotes = new ArrayList<>();
 
-            testEventGenerator = new EventGenerator();
+            TemperatureSensorRemote tempRemote;
+            for (UnitConfigType.UnitConfig temperatureSensorConfig : temperatureSensors) {
+                tempRemote = new TemperatureSensorRemote();
+                tempRemote.init(temperatureSensorConfig);
+                tempRemote.activate();
+                temperatureSensorRemotes.add(tempRemote);
+                tempRemote.addObserver(new Observer<TemperatureSensorType.TemperatureSensor>() {
+
+                    @Override
+                    public void update(Observable<TemperatureSensorType.TemperatureSensor> source, TemperatureSensorType.TemperatureSensor data) throws Exception {
+                        testEventGenerator.fireEvent('b');
+                    }
+                });
+            }
+            
+//            List<UnitConfigType.UnitConfig> lights = deviceRegistryRemote.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.LIGHT);
+//            List<LightRemote> lightRemotes = new ArrayList<>();
+//
+//            LightRemote lightRemote;
+//            for (UnitConfigType.UnitConfig lightConfig : lights) {
+//                lightRemote = new LightRemote();
+//                lightRemote.init(lightConfig);
+//                lightRemote.activate();
+//                lightRemotes.add(lightRemote);
+//                lightRemote.addObserver(new Observer<LightType.Light>() {
+//
+//                    @Override
+//                    public void update(Observable<LightType.Light> source, LightType.Light data) throws Exception {
+//                        testEventGenerator.fireEvent('c');
+//                    }
+//                });
+//            }
+
+
             synth = JSyn.createSynthesizer();
             synth.add(lineOut = new LineOut());
 
@@ -109,7 +151,9 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
                 Thread.sleep(100);
             }
 
-        } finally {
+        } 
+        
+        finally {
             //listener.deactivate();
             deviceRegistryRemote.shutdown();
         }
@@ -152,6 +196,7 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
             voiceAllocator2.noteOn(notenumber, char_num, 0, synth.createTimeStamp());
         } else {
             return;
+            
         }
         System.out.println(notenumber);
     }

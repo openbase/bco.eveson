@@ -20,19 +20,16 @@ import rsb.converter.WireContents;
  */
 public class RSBGenericConverterConfig {
 
-    private ConverterRepository repository = new DefaultConverterRepository<ByteBuffer>();
-    
-    public ParticipantConfig generateConfig() {
+    public static ParticipantConfig generateConfig() {
+        
         ParticipantConfig config = Factory.getInstance().getDefaultParticipantConfig().copy();
 
         for (TransportConfig name : config.getTransports().values()) {
             ConverterRepository<?> converters = new ConverterRepository<ByteBuffer>() {
-                
-                
 
                 @Override
                 public ConverterSelectionStrategy<ByteBuffer> getConvertersForSerialization() {
-                    return repository.getConvertersForSerialization();
+                    return new DefaultConverterRepository<ByteBuffer>().getConvertersForSerialization();
                 }
 
                 @Override
@@ -41,11 +38,6 @@ public class RSBGenericConverterConfig {
 
                         @Override
                         public Converter<ByteBuffer> getConverter(String string) {
-                            
-                            
-                            System.out.println("get converter for key"+string);
-                            
-//                            System.out.println("Searching for: " + string);
                             return new Converter<ByteBuffer>() {
 
                                 @Override
@@ -72,9 +64,9 @@ public class RSBGenericConverterConfig {
 
                 @Override
                 public void addConverter(Converter<ByteBuffer> converter) {
-                    repository.addConverter(converter);
+//                    repository.addConverter(converter);
 //                    converter.getSignature().getDataType().get
-                    System.out.println("Registering converter for 1");
+//                    System.out.println("Registering converter for 1");
 //                    System.out.println("Adding converter.");
                 }
             };
@@ -83,23 +75,4 @@ public class RSBGenericConverterConfig {
         }
         return config;
     }
-
-//    
-//        Listener l = Factory.getInstance().createListener(new Scope("/"), config);
-//
-//        l.addHandler(new Handler() {
-//
-//            @Override
-//            public void internalNotify(Event event) {
-//                System.out.println(event.getData());
-//            }
-//        }, true);
-//
-//        l.activate();
-//
-//        while (true) {
-//            Thread.sleep(1000);
-//        }
-//
-//    }
 }
