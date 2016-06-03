@@ -1,4 +1,4 @@
-package isy.eveson.eveson;
+package isy.eveson.eveson.old_tests;
 
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
@@ -126,14 +126,14 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
 
             voices = new UnitVoice[MAX_VOICES];
             for (int i = 0; i < MAX_VOICES; i++) {
-                SampleVoice voice = new SampleVoice("violin", synth, lineOut);
+                SampleVoice_old voice = new SampleVoice_old("violin", synth, lineOut);
                 voices[i] = voice;
             }
             voiceAllocator = new VoiceAllocator(voices);
             // Test sound output
             voices2 = new UnitVoice[MAX_VOICES];
             for (int i = 0; i < MAX_VOICES; i++) {
-                SampleVoice voice = new SampleVoice("piano", synth, lineOut);
+                SampleVoice_old voice = new SampleVoice_old("piano", synth, lineOut);
                 voices2[i] = voice;
             }
             voiceAllocator2 = new VoiceAllocator(voices2);

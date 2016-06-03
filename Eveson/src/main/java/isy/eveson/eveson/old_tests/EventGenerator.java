@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package isy.eveson.eveson;
+package isy.eveson.eveson.old_tests;
 
+import isy.eveson.eveson.old_tests.TestEvent;
+import isy.eveson.eveson.old_tests.TestEventListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

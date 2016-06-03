@@ -5,13 +5,10 @@
  */
 package isy.eveson.eveson;
 
-import java.util.EventListener;
-
 /**
- * Dummy listener for dummy event.
+ *
  * @author mgao
  */
-public interface TestEventListener extends EventListener{
-        public void eventReceived( TestEvent event );
+public class PlayEvent {
+    
 }
-   
