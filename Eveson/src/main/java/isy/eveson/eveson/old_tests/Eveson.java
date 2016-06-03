@@ -1,4 +1,4 @@
-package isy.eveson.eveson;
+package isy.eveson.eveson.old_tests;
 
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;

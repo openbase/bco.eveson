@@ -1,4 +1,4 @@
-package isy.eveson.eveson;
+package isy.eveson.eveson.old_tests;
 
 import com.jsyn.Synthesizer;
 import com.jsyn.data.FloatSample;
@@ -12,54 +12,51 @@ import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * A UnitVoice for one sample.
- *
+ * Implementation of UnitVoice for Samples, so they can be allocated using a VoiceAllocator.
  * @author mgao
  */
-public class SampleVoice implements UnitVoice {
+public class SampleVoice_old implements UnitVoice {
 
-    private final URL sampleURL;
+    private static final String SAMPLE_PATH = "/samples/";
+    private static final int MAX_VOICES = 30;
     private final VariableRateDataReader samplePlayer;
+    private final String instrument;
     private FloatSample sample;
 
     /**
-     * Constructor.
-     *
-     * @param sampleFile File to be played
+     * Constructor for setting up the voice and connecting its output.
+     * @param instrument folder for samples
+     * @param s Synthesizer
+     * @param l LineOut
      */
-    public SampleVoice(String sampleFile) {
-        Synthesizer s = EventPlayer.getSynth();
-        LineOut l = EventPlayer.getLineOut();
-        sampleURL = this.getClass().getResource(sampleFile);
+    public SampleVoice_old(String instrument, Synthesizer s, LineOut l) {
+        this.instrument = instrument;
         this.samplePlayer = new VariableRateStereoReader();
         s.add(samplePlayer);
-        samplePlayer.output.connect(0, l.input, 0);
-        samplePlayer.output.connect(1, l.input, 1);
+        samplePlayer.output.connect(0,l.input,0);
+        samplePlayer.output.connect(1,l.input,1);
     }
 
     /**
-     * Play a sample.
-     *
-     * @param d Unused (TODO: use for pitching?)
-     * @param d1 Amplitude
-     * @param ts TimeStamp
+     * Playing a sample until the end.
+     * @param d Filename (typically pitch - where 1 = G, 2 = G#..)
+     * @param d1 amplitude
+     * @param ts unused
      */
     @Override
     public void noteOn(double d, double d1, TimeStamp ts) {
+        URL sampleFile = this.getClass().getResource(SAMPLE_PATH + instrument + "/" + Math.round(d) + ".wav");
+        System.out.println(sampleFile.getPath());
         try {
-            sample = SampleLoader.loadFloatSample(sampleURL);
-            System.out.println(sampleURL.getPath());
+            sample = SampleLoader.loadFloatSample(sampleFile);
             samplePlayer.rate.set(sample.getFrameRate());
             samplePlayer.dataQueue.queue(sample);
             samplePlayer.amplitude.set(d1);
-        } catch (IOException ex) {
-            Logger.getLogger(SampleVoice.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException io) {
+            // TODO
         }
-
     }
 
     @Override
@@ -67,7 +64,6 @@ public class SampleVoice implements UnitVoice {
         samplePlayer.dataQueue.queueOff(sample);
     }
 
-    // Unused Stuff
     @Override
     public UnitGenerator getUnitGenerator() {
         return samplePlayer;
@@ -85,6 +81,11 @@ public class SampleVoice implements UnitVoice {
 
     @Override
     public UnitOutputPort getOutput() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return samplePlayer.output;
     }
+
+    public VariableRateDataReader getSamplePlayer() {
+        return samplePlayer;
+    }
+
 }

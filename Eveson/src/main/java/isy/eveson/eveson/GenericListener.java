@@ -20,13 +20,14 @@ import rsb.RSBException;
  */
 public class GenericListener {
 
-    private final String audioSample;
+    private final ScopePlayer audioSample;
     private final String scope;
     private final Listener listener;
 
-    public GenericListener(final String scope, final String audioSample) throws InitializeException, InterruptedException, RSBException {
+//    public GenericListener(final String scope, final String audioSample) throws InitializeException, InterruptedException, RSBException {
+    public GenericListener(final String scope, final ScopePlayer player) throws InitializeException, InterruptedException, RSBException {
         this.scope = scope;
-        this.audioSample = audioSample;
+        this.audioSample = player;
         
         Runtime.getRuntime().addShutdownHook(new Thread() {
 
@@ -51,7 +52,9 @@ public class GenericListener {
 
             @Override
             public void internalNotify(Event event) {
-                System.out.println("Play Sample["+audioSample+"] for Scope["+scope+"]");
+                System.out.println("Play Sample["+player.getSampleFile()+"] for Scope["+scope+"]");
+                player.play(0.5);
+                
             }
         }, true);
 

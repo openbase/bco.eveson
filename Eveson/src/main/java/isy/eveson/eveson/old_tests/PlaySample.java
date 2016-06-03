@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package isy.eveson.eveson;
+package isy.eveson.eveson.old_tests;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -20,7 +20,7 @@ import com.jsyn.util.SampleLoader;
 import java.io.File;
 
 /**
- * This file plays a minor third using violin samples. 
+ * This file plays a minor third using violin samples.
  */
 public class PlaySample {
 
@@ -32,14 +32,14 @@ public class PlaySample {
     private static final String SAMPLE_PATH = "src/resources/samples/";
 
     private void test() {
-        File sampleFile,sampleFile2;
+        File sampleFile, sampleFile2;
         sampleFile = new File(SAMPLE_PATH + "violin" + "/" + "1" + ".wav");
         sampleFile2 = new File(SAMPLE_PATH + "violin" + "/" + "4" + ".wav");
         // sampleFile = new URL("http://www.softsynth.com/samples/NotHereNow22K.wav");
 
         synth = JSyn.createSynthesizer();
 
-        FloatSample sample,sample2;
+        FloatSample sample, sample2;
         try {
             // We only need to start the LineOut. It will pull data from the
             // sample player.
@@ -63,7 +63,7 @@ public class PlaySample {
                 synth.add(samplePlayer = new VariableRateMonoReader());
                 synth.add(samplePlayer2 = new VariableRateMonoReader());
                 samplePlayer.output.connect(0, lineOut.input, 0);
-                samplePlayer2.output.connect(0,lineOut.input,0);
+                samplePlayer2.output.connect(0, lineOut.input, 0);
             } else if (sample.getChannelsPerFrame() == 2) {
                 synth.add(samplePlayer = new VariableRateStereoReader());
                 synth.add(samplePlayer2 = new VariableRateStereoReader());
@@ -75,10 +75,8 @@ public class PlaySample {
                 throw new RuntimeException("Can only play mono or stereo samples.");
             }
 
-
             samplePlayer.rate.set(sample.getFrameRate());
             samplePlayer2.rate.set(sample2.getFrameRate());
-
 
             // We can simply queue the entire file.
             // Or if it has a loop we can play the loop for a while.
@@ -98,9 +96,18 @@ public class PlaySample {
         }
         // Stop everything.
         synth.stop();
-        
-        
+
     }
 
+    public static void main(String[] args) {
+    //new PlaySample().test();
+
+        Synthesizer s = JSyn.createSynthesizer();
+        LineOut l = new LineOut();
+        s.add(l);
+
+        File sampleFile = new File(SAMPLE_PATH + "violin" + "/" + "1" + ".wav");
+
+    }
 
 }
