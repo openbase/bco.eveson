@@ -49,10 +49,16 @@ public class EventPlayer {
         lineOut.start();
         
         Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
-        scopeSampleMap.put("/home/control/motionsensor", new ScopePlayer("/samples/piano/2.wav",ADJUST));
-        scopeSampleMap.put("/home/control/tamperswitch", new ScopePlayer("/samples/piano/3.wav",PLAY));
-        scopeSampleMap.put("/home/control/brightnesssensor", new ScopePlayer("/samples/piano/5.wav",PLAY));
-        scopeSampleMap.put("/home/kitchen/floor", new ScopePlayer("/samples/piano/3.wav",ADJUST));
+        scopeSampleMap.put("/home/kitchen/floor/", new ScopePlayer("/samples/purr.wav",ADJUST));
+        scopeSampleMap.put("/home/living/motionsensor/", new ScopePlayer("/samples/bird.wav",PLAY));
+        scopeSampleMap.put("/home/kitchen/motionsensor/", new ScopePlayer("/samples/bird.wav",PLAY));
+        scopeSampleMap.put("/home/sports/motionsensor/", new ScopePlayer("/samples/bird.wav",PLAY));
+        scopeSampleMap.put("/home/living/ambientlight/", new ScopePlayer("/samples/sound_beim_anzuenden.wav",PLAY));
+        scopeSampleMap.put("/home/kitchen/ambientlight/", new ScopePlayer("/samples/sound_beim_anzuenden.wav",PLAY));
+        scopeSampleMap.put("/home/living/temperaturesensor", new ScopePlayer("/samples/wind.wav",ADJUST));
+        scopeSampleMap.put("/home/kitchen/powerconsumptionsensor", new ScopePlayer("/samples/rain.wav",ADJUST));
+        scopeSampleMap.put("/home/living/powerconsumptionsensor", new ScopePlayer("/samples/rain.wav",ADJUST));
+        scopeSampleMap.put("/home/kitchen/soundlocation", new ScopePlayer("/samples/woodpecker.wav",PLAY));
 //        scopeSampleMap.put("/home/<location>/<microphon>/audio/", "Brightness.wav");
 //        scopeSampleMap.put("/apartment/calendar/", "Brightness.wav");
 

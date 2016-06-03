@@ -7,6 +7,7 @@ import com.jsyn.unitgen.LineOut;
 import com.jsyn.unitgen.UnitGenerator;
 import com.jsyn.unitgen.UnitVoice;
 import com.jsyn.unitgen.VariableRateDataReader;
+import com.jsyn.unitgen.VariableRateMonoReader;
 import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
@@ -35,10 +36,21 @@ public class SampleVoice implements UnitVoice {
         Synthesizer s = EventPlayer.getSynth();
         LineOut l = EventPlayer.getLineOut();
         sampleURL = this.getClass().getResource(sampleFile);
-        this.samplePlayer = new VariableRateStereoReader();
-        s.add(samplePlayer);
-        samplePlayer.output.connect(0, l.input, 0);
-        samplePlayer.output.connect(1, l.input, 1);
+        try {
+            sample = SampleLoader.loadFloatSample(sampleURL);
+        } catch (IOException ex) {
+            Logger.getLogger(SampleVoice.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (sample.getChannelsPerFrame() == 2) {
+            this.samplePlayer = new VariableRateStereoReader();
+            s.add(samplePlayer);
+            samplePlayer.output.connect(0, l.input, 0);
+            samplePlayer.output.connect(1, l.input, 1);
+        } else{
+        this.samplePlayer = new VariableRateMonoReader();
+            s.add(samplePlayer);
+            samplePlayer.output.connect(0, l.input, 0);
+        }
     }
 
     /**
@@ -50,15 +62,9 @@ public class SampleVoice implements UnitVoice {
      */
     @Override
     public void noteOn(double d, double d1, TimeStamp ts) {
-        try {
-            sample = SampleLoader.loadFloatSample(sampleURL);
-            System.out.println(sampleURL.getPath());
-            samplePlayer.rate.set(sample.getFrameRate());
-            samplePlayer.dataQueue.queue(sample);
-            samplePlayer.amplitude.set(d1);
-        } catch (IOException ex) {
-            Logger.getLogger(SampleVoice.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        samplePlayer.rate.set(sample.getFrameRate());
+        samplePlayer.dataQueue.queue(sample);
+        samplePlayer.amplitude.set(d1);
 
     }
 

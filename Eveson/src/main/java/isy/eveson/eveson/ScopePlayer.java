@@ -3,6 +3,7 @@ package isy.eveson.eveson;
 import com.jsyn.data.FloatSample;
 import com.jsyn.unitgen.UnitVoice;
 import com.jsyn.unitgen.VariableRateDataReader;
+import com.jsyn.unitgen.VariableRateMonoReader;
 import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.jsyn.util.VoiceAllocator;
@@ -39,19 +40,26 @@ public class ScopePlayer {
                 }
                 allocator = new VoiceAllocator(voices);
                 break;
-            case ADJUST:
-                samplePlayer = new VariableRateStereoReader();
-                EventPlayer.getSynth().add(samplePlayer);
-                 {
-                    try {
-                        sample = SampleLoader.loadFloatSample(this.getClass().getResource(sampleFile));
-                    } catch (IOException ex) {
-                        Logger.getLogger(ScopePlayer.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+            case ADJUST: {
+                try {
+                    sample = SampleLoader.loadFloatSample(this.getClass().getResource(sampleFile));
+                } catch (IOException ex) {
+                    Logger.getLogger(ScopePlayer.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+
+            if (sample.getChannelsPerFrame() == 2) {
+                samplePlayer = new VariableRateStereoReader();
                 samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
                 samplePlayer.output.connect(1, EventPlayer.getLineOut().input, 1);
-                samplePlayer.rate.set(sample.getFrameRate());
+            } else {
+
+                samplePlayer = new VariableRateMonoReader();
+                samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
+            }
+            
+                EventPlayer.getSynth().add(samplePlayer);
+            samplePlayer.rate.set(sample.getFrameRate());
 
         }
     }
@@ -59,15 +67,13 @@ public class ScopePlayer {
     public void play(double amplitude) {
         switch (type) {
             case ADJUST:
-                
-                System.out.println("scopePlayer: Is something already playing? " + samplePlayer.dataQueue.hasMore());
+
                 samplePlayer.amplitude.set(amplitude);
 
                 if (!samplePlayer.dataQueue.hasMore()) {
-                    samplePlayer.dataQueue.queue(sample);   
+                    samplePlayer.dataQueue.queue(sample);
                 }
-                
- 
+
                 break;
             case PLAY:
                 allocator.noteOn(counter, 1, amplitude, EventPlayer.getSynth().createTimeStamp());
