@@ -66,7 +66,7 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
 
             List<UnitConfigType.UnitConfig> motionSensors = deviceRegistryRemote.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.MOTION_SENSOR);
             List<MotionSensorRemote> motionSensorRemotes = new ArrayList<>();
-
+            
             MotionSensorRemote remote;
             for (UnitConfigType.UnitConfig motionSensorConfig : motionSensors) {
                 remote = new MotionSensorRemote();
@@ -78,6 +78,7 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
                     @Override
                     public void update(Observable<MotionSensorType.MotionSensor> source, MotionSensorType.MotionSensor data) throws Exception {
                         testEventGenerator.fireEvent('a');
+                        
                     }
                 });
             }

@@ -17,6 +17,7 @@ import com.jsyn.unitgen.VariableRateDataReader;
 import com.jsyn.unitgen.VariableRateMonoReader;
 import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
+import com.softsynth.shared.time.TimeStamp;
 import java.io.File;
 
 /**
@@ -84,6 +85,14 @@ public class PlaySample {
             samplePlayer.dataQueue.queue(sample);
             samplePlayer2.dataQueue.queue(sample2);
 
+            for (int i = 1; i < 10; i++) {
+                samplePlayer2.amplitude.set(1 - (double)i/10, new TimeStamp(synth.getCurrentTime() + (double)i/10));
+                samplePlayer.amplitude.set(1 - (double)i/10, new TimeStamp(synth.getCurrentTime() +(double)i/10));
+                // this is super silly
+                samplePlayer.rate.set(sample.getFrameRate() * (1 + (double)i/10), new TimeStamp(synth.getCurrentTime() +(double)i/10));
+                samplePlayer2.rate.set(sample2.getFrameRate() * (1 + (double)i/10), new TimeStamp(synth.getCurrentTime() + (double)i/10));
+            }
+
             // Wait until the sample has finished playing.
             do {
                 synth.sleepFor(1.0);
@@ -100,13 +109,7 @@ public class PlaySample {
     }
 
     public static void main(String[] args) {
-    //new PlaySample().test();
-
-        Synthesizer s = JSyn.createSynthesizer();
-        LineOut l = new LineOut();
-        s.add(l);
-
-        File sampleFile = new File(SAMPLE_PATH + "violin" + "/" + "1" + ".wav");
+        new PlaySample().test();
 
     }
 

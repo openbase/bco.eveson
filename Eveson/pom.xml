@@ -27,7 +27,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix> 
-                            <mainClass>isy.eveson.eveson.SampleTest</mainClass>
+                            <mainClass>EventPlayer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
