@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package isy.eveson.eveson.old_tests;
+package de.citec.csra.old_tests;
 
 import java.util.EventListener;
 

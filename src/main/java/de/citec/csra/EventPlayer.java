@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package isy.eveson.eveson;
+package de.citec.csra;
 
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
 import com.jsyn.unitgen.LineOut;
-import static isy.eveson.eveson.ScopePlayer.Type.ADJUST;
-import static isy.eveson.eveson.ScopePlayer.Type.PLAY;
-import isy.eveson.eveson.jp.JPAudioResoureFolder;
+import static de.citec.csra.ScopePlayer.Type.ADJUST;
+import static de.citec.csra.ScopePlayer.Type.PLAY;
+import de.citec.csra.jp.JPAudioResoureFolder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

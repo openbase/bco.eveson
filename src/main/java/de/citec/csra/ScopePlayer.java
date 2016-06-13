@@ -1,4 +1,4 @@
-package isy.eveson.eveson;
+package de.citec.csra;
 
 import com.jsyn.data.FloatSample;
 import com.jsyn.unitgen.UnitVoice;

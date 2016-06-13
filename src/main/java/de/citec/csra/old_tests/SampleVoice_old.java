@@ -1,4 +1,4 @@
-package isy.eveson.eveson.old_tests;
+package de.citec.csra.old_tests;
 
 import com.jsyn.Synthesizer;
 import com.jsyn.data.FloatSample;

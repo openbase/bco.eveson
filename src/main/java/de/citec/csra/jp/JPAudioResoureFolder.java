@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package isy.eveson.eveson.jp;
+package de.citec.csra.jp;
 
 import java.io.File;
 import org.dc.jps.core.JPService;
