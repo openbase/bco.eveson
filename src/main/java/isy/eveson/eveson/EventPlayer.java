@@ -62,9 +62,9 @@ public class EventPlayer {
         Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
 
         scopeSampleMap.put("/home/kitchen/floor/", new ScopePlayer(prefix+"purr.wav",ADJUST));
-        scopeSampleMap.put("/home/living/motionsensor/", new ScopePlayer(prefix+"bird/swiftoid.wav",PLAY));
-        scopeSampleMap.put("/home/kitchen/motionsensor/", new ScopePlayer(prefix+"bird/inspectorj.wav",PLAY));
-        scopeSampleMap.put("/home/sports/motionsensor/", new ScopePlayer(prefix+"bird/cajo.wav",PLAY));
+        scopeSampleMap.put("/home/living/motionsensor/", new ScopePlayer(prefix+"birds/swiftoid.wav",PLAY));
+        scopeSampleMap.put("/home/kitchen/motionsensor/", new ScopePlayer(prefix+"birds/inspectorj.wav",PLAY));
+        scopeSampleMap.put("/home/sports/motionsensor/", new ScopePlayer(prefix+"birds/cajo.wav",PLAY));
         scopeSampleMap.put("/home/living/ambientlight/", new ScopePlayer(prefix+"sound_beim_anzuenden.wav",PLAY));
         scopeSampleMap.put("/home/kitchen/ambientlight/", new ScopePlayer(prefix+"sound_beim_anzuenden.wav",PLAY));
         scopeSampleMap.put("/home/living/temperaturesensor", new ScopePlayer(prefix+"wind.wav",ADJUST));
