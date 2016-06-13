@@ -12,11 +12,11 @@
         <dependency.bco.dal.version>[1.1,1.2-SNAPSHOT)</dependency.bco.dal.version>
     </properties>
     <build> 
-        <resources>
+<!--        <resources>
             <resource>
-                <directory>src/resources</directory>
+                <directory>src/main/resources</directory>
             </resource>
-        </resources>
+        </resources>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
