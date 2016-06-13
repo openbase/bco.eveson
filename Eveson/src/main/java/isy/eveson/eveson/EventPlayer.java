@@ -50,9 +50,9 @@ public class EventPlayer {
         
         Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
         scopeSampleMap.put("/home/kitchen/floor/", new ScopePlayer("/samples/purr.wav",ADJUST));
-        scopeSampleMap.put("/home/living/motionsensor/", new ScopePlayer("/samples/bird.wav",PLAY));
-        scopeSampleMap.put("/home/kitchen/motionsensor/", new ScopePlayer("/samples/bird.wav",PLAY));
-        scopeSampleMap.put("/home/sports/motionsensor/", new ScopePlayer("/samples/bird.wav",PLAY));
+        scopeSampleMap.put("/home/living/motionsensor/", new ScopePlayer("/samples/bird/swiftoid.wav",PLAY));
+        scopeSampleMap.put("/home/kitchen/motionsensor/", new ScopePlayer("/samples/bird/inspectorj.wav",PLAY));
+        scopeSampleMap.put("/home/sports/motionsensor/", new ScopePlayer("/samples/bird/cajo.wav",PLAY));
         scopeSampleMap.put("/home/living/ambientlight/", new ScopePlayer("/samples/sound_beim_anzuenden.wav",PLAY));
         scopeSampleMap.put("/home/kitchen/ambientlight/", new ScopePlayer("/samples/sound_beim_anzuenden.wav",PLAY));
         scopeSampleMap.put("/home/living/temperaturesensor", new ScopePlayer("/samples/wind.wav",ADJUST));
@@ -64,6 +64,7 @@ public class EventPlayer {
 
         new EventPlayer(scopeSampleMap).play();
 
+        
         
         while (true) {
             Thread.sleep(100);
