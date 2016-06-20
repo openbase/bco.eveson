@@ -54,7 +54,6 @@ public class EventPlayer {
         JPService.parseAndExitOnError(args);
 
         try {
-            System.out.println("audio folder: " + JPService.getProperty(JPAudioResoureFolder.class).getValue().getAbsolutePath());
             String prefix = JPService.getProperty(JPAudioResoureFolder.class).getValue().getAbsolutePath();
 
             synth = JSyn.createSynthesizer();
@@ -65,43 +64,47 @@ public class EventPlayer {
 
             Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
 
+            // #################### scope - audio mapping ####################
             List<PlayerConfig> configList = new ArrayList<>();
-            configList.add(new PlayerConfig("/home/kitchen/floor/", prefix + "/purr.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/ambientlight/", prefix + "/sound_beim_anzuenden.wav", PLAY));
-            configList.add(new PlayerConfig("/home/kitchen/ambientlight/", prefix + "/sound_beim_anzuenden.wav", PLAY));
-            configList.add(new PlayerConfig("/home/living/temperaturesensor", prefix + "/purr.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", prefix + "/rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", prefix + "/rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/soundlocation", prefix + "/woodpecker.wav", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/floor/", "purr.wav", ADJUST));
+            configList.add(new PlayerConfig("/home/living/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
+            configList.add(new PlayerConfig("/home/kitchen/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
+            configList.add(new PlayerConfig("/home/living/temperaturesensor", "purr.wav", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "rain.wav", ADJUST));
+            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "rain.wav", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "woodpecker.wav", ADJUST));
 
+            configList.add(new PlayerConfig("/home/living/temperaturesensor", "/wind.wav", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "/rain.wav", ADJUST));
+            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "/rain.wav", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "/woodpecker.wav", PLAY));
+            //mapping of birds to motionsensors
+            configList.add(new PlayerConfig("/home/living/motionsensor/couch/", "/birds/1.wav", PLAY));
+            configList.add(new PlayerConfig("/home/living/motionsensor/table/", "/birds/2.wav", PLAY));
+            configList.add(new PlayerConfig("/home/living/motionsensor/media/", "/birds/3.wav", PLAY));
+            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/4.wav", PLAY));
+            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/hallway/", "/birds/5.wav", PLAY));
+            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/6.wav", PLAY));
+            configList.add(new PlayerConfig("/home/sports/motionsensor/interaction/", "/birds/7.wav", PLAY));
+            configList.add(new PlayerConfig("/home/sports/motionsensor/pathway/", "/birds/8.wav", PLAY));
+            configList.add(new PlayerConfig("/home/kitchen/motionsensor/global/", "/birds/9.wav", PLAY));
+            configList.add(new PlayerConfig("/home/bath/motionsensor/global/", "/birds/10.wav", PLAY));
+            configList.add(new PlayerConfig("/home/bath/motionsensor/entrance/", "/birds/11.wav", PLAY));
+            // ###############################################################
+            
+            
             configList.stream().forEach((config) -> {
                 try {
-                    scopeSampleMap.put(config.getScope(), new ScopePlayer(config.getSampleFile(), config.getType()));
+                    scopeSampleMap.put(config.getScope(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType()));
                 } catch (CouldNotPerformException ex) {
                     ExceptionPrinter.printHistory(new CouldNotPerformException("error occured... skipping sample " + config.getSampleFile(), ex), System.err);
                 }
-            });//            scopeSampleMap.put("/home/living/temperaturesensor", new ScopePlayer(prefix + "/wind.wav", ADJUST));
-//            scopeSampleMap.put("/home/kitchen/powerconsumptionsensor", new ScopePlayer(prefix + "/rain.wav", ADJUST));
-//            scopeSampleMap.put("/home/living/powerconsumptionsensor", new ScopePlayer(prefix + "/rain.wav", ADJUST));
-//            scopeSampleMap.put("/home/kitchen/soundlocation", new ScopePlayer(prefix + "/woodpecker.wav", PLAY));
-//
-//            //mapping of birds to motionsensors
-//            scopeSampleMap.put("/home/living/motionsensor/couch/", new ScopePlayer(prefix + "/birds/1.wav", PLAY));
-//            scopeSampleMap.put("/home/living/motionsensor/table/", new ScopePlayer(prefix + "/birds/2.wav", PLAY));
-//            scopeSampleMap.put("/home/living/motionsensor/media/", new ScopePlayer(prefix + "/birds/3.wav", PLAY));
-//            scopeSampleMap.put("/home/wardrobe/motionsensor/entrance/", new ScopePlayer(prefix + "/birds/4.wav", PLAY));
-//            scopeSampleMap.put("/home/wardrobe/motionsensor/hallway/", new ScopePlayer(prefix + "/birds/5.wav", PLAY));
-//            scopeSampleMap.put("/home/wardrobe/motionsensor/entrance/", new ScopePlayer(prefix + "/birds/6.wav", PLAY));
-//            scopeSampleMap.put("/home/sports/motionsensor/interaction/", new ScopePlayer(prefix + "/birds/7.wav", PLAY));
-//            scopeSampleMap.put("/home/sports/motionsensor/pathway/", new ScopePlayer(prefix + "/birds/8.wav", PLAY));
-//            scopeSampleMap.put("/home/kitchen/motionsensor/global/", new ScopePlayer(prefix + "/birds/9.wav", PLAY));
-//            scopeSampleMap.put("/home/bath/motionsensor/global/", new ScopePlayer(prefix + "/birds/10.wav", PLAY));
-//            scopeSampleMap.put("/home/bath/motionsensor/entrance/", new ScopePlayer(prefix + "/birds/11.wav", PLAY));
+            });
 
             new EventPlayer(scopeSampleMap).play();
 
             while (!Thread.currentThread().isInterrupted()) {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             }
             System.exit(0);
         } catch (final Exception ex) {
