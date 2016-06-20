@@ -7,6 +7,7 @@ import com.jsyn.unitgen.VariableRateMonoReader;
 import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.jsyn.util.VoiceAllocator;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ public class ScopePlayer {
     private int counter = 0; // Voice Allocators need a unique number for each note played
 
     public ScopePlayer(String sampleFile, Type type) {
+        System.out.println("Load: " + sampleFile);
         this.sampleFile = sampleFile;
         this.type = type;
         switch (type) {
@@ -42,7 +44,7 @@ public class ScopePlayer {
                 break;
             case ADJUST: {
                 try {
-                    sample = SampleLoader.loadFloatSample(this.getClass().getResource(sampleFile));
+                    sample = SampleLoader.loadFloatSample(new File(sampleFile));
                 } catch (IOException ex) {
                     Logger.getLogger(ScopePlayer.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -57,8 +59,8 @@ public class ScopePlayer {
                 samplePlayer = new VariableRateMonoReader();
                 samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
             }
-            
-                EventPlayer.getSynth().add(samplePlayer);
+
+            EventPlayer.getSynth().add(samplePlayer);
             samplePlayer.rate.set(sample.getFrameRate());
 
         }

@@ -11,10 +11,13 @@ import com.jsyn.unitgen.VariableRateMonoReader;
 import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.dc.jul.exception.CouldNotPerformException;
+import org.dc.jul.exception.NotAvailableException;
+import org.dc.jul.exception.printer.ExceptionPrinter;
 
 /**
  * A UnitVoice for one sample.
@@ -23,7 +26,6 @@ import java.util.logging.Logger;
  */
 public class SampleVoice implements UnitVoice {
 
-    private final URL sampleURL;
     private final VariableRateDataReader samplePlayer;
     private FloatSample sample;
 
@@ -35,11 +37,14 @@ public class SampleVoice implements UnitVoice {
     public SampleVoice(String sampleFile) {
         Synthesizer s = EventPlayer.getSynth();
         LineOut l = EventPlayer.getLineOut();
-        sampleURL = this.getClass().getResource(sampleFile);
         try {
-            sample = SampleLoader.loadFloatSample(sampleURL);
-        } catch (IOException ex) {
-            Logger.getLogger(SampleVoice.class.getName()).log(Level.SEVERE, null, ex);
+            sample = SampleLoader.loadFloatSample(new File(sampleFile));
+            if (sample == null) 
+            {
+                throw new CouldNotPerformException("Could not load: "+sampleFile);
+            }
+        } catch (IOException | CouldNotPerformException ex) {
+            ExceptionPrinter.print
         }
         if (sample.getChannelsPerFrame() == 2) {
             this.samplePlayer = new VariableRateStereoReader();
