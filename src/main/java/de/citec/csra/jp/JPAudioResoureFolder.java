@@ -6,11 +6,11 @@
 package de.citec.csra.jp;
 
 import java.io.File;
-import org.dc.jps.core.JPService;
-import org.dc.jps.exception.JPNotAvailableException;
-import org.dc.jps.preset.AbstractJPDirectory;
-import org.dc.jps.preset.JPPrefix;
-import org.dc.jps.tools.FileHandler;
+import org.openbase.jps.core.JPService;
+import org.openbase.jps.exception.JPNotAvailableException;
+import org.openbase.jps.preset.AbstractJPDirectory;
+import org.openbase.jps.preset.JPPrefix;
+import org.openbase.jps.tools.FileHandler;
 
 /**
  *

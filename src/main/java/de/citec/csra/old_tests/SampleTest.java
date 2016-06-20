@@ -11,10 +11,10 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
-import org.dc.bco.registry.device.lib.DeviceRegistry;
-import org.dc.bco.registry.device.remote.DeviceRegistryRemote;
-import org.dc.jul.pattern.Observable;
-import org.dc.jul.pattern.Observer;
+import org.openbase.bco.registry.device.lib.DeviceRegistry;
+import org.openbase.bco.registry.device.remote.DeviceRegistryRemote;
+import org.openbase.jul.pattern.Observable;
+import org.openbase.jul.pattern.Observer;
 import rsb.AbstractEventHandler;
 import rsb.Event;
 import rsb.Factory;
@@ -27,9 +27,9 @@ import rst.homeautomation.unit.TemperatureSensorType;
 import rst.homeautomation.unit.UnitConfigType;
 import rst.homeautomation.unit.UnitTemplateType;
 
-import org.dc.bco.dal.remote.unit.MotionSensorRemote;
-import org.dc.bco.dal.remote.unit.LightRemote;
-import org.dc.bco.dal.remote.unit.TemperatureSensorRemote;
+import org.openbase.bco.dal.remote.unit.MotionSensorRemote;
+import org.openbase.bco.dal.remote.unit.LightRemote;
+import org.openbase.bco.dal.remote.unit.TemperatureSensorRemote;
 import rst.homeautomation.unit.LightType;
 
 /**
