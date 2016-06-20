@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.openbase.jul.exception.CouldNotPerformException;
 
 /**
  * Handles events for one scope.
@@ -29,40 +30,44 @@ public class ScopePlayer {
     private FloatSample sample;
     private int counter = 0; // Voice Allocators need a unique number for each note played
 
-    public ScopePlayer(String sampleFile, Type type) {
-        System.out.println("Load: " + sampleFile);
-        this.sampleFile = sampleFile;
-        this.type = type;
-        switch (type) {
-            case PLAY:
-                UnitVoice[] voices = new UnitVoice[MAX_VOICES];
-                for (int i = 0; i < MAX_VOICES; i++) {
-                    SampleVoice voice = new SampleVoice(sampleFile);
-                    voices[i] = voice;
+    public ScopePlayer(String sampleFile, Type type) throws org.openbase.jul.exception.InstantiationException {
+        try {
+            System.out.println("Load: " + sampleFile);
+            this.sampleFile = sampleFile;
+            this.type = type;
+            switch (type) {
+                case PLAY:
+                    UnitVoice[] voices = new UnitVoice[MAX_VOICES];
+                    for (int i = 0; i < MAX_VOICES; i++) {
+                        SampleVoice voice = new SampleVoice(sampleFile);
+                        voices[i] = voice;
+                    }
+                    allocator = new VoiceAllocator(voices);
+                    break;
+                case ADJUST: {
+                    try {
+                        sample = SampleLoader.loadFloatSample(new File(sampleFile));
+                    } catch (IOException ex) {
+                        throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
+                    }
                 }
-                allocator = new VoiceAllocator(voices);
-                break;
-            case ADJUST: {
-                try {
-                    sample = SampleLoader.loadFloatSample(new File(sampleFile));
-                } catch (IOException ex) {
-                    Logger.getLogger(ScopePlayer.class.getName()).log(Level.SEVERE, null, ex);
+
+                if (sample.getChannelsPerFrame() == 2) {
+                    samplePlayer = new VariableRateStereoReader();
+                    samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
+                    samplePlayer.output.connect(1, EventPlayer.getLineOut().input, 1);
+                } else {
+
+                    samplePlayer = new VariableRateMonoReader();
+                    samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
                 }
+
+                EventPlayer.getSynth().add(samplePlayer);
+                samplePlayer.rate.set(sample.getFrameRate());
+
             }
-
-            if (sample.getChannelsPerFrame() == 2) {
-                samplePlayer = new VariableRateStereoReader();
-                samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
-                samplePlayer.output.connect(1, EventPlayer.getLineOut().input, 1);
-            } else {
-
-                samplePlayer = new VariableRateMonoReader();
-                samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
-            }
-
-            EventPlayer.getSynth().add(samplePlayer);
-            samplePlayer.rate.set(sample.getFrameRate());
-
+        } catch (CouldNotPerformException ex) {
+            throw new org.openbase.jul.exception.InstantiationException(this, ex);
         }
     }
 
