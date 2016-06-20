@@ -48,7 +48,11 @@ public class ScopePlayer {
                     try {
                         sample = SampleLoader.loadFloatSample(new File(sampleFile));
                     } catch (IOException ex) {
+<<<<<<< HEAD
                         throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
+=======
+                        Logger.getLogger(ScopePlayer.class.getName()).log(Level.SEVERE, null, ex);
+>>>>>>> 988b36684dd9eba7839d7d4f29fc98a422f0a3fc
                     }
                 }
 
