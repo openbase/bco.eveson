@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.dc.jps.core.JPService;
+import org.openbase.jps.core.JPService;
 import rsb.RSBException;
 
 /**
