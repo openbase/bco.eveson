@@ -13,11 +13,8 @@ import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.dc.jul.exception.CouldNotPerformException;
-import org.dc.jul.exception.NotAvailableException;
-import org.dc.jul.exception.printer.ExceptionPrinter;
+import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.printer.ExceptionPrinter;
 
 /**
  * A UnitVoice for one sample.
@@ -33,28 +30,30 @@ public class SampleVoice implements UnitVoice {
      * Constructor.
      *
      * @param sampleFile File to be played
+     * @throws org.openbase.jul.exception.InstantiationException
      */
-    public SampleVoice(String sampleFile) {
-        Synthesizer s = EventPlayer.getSynth();
-        LineOut l = EventPlayer.getLineOut();
+    public SampleVoice(String sampleFile) throws org.openbase.jul.exception.InstantiationException {
         try {
-            sample = SampleLoader.loadFloatSample(new File(sampleFile));
-            if (sample == null) 
-            {
-                throw new CouldNotPerformException("Could not load: "+sampleFile);
+            Synthesizer s = EventPlayer.getSynth();
+            LineOut l = EventPlayer.getLineOut();
+            try {
+                sample = SampleLoader.loadFloatSample(new File(sampleFile));
+            } catch (IOException ex) {
+                throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
             }
-        } catch (IOException | CouldNotPerformException ex) {
-            ExceptionPrinter.print
-        }
-        if (sample.getChannelsPerFrame() == 2) {
-            this.samplePlayer = new VariableRateStereoReader();
-            s.add(samplePlayer);
-            samplePlayer.output.connect(0, l.input, 0);
-            samplePlayer.output.connect(1, l.input, 1);
-        } else{
-        this.samplePlayer = new VariableRateMonoReader();
-            s.add(samplePlayer);
-            samplePlayer.output.connect(0, l.input, 0);
+            if (sample.getChannelsPerFrame() == 2) {
+                this.samplePlayer = new VariableRateStereoReader();
+                s.add(samplePlayer);
+                samplePlayer.output.connect(0, l.input, 0);
+                samplePlayer.output.connect(1, l.input, 1);
+            } else {
+                this.samplePlayer = new VariableRateMonoReader();
+                s.add(samplePlayer);
+                samplePlayer.output.connect(0, l.input, 0);
+            }
+
+        } catch (CouldNotPerformException ex) {
+            throw new org.openbase.jul.exception.InstantiationException(this, ex);
         }
     }
 
