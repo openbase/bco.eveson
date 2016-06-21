@@ -7,6 +7,9 @@ package de.citec.csra;
 
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
+import com.jsyn.devices.AudioDeviceFactory;
+import com.jsyn.devices.AudioDeviceManager;
+import com.jsyn.devices.javasound.JavaSoundAudioDevice;
 import com.jsyn.unitgen.LineOut;
 import static de.citec.csra.ScopePlayer.Type.ADJUST;
 import static de.citec.csra.ScopePlayer.Type.PLAY;
@@ -17,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import org.openbase.jps.core.JPService;
 import org.openbase.jul.exception.CouldNotPerformException;
-import org.openbase.jul.exception.MultiException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import rsb.RSBException;
 
@@ -57,7 +59,25 @@ public class EventPlayer {
             String prefix = JPService.getProperty(JPAudioResoureFolder.class).getValue().getAbsolutePath();
 
             synth = JSyn.createSynthesizer();
+
+            AudioDeviceManager audioManager = AudioDeviceFactory.createAudioDeviceManager();
+
+            int numDevices = audioManager.getDeviceCount();
+            for (int i = 0; i < numDevices; i++) {
+                String deviceName = audioManager.getDeviceName(i);
+                int maxInputs = audioManager.getMaxInputChannels(i);
+                int maxOutputs = audioManager.getMaxInputChannels(i);
+                boolean isDefaultInput = (i == audioManager.getDefaultInputDeviceID());
+                boolean isDefaultOutput = (i == audioManager.getDefaultInputDeviceID());
+                System.out.println("#" + i + " : " + deviceName);
+                System.out.println("  max inputs : " + maxInputs + (isDefaultInput ? "   (default)" : ""));
+                System.out.println("  max outputs: " + maxOutputs + (isDefaultOutput ? "   (default)" : ""));
+            }
+
+            System.out.println("JavaSoundAudioDevice:" + new JavaSoundAudioDevice().getDefaultOutputDeviceID());
+
             lineOut = new LineOut();
+
             synth.add(lineOut);
             synth.start();
             lineOut.start();
@@ -91,8 +111,7 @@ public class EventPlayer {
             configList.add(new PlayerConfig("/home/bath/motionsensor/global/", "/birds/10.wav", PLAY));
             configList.add(new PlayerConfig("/home/bath/motionsensor/entrance/", "/birds/11.wav", PLAY));
             // ###############################################################
-            
-            
+
             configList.stream().forEach((config) -> {
                 try {
                     scopeSampleMap.put(config.getScope(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType()));

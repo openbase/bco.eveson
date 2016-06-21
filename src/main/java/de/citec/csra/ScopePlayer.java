@@ -61,6 +61,7 @@ public class ScopePlayer {
 
                     samplePlayer = new VariableRateMonoReader();
                     samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
+                    samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 1);
                 }
 
                 EventPlayer.getSynth().add(samplePlayer);
