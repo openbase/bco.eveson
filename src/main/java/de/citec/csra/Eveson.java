@@ -41,7 +41,7 @@ public class Eveson implements Launchable {
             // Init audio devices and synthesizer
             AudioDeviceManager audioManager = AudioDeviceFactory.createAudioDeviceManager();
             synthesizer = JSyn.createSynthesizer();
-            lineOut.start();
+            lineOut = new LineOut();
             synthesizer.add(lineOut);
             int audioDevice = loadAudioDevice(audioManager);
             int outputChannles = audioManager.getMaxInputChannels(audioDevice);
@@ -52,7 +52,7 @@ public class Eveson implements Launchable {
             }
 
             synthesizer.start(DEFAULT_FRAME_RATE, -1, 0, audioDevice, outputChannles);
-            lineOut = new LineOut();
+            lineOut.start();
 
             // Load setting scope - audio mapping
             final String prefix = JPService.getProperty(JPAudioResoureFolder.class).getValue().getAbsolutePath();
