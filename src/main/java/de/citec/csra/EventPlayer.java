@@ -10,6 +10,7 @@ import com.jsyn.Synthesizer;
 import com.jsyn.devices.AudioDeviceFactory;
 import com.jsyn.devices.AudioDeviceManager;
 import com.jsyn.devices.javasound.JavaSoundAudioDevice;
+import static com.jsyn.engine.SynthesisEngine.DEFAULT_FRAME_RATE;
 import com.jsyn.unitgen.LineOut;
 import static de.citec.csra.ScopePlayer.Type.ADJUST;
 import static de.citec.csra.ScopePlayer.Type.PLAY;
@@ -62,8 +63,11 @@ public class EventPlayer {
 
             AudioDeviceManager audioManager = AudioDeviceFactory.createAudioDeviceManager();
 
-            int numDevices = audioManager.getDeviceCount();
-            for (int i = 0; i < numDevices; i++) {
+            String selectedDevice = "d8m";
+            int selectedDeviceID = -1;
+            
+            // find selected audio device
+            for (int i = 0; i < audioManager.getDeviceCount(); i++) {
                 String deviceName = audioManager.getDeviceName(i);
                 int maxInputs = audioManager.getMaxInputChannels(i);
                 int maxOutputs = audioManager.getMaxInputChannels(i);
@@ -72,14 +76,18 @@ public class EventPlayer {
                 System.out.println("#" + i + " : " + deviceName);
                 System.out.println("  max inputs : " + maxInputs + (isDefaultInput ? "   (default)" : ""));
                 System.out.println("  max outputs: " + maxOutputs + (isDefaultOutput ? "   (default)" : ""));
+                
+                if(audioManager.getDeviceName(i).contains(selectedDevice)) {
+                    selectedDeviceID = i;
+                }
             }
-
-            System.out.println("JavaSoundAudioDevice:" + new JavaSoundAudioDevice().getDefaultOutputDeviceID());
+            
+            System.out.println("load selected SoundDevice["+audioManager.getDeviceName(selectedDeviceID)+"]");
 
             lineOut = new LineOut();
 
             synth.add(lineOut);
-            synth.start();
+            synth.start(DEFAULT_FRAME_RATE, -1, 0, selectedDeviceID, audioManager.getMaxInputChannels(selectedDeviceID));
             lineOut.start();
 
             Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
