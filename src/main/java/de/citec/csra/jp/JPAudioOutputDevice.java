@@ -44,6 +44,7 @@ public class JPAudioOutputDevice extends AbstractJPString {
         for (int i = 0; i < audioManager.getDeviceCount(); i++) {
             if (audioManager.getDeviceName(i).toLowerCase().contains(selectedDevice)) {
                 selectedDeviceId = i;
+                System.out.println("found audio device: "+audioManager.getDeviceName(i) +"["+audioManager.getMaxInputChannels(selectedDeviceId) + ":in|"+ audioManager.getMaxOutputChannels(selectedDeviceId)+":out]");
             }
         }
 
