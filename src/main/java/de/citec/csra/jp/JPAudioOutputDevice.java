@@ -7,14 +7,10 @@ package de.citec.csra.jp;
 
 import com.jsyn.devices.AudioDeviceFactory;
 import com.jsyn.devices.AudioDeviceManager;
-import java.io.File;
 import java.util.List;
-import org.openbase.jps.core.JPService;
 import org.openbase.jps.exception.JPBadArgumentException;
 import org.openbase.jps.exception.JPNotAvailableException;
 import org.openbase.jps.preset.AbstractJPString;
-import org.openbase.jps.preset.JPPrefix;
-import org.openbase.jps.tools.FileHandler;
 
 /**
  *

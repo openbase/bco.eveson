@@ -41,17 +41,24 @@ public class Eveson implements Launchable {
             // Init audio devices and synthesizer
             AudioDeviceManager audioManager = AudioDeviceFactory.createAudioDeviceManager();
             synthesizer = JSyn.createSynthesizer();
-            lineOut = new LineOut();
+            lineOut.start();
             synthesizer.add(lineOut);
             int audioDevice = loadAudioDevice(audioManager);
-            synthesizer.start(DEFAULT_FRAME_RATE, -1, 0, audioDevice, audioManager.getMaxInputChannels(audioDevice));
-            lineOut.start();
+            int outputChannles = audioManager.getMaxInputChannels(audioDevice);
+
+            if (outputChannles <= 0) {
+                System.out.println("WARN: Audio channel detection failed. Try to force at least to output channels.");
+                outputChannles = 2;
+            }
+
+            synthesizer.start(DEFAULT_FRAME_RATE, -1, 0, audioDevice, outputChannles);
+            lineOut = new LineOut();
 
             // Load setting scope - audio mapping
             final String prefix = JPService.getProperty(JPAudioResoureFolder.class).getValue().getAbsolutePath();
             final Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
             List<PlayerConfig> configList = new ArrayList<>();
-            
+
             // ###############################################################
             configList.add(new PlayerConfig("/home/kitchen/floor/", "purr.wav", ADJUST));
             configList.add(new PlayerConfig("/home/living/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
@@ -103,7 +110,7 @@ public class Eveson implements Launchable {
             throw new CouldNotPerformException("Could not load audio device!", ex);
         }
     }
-    
+
     public static Synthesizer getSynthesizer() {
         return synthesizer;
     }
