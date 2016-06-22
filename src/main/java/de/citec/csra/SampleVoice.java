@@ -34,8 +34,8 @@ public class SampleVoice implements UnitVoice {
      */
     public SampleVoice(String sampleFile) throws org.openbase.jul.exception.InstantiationException {
         try {
-            Synthesizer s = EventPlayer.getSynth();
-            LineOut l = EventPlayer.getLineOut();
+            Synthesizer s = Eveson.getSynthesizer();
+            LineOut l = Eveson.getLineOut();
             try {
                 sample = SampleLoader.loadFloatSample(new File(sampleFile));
             } catch (IOException ex) {

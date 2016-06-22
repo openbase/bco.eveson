@@ -7,6 +7,8 @@ package de.citec.csra;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.printer.ExceptionPrinter;
 import rsb.Event;
 import rsb.Factory;
 import rsb.Handler;
@@ -20,57 +22,56 @@ import rsb.RSBException;
  */
 public class GenericListener {
 
-    private final ScopePlayer audioSample;
+    private final ScopePlayer player;
     private final String scope;
     private final Listener listener;
 
-//    public GenericListener(final String scope, final String audioSample) throws InitializeException, InterruptedException, RSBException {
-    public GenericListener(final String scope, final ScopePlayer player) throws InitializeException, InterruptedException, RSBException {
-        this.scope = scope;
-        this.audioSample = player;
-        
-        Runtime.getRuntime().addShutdownHook(new Thread() {
+    public GenericListener(final String scope, final ScopePlayer player) throws org.openbase.jul.exception.InstantiationException, InterruptedException {
+        try {
+            this.scope = scope;
+            this.player = player;
 
-            @Override
-            public void run() {
-                try {
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+
+                @Override
+                public void run() {
                     shutdown();
-                } catch (RSBException ex) {
-                    Logger.getLogger(GenericListener.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GenericListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            
-        });
-        
-        this.listener = Factory.getInstance().createListener(scope, RSBGenericConverterConfig.generateConfig());
 
-        
-        
-        listener.addHandler(new Handler() {
+            });
 
-            @Override
-            public void internalNotify(Event event) {
-                System.out.println("Play Sample["+player.getSampleFile()+"] for Scope["+scope+"]");
+            this.listener = Factory.getInstance().createListener(scope, RSBGenericConverterConfig.generateConfig());
+
+            listener.addHandler((Event event) -> {
+                System.out.println("Play Sample[" + player.getSampleFile() + "] for Scope[" + scope + "]");
                 player.play(0.5);
-                
-            }
-        }, true);
+            }, true);
 
-        listener.activate();
-        System.out.println("Listener activated for Scope["+scope+"].");
+            listener.activate();
+            System.out.println("Listener activated for " + this);
+        } catch (RSBException ex) {
+            throw new org.openbase.jul.exception.InstantiationException(this, ex);
+        }
     }
 
     public String getScope() {
         return scope;
     }
-    
-    public void shutdown() throws RSBException, InterruptedException {
-        if(listener == null) {
+
+    public void shutdown() {
+        if (listener == null) {
             return;
         }
-        
-        listener.deactivate();
+
+        try {
+            listener.deactivate();
+        } catch (RSBException | InterruptedException ex) {
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not shutdown " + this), System.out);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[" + scope + "]";
     }
 }

@@ -9,8 +9,6 @@ import com.jsyn.util.SampleLoader;
 import com.jsyn.util.VoiceAllocator;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openbase.jul.exception.CouldNotPerformException;
 
 /**
@@ -48,23 +46,23 @@ public class ScopePlayer {
                     try {
                         sample = SampleLoader.loadFloatSample(new File(sampleFile));
                     } catch (IOException ex) {
-                        
+
                         throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
                     }
                 }
 
                 if (sample.getChannelsPerFrame() == 2) {
                     samplePlayer = new VariableRateStereoReader();
-                    samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
-                    samplePlayer.output.connect(1, EventPlayer.getLineOut().input, 1);
+                    samplePlayer.output.connect(0, Eveson.getLineOut().input, 0);
+                    samplePlayer.output.connect(1, Eveson.getLineOut().input, 1);
                 } else {
 
                     samplePlayer = new VariableRateMonoReader();
-                    samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 0);
-                    samplePlayer.output.connect(0, EventPlayer.getLineOut().input, 1);
+                    samplePlayer.output.connect(0, Eveson.getLineOut().input, 0);
+                    samplePlayer.output.connect(0, Eveson.getLineOut().input, 1);
                 }
 
-                EventPlayer.getSynth().add(samplePlayer);
+                Eveson.getSynthesizer().add(samplePlayer);
                 samplePlayer.rate.set(sample.getFrameRate());
 
             }
@@ -85,7 +83,7 @@ public class ScopePlayer {
 
                 break;
             case PLAY:
-                allocator.noteOn(counter, 1, amplitude, EventPlayer.getSynth().createTimeStamp());
+                allocator.noteOn(counter, 1, amplitude, Eveson.getSynthesizer().createTimeStamp());
                 counter++;
         }
     }
