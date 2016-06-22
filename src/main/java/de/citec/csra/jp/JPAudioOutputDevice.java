@@ -34,6 +34,7 @@ public class JPAudioOutputDevice extends AbstractJPString {
 
     @Override
     protected String parse(List<String> arguments) throws JPBadArgumentException {
+        checkArgumentCount(1);
         String selectedDevice = arguments.get(0).toLowerCase();
         int selectedDeviceId = -1;
 
