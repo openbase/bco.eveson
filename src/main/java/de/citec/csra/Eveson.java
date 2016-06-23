@@ -50,7 +50,7 @@ public class Eveson implements Launchable {
                 System.out.println("WARN: Audio channel detection failed. Try to force at least to output channels.");
                 outputChannles = 2;
             }
-
+            synthesizer.start();
             synthesizer.start(DEFAULT_FRAME_RATE, -1, 0, audioDevice, outputChannles);
             lineOut.start();
 
@@ -102,7 +102,7 @@ public class Eveson implements Launchable {
 
     private int loadAudioDevice(final AudioDeviceManager audioManager) throws CouldNotPerformException {
         try {
-            System.out.println("load audio device: " + JPService.getProperty(JPAudioOutputDevice.class).getValue());
+            System.out.println("load audio device: " + JPService.getProperty(JPAudioOutputDevice.class).getValue() + " ["+JPService.getProperty(JPAudioOutputDevice.class).getAudioOutputDeviceId()+"]");
             int selectedDeviceId = JPService.getProperty(JPAudioOutputDevice.class).getAudioOutputDeviceId();
             System.out.println(audioManager.getMaxInputChannels(selectedDeviceId) + " input and " + audioManager.getMaxOutputChannels(selectedDeviceId) + " output channels found.");
             return selectedDeviceId;
