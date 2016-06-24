@@ -142,6 +142,11 @@
             <artifactId>dal.remote</artifactId>
             <version>${dependency.bco.dal.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.openbase.bco</groupId>
+            <artifactId>manager.location.remote</artifactId>
+            <version>${dependency.bco.dal.version}</version>
+        </dependency>
     </dependencies>
     
     <repositories>

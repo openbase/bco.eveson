@@ -15,6 +15,7 @@ import static de.citec.csra.ScopePlayer.Type.ADJUST;
 import static de.citec.csra.ScopePlayer.Type.PLAY;
 import de.citec.csra.jp.JPAudioOutputDevice;
 import de.citec.csra.jp.JPAudioResoureFolder;
+import de.citec.csra.remotes.Remotes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,17 +73,20 @@ public class Eveson implements Launchable {
             configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "/rain.wav", ADJUST));
             configList.add(new PlayerConfig("/home/kitchen/soundlocation", "/woodpecker.wav", PLAY));
             // ### mapping of birds to motionsensors
-            configList.add(new PlayerConfig("/home/living/motionsensor/couch/", "/birds/1.wav", PLAY));
-            configList.add(new PlayerConfig("/home/living/motionsensor/table/", "/birds/2.wav", PLAY));
-            configList.add(new PlayerConfig("/home/living/motionsensor/media/", "/birds/3.wav", PLAY));
-            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/4.wav", PLAY));
-            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/hallway/", "/birds/5.wav", PLAY));
-            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/6.wav", PLAY));
-            configList.add(new PlayerConfig("/home/sports/motionsensor/interaction/", "/birds/7.wav", PLAY));
-            configList.add(new PlayerConfig("/home/sports/motionsensor/pathway/", "/birds/8.wav", PLAY));
-            configList.add(new PlayerConfig("/home/kitchen/motionsensor/global/", "/birds/9.wav", PLAY));
-            configList.add(new PlayerConfig("/home/bath/motionsensor/global/", "/birds/10.wav", PLAY));
-            configList.add(new PlayerConfig("/home/bath/motionsensor/entrance/", "/birds/11.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/living/motionsensor/couch/", "/birds/1.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/living/motionsensor/table/", "/birds/2.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/living/motionsensor/media/", "/birds/3.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/4.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/hallway/", "/birds/5.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/6.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/sports/motionsensor/interaction/", "/birds/7.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/sports/motionsensor/pathway/", "/birds/8.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/kitchen/motionsensor/global/", "/birds/9.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/bath/motionsensor/global/", "/birds/10.wav", PLAY));
+//            configList.add(new PlayerConfig("/home/bath/motionsensor/entrance/", "/birds/11.wav", PLAY));
+            
+            Remotes remotes = new Remotes();
+            remotes.init();
             // ###############################################################
 
             // Init player
