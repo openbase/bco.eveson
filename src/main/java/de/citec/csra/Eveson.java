@@ -12,6 +12,7 @@ import com.jsyn.devices.AudioDeviceManager;
 import static com.jsyn.engine.SynthesisEngine.DEFAULT_FRAME_RATE;
 import com.jsyn.unitgen.LineOut;
 import static de.citec.csra.ScopePlayer.Type.ADJUST;
+import static de.citec.csra.ScopePlayer.Type.CUSTOM;
 import static de.citec.csra.ScopePlayer.Type.PLAY;
 import de.citec.csra.jp.JPAudioOutputDevice;
 import de.citec.csra.jp.JPAudioResoureFolder;
@@ -58,8 +59,33 @@ public class Eveson implements Launchable {
             // Load setting scope - audio mapping
             final String prefix = JPService.getProperty(JPAudioResoureFolder.class).getValue().getAbsolutePath();
             final Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
+//            List<PlayerConfig> configList = new ArrayList<>();
+            
             List<PlayerConfig> configList = new ArrayList<>();
-
+//            HashMap<String,PlayerConfig> configMap = new HashMap<>();
+//            configMap.put("/home/kitchen/floor/", new PlayerConfig("/home/kitchen/floor/", "purr.wav", ADJUST));
+//            configMap.put("/home/living/ambientlight/", new PlayerConfig("/home/living/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
+//            configMap.put("/home/kitchen/ambientlight/", new PlayerConfig("/home/kitchen/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
+//            configMap.put("/home/living/temperaturesensor", new PlayerConfig("/home/living/temperaturesensor", "purr.wav", ADJUST));
+//            configMap.put("/home/kitchen/powerconsumptionsensor", new PlayerConfig("/home/kitchen/powerconsumptionsensor", "rain.wav", ADJUST));
+//            configMap.put("/home/living/powerconsumptionsensor", new PlayerConfig("/home/living/powerconsumptionsensor", "rain.wav", ADJUST));
+//            configMap.put("/home/kitchen/soundlocation", new PlayerConfig("/home/kitchen/soundlocation", "woodpecker.wav", ADJUST));
+//            configMap.put("/home/living/temperaturesensor", new PlayerConfig("/home/living/temperaturesensor", "/wind.wav", ADJUST));
+//            configMap.put("/home/kitchen/powerconsumptionsensor", new PlayerConfig("/home/kitchen/powerconsumptionsensor", "/rain.wav", ADJUST));
+//            configMap.put("/home/living/powerconsumptionsensor", new PlayerConfig("/home/living/powerconsumptionsensor", "/rain.wav", ADJUST));
+//            configMap.put("/home/kitchen/soundlocation", new PlayerConfig("/home/kitchen/soundlocation", "/woodpecker.wav", PLAY));
+//            configMap.put("motionsensor_1", new PlayerConfig("motionsensor_1", "/birds/1.wav", CUSTOM));
+//            configMap.put("motionsensor_2", new PlayerConfig("motionsensor_2", "/birds/2.wav", CUSTOM));
+//            configMap.put("motionsensor_3", new PlayerConfig("motionsensor_3", "/birds/3.wav", CUSTOM));
+//            configMap.put("motionsensor_4", new PlayerConfig("motionsensor_4", "/birds/4.wav", CUSTOM));
+//            configMap.put("motionsensor_5", new PlayerConfig("motionsensor_5", "/birds/5.wav", CUSTOM));
+//            configMap.put("motionsensor_6", new PlayerConfig("motionsensor_6", "/birds/6.wav", CUSTOM));
+//            configMap.put("motionsensor_7", new PlayerConfig("motionsensor_7", "/birds/7.wav", CUSTOM));
+//            configMap.put("motionsensor_8", new PlayerConfig("motionsensor_8", "/birds/8.wav", CUSTOM));
+//            configMap.put("motionsensor_9", new PlayerConfig("motionsensor_9", "/birds/9.wav", CUSTOM));
+//            configMap.put("motionsensor_10", new PlayerConfig("motionsensor_10", "/birds/10.wav", CUSTOM));
+//            configMap.put("motionsensor_11", new PlayerConfig("motionsensor_11", "/birds/11.wav", CUSTOM));
+            
             // ###############################################################
             configList.add(new PlayerConfig("/home/kitchen/floor/", "purr.wav", ADJUST));
             configList.add(new PlayerConfig("/home/living/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
@@ -73,26 +99,33 @@ public class Eveson implements Launchable {
             configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "/rain.wav", ADJUST));
             configList.add(new PlayerConfig("/home/kitchen/soundlocation", "/woodpecker.wav", PLAY));
             // ### mapping of birds to motionsensors
-//            configList.add(new PlayerConfig("/home/living/motionsensor/couch/", "/birds/1.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/living/motionsensor/table/", "/birds/2.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/living/motionsensor/media/", "/birds/3.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/4.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/hallway/", "/birds/5.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/6.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/sports/motionsensor/interaction/", "/birds/7.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/sports/motionsensor/pathway/", "/birds/8.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/kitchen/motionsensor/global/", "/birds/9.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/bath/motionsensor/global/", "/birds/10.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/bath/motionsensor/entrance/", "/birds/11.wav", PLAY));
+            configList.add(new PlayerConfig("motionsensor_1", "/birds/1.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_2", "/birds/2.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_3", "/birds/3.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_4", "/birds/4.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_5", "/birds/5.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_6", "/birds/6.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_7", "/birds/7.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_8", "/birds/8.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_9", "/birds/9.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_10", "/birds/10.wav", CUSTOM));
+            configList.add(new PlayerConfig("motionsensor_11", "/birds/11.wav", CUSTOM));
             
             Remotes remotes = new Remotes();
             remotes.init();
             // ###############################################################
 
             // Init player
+//            configMap.values().stream().forEach((config) -> {
+//                try {
+//                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType()));
+//                } catch (CouldNotPerformException ex) {
+//                    ExceptionPrinter.printHistory(new CouldNotPerformException("error occured... skipping sample " + config.getSampleFile(), ex), System.err);
+//                }
+//            });
             configList.stream().forEach((config) -> {
                 try {
-                    scopeSampleMap.put(config.getScope(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType()));
+                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType()));
                 } catch (CouldNotPerformException ex) {
                     ExceptionPrinter.printHistory(new CouldNotPerformException("error occured... skipping sample " + config.getSampleFile(), ex), System.err);
                 }
@@ -122,4 +155,5 @@ public class Eveson implements Launchable {
     public static LineOut getLineOut() {
         return lineOut;
     }
+    
 }

@@ -1,96 +1,75 @@
 package de.citec.csra.remotes;
 
-import com.jsyn.JSyn;
-import com.jsyn.Synthesizer;
-import com.jsyn.unitgen.LineOut;
-import com.jsyn.unitgen.UnitVoice;
-import com.jsyn.util.VoiceAllocator;
-import com.softsynth.shared.time.TimeStamp;
-import de.citec.csra.ScopePlayer;
-import de.citec.csra.old_tests.Eveson;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import org.openbase.bco.registry.device.remote.DeviceRegistryRemote;
-import org.openbase.jul.pattern.Observable;
-import org.openbase.jul.pattern.Observer;
-import rsb.AbstractEventHandler;
-import rsb.Event;
-import rst.homeautomation.unit.MotionSensorType;
-import rst.homeautomation.unit.TemperatureSensorType;
-import rst.homeautomation.unit.UnitConfigType;
-import rst.homeautomation.unit.UnitTemplateType;
-
 import org.openbase.bco.dal.remote.unit.MotionSensorRemote;
-import org.openbase.bco.dal.remote.unit.TemperatureSensorRemote;
 import org.openbase.bco.manager.location.remote.LocationRemote;
-import org.openbase.bco.registry.location.remote.LocationRegistryRemote;
+import org.openbase.bco.registry.device.lib.DeviceRegistry;
+import org.openbase.bco.registry.device.remote.CachedDeviceRegistryRemote;
+import org.openbase.bco.registry.location.lib.LocationRegistry;
+import org.openbase.bco.registry.location.remote.CachedLocationRegistryRemote;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InitializationException;
 import org.openbase.jul.exception.InstantiationException;
-import static rst.homeautomation.state.MotionStateType.MotionState.State.MOVEMENT;
+import rst.homeautomation.state.InventoryStateType;
+import rst.homeautomation.unit.UnitConfigType;
+import rst.homeautomation.unit.UnitTemplateType;
 
 /**
- * 
+ *
  *
  * @author mgao
  */
 public class Remotes {
 
-    DeviceRegistryRemote deviceRegistryRemote;
-    LocationRegistryRemote locationRegistryRemote;
+    DeviceRegistry deviceRegistry;
+    LocationRegistry locationRegistry;
 
-    public Remotes() throws InstantiationException {
-        this.deviceRegistryRemote = new DeviceRegistryRemote();
-        this.locationRegistryRemote = new LocationRegistryRemote();
+    public Remotes() throws InstantiationException, InterruptedException {
         try {
-            deviceRegistryRemote.init();
-            deviceRegistryRemote.activate();
-        } catch (InitializationException ex) {
-            Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);
+            CachedDeviceRegistryRemote.waitForData();
+            CachedLocationRegistryRemote.waitForData();
+            this.deviceRegistry = CachedDeviceRegistryRemote.getRegistry();
+            this.locationRegistry = CachedLocationRegistryRemote.getRegistry();
         } catch (CouldNotPerformException ex) {
             Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void init() {
-
+    public void init() throws InterruptedException{
         try {
-            //listener.activate();
-
             LocationRemote locationRemote = new LocationRemote();
-            locationRemote.init(locationRegistryRemote.getRootLocationConfig());
+            locationRemote.init(locationRegistry.getRootLocationConfig());
             locationRemote.activate();
             locationRemote.addDataObserver(new LocationObserver());
-//            locationRemote.getPowerConsumption();
-            List<UnitConfigType.UnitConfig> motionSensors = deviceRegistryRemote.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.MOTION_SENSOR);
+            List<UnitConfigType.UnitConfig> motionSensors = deviceRegistry.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.MOTION_SENSOR);
             List<MotionSensorRemote> motionSensorRemotes = new ArrayList<>();
 
             MotionSensorRemote remote;
+            
+            int i = 0;
             for (UnitConfigType.UnitConfig motionSensorConfig : motionSensors) {
+                
+                if(!deviceRegistry.getDeviceConfigById(motionSensorConfig.getDeviceId()).getInventoryState().getValue().equals(InventoryStateType.InventoryState.State.INSTALLED)) {
+                    continue;
+                } 
+                     
                 remote = new MotionSensorRemote();
                 remote.init(motionSensorConfig);
                 remote.activate();
                 motionSensorRemotes.add(remote);
-                remote.addDataObserver(new MotionSensorObserver(motionSensorConfig.getScope().toString()));
+                
+                
+                remote.addDataObserver(new MotionSensorObserver(motionSensorConfig.getType().name() + "_" + i));
             }
-
-        } catch (InstantiationException | InitializationException | InterruptedException ex) {
+        } catch (InstantiationException | InitializationException ex) {
             Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);
         } catch (CouldNotPerformException ex) {
             Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            //listener.deactivate();
-            deviceRegistryRemote.shutdown();
-
+            deviceRegistry.shutdown();
         }
-
     }
-
 }

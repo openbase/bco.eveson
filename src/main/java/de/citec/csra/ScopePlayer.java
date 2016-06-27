@@ -96,7 +96,7 @@ public class ScopePlayer {
      */
     public enum Type {
 
-        PLAY, ADJUST;
+        PLAY, ADJUST,CUSTOM;
     }
 
     public String getSampleFile() {
