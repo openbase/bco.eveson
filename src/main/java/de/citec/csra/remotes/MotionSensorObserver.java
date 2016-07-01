@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.citec.csra.remotes;
 
+import de.citec.csra.EventPlayer;
 import de.citec.csra.ScopePlayer;
+import java.util.Map;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
@@ -18,17 +15,25 @@ import rst.homeautomation.unit.MotionSensorType;
  */
 public class MotionSensorObserver implements Observer<MotionSensorType.MotionSensor> {
 
-    ScopePlayer sp;
-    String sampleFile;
+    private ScopePlayer sp;
+    private String sampleFile;
+    private String id; 
 
-    public MotionSensorObserver(String id) throws InterruptedException, InstantiationException{
-        // todo: get sample from map
-        sp = new ScopePlayer(sampleFile, ScopePlayer.Type.PLAY);
+    public MotionSensorObserver(String id) throws InterruptedException, InstantiationException {
+        final Map<String, ScopePlayer> scopeSampleMap = EventPlayer.getInstance().getScopeSampleMap();
+        this.id = id;
+        if (scopeSampleMap.containsKey(id)) {
+            sampleFile = scopeSampleMap.get(id).getSampleFile();
+            sp = new ScopePlayer(sampleFile, ScopePlayer.Type.PLAY);
+        }
     }
 
     @Override
     public void update(Observable<MotionSensorType.MotionSensor> source, MotionSensorType.MotionSensor data) throws Exception {
-        if (data.getMotionState().getValue().equals(MOVEMENT) && sampleFile != null) {
+        
+        System.out.println("MotionSensorObserver: " + data.getMotionState().getValue() + " in " + id);
+        if (data.getMotionState().getValue().equals(MOVEMENT) ) {
+            System.out.println("Motion Sensor:" + sampleFile);
             sp.play(1);
         }
     }

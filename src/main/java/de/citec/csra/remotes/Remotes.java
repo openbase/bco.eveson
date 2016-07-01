@@ -1,5 +1,6 @@
 package de.citec.csra.remotes;
 
+import de.citec.csra.EventPlayer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -38,7 +39,7 @@ public class Remotes {
         }
     }
 
-    public void init() throws InterruptedException{
+    public void init() throws InterruptedException {
         try {
             LocationRemote locationRemote = new LocationRemote();
             locationRemote.init(locationRegistry.getRootLocationConfig());
@@ -48,21 +49,25 @@ public class Remotes {
             List<MotionSensorRemote> motionSensorRemotes = new ArrayList<>();
 
             MotionSensorRemote remote;
-            
-            int i = 0;
+
+            int i = 1;
+            String id;
             for (UnitConfigType.UnitConfig motionSensorConfig : motionSensors) {
-                
-                if(!deviceRegistry.getDeviceConfigById(motionSensorConfig.getDeviceId()).getInventoryState().getValue().equals(InventoryStateType.InventoryState.State.INSTALLED)) {
+
+                if (!deviceRegistry.getDeviceConfigById(motionSensorConfig.getDeviceId()).getInventoryState().getValue().equals(InventoryStateType.InventoryState.State.INSTALLED)) {
                     continue;
-                } 
-                     
+                }
                 remote = new MotionSensorRemote();
                 remote.init(motionSensorConfig);
                 remote.activate();
                 motionSensorRemotes.add(remote);
-                
-                
-                remote.addDataObserver(new MotionSensorObserver(motionSensorConfig.getType().name() + "_" + i));
+                id = motionSensorConfig.getType().name() + "_" + i;
+//                System.out.println(id + ": Scope: " + motionSensorConfig.getScope().toString());
+                if (EventPlayer.getInstance().getScopeSampleMap().containsKey(id)) {
+                    remote.addDataObserver(new MotionSensorObserver(id));
+                }
+//                System.out.println("Listener registered for " + motionSensorConfig.getType().name() + "_" + i + "(" + remote.getScope().toString() + ")");
+                i++;
             }
         } catch (InstantiationException | InitializationException ex) {
             Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);

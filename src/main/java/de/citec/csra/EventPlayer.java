@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.citec.csra;
 
 import static de.citec.csra.ScopePlayer.Type.CUSTOM;
@@ -17,12 +12,15 @@ import org.openbase.jul.exception.CouldNotPerformException;
  */
 public class EventPlayer {
 
+    private static EventPlayer instance;
     private final Map<String, ScopePlayer> scopeSampleMap;
     private final List<GenericListener> listenerMap;
+    private static float maxAmplitude;
 
     public EventPlayer(Map<String, ScopePlayer> scopeSampleMap) {
         this.scopeSampleMap = scopeSampleMap;
         this.listenerMap = new ArrayList<>();
+        instance = this;
     }
 
     public void play() throws InterruptedException, CouldNotPerformException {
@@ -38,5 +36,21 @@ public class EventPlayer {
         } catch (CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not play!", ex);
         }
+    }
+
+    public Map<String, ScopePlayer> getScopeSampleMap() {
+        return scopeSampleMap;
+    }
+
+    public static EventPlayer getInstance() {
+        return instance;
+    }
+
+    public static void setMaxAmplitude(float maxAmplitude) {
+        EventPlayer.maxAmplitude = maxAmplitude;
+    }
+
+    public static float getMaxAmplitude() {
+        return maxAmplitude;
     }
 }

@@ -12,7 +12,10 @@ public class LocationObserver implements Observer<LocationData>{
 
     @Override
     public void update(Observable<LocationData> source, LocationData data) throws Exception {
-        System.out.println(data.getPowerConsumptionState());
+        
+//        System.out.println("---- Location ----");
+//        System.out.println("Power Consumption: " + data.getPowerConsumptionState().getConsumption());
+//        System.out.println("Temperature: " + data.getTemperature());
     }
     
 }
