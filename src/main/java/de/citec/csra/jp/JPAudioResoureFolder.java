@@ -31,7 +31,7 @@ public class JPAudioResoureFolder extends AbstractJPDirectory {
 
     @Override
     public String getDescription() {
-        return "This property configure the audio resource folder.";
+        return "This property configures the audio resource folder.";
     }
     
 }
