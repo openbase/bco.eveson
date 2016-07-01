@@ -10,6 +10,7 @@ import com.jsyn.util.VoiceAllocator;
 import java.io.File;
 import java.io.IOException;
 import org.openbase.jul.exception.CouldNotPerformException;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Handles events for one scope.
@@ -31,6 +32,7 @@ public class ScopePlayer {
     public ScopePlayer(String sampleFile, Type type) throws org.openbase.jul.exception.InstantiationException {
         try {
             System.out.println("Load: " + sampleFile);
+            //int rand = ThreadLocalRandom.current().nextInt(1, 9 + 1);
             this.sampleFile = sampleFile;
             this.type = type;
             switch (type) {
