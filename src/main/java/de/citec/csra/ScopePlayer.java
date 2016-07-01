@@ -74,6 +74,8 @@ public class ScopePlayer {
     }
 
     public void play(double amplitude) {
+        assert (amplitude >= 0 && amplitude <= 1.0);
+        amplitude *= EventPlayer.getMaxAmplitude();
         switch (type) {
             case ADJUST:
 
@@ -98,7 +100,7 @@ public class ScopePlayer {
      */
     public enum Type {
 
-        PLAY, ADJUST;
+        PLAY, ADJUST, CUSTOM;
     }
 
     public String getSampleFile() {
