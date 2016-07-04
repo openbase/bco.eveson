@@ -9,6 +9,7 @@ import com.jsyn.util.SampleLoader;
 import com.jsyn.util.VoiceAllocator;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import org.openbase.jul.exception.CouldNotPerformException;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,15 +29,21 @@ public class ScopePlayer {
     private VariableRateDataReader samplePlayer;
     private FloatSample sample;
     private int counter = 0; // Voice Allocators need a unique number for each note played
-
+   
+    int randomInt;
+    Random randomGenerator = new Random();
+    private int NumSamplesInDir;
+    
+    
     public ScopePlayer(String sampleFile, Type type) throws org.openbase.jul.exception.InstantiationException {
         try {
             System.out.println("Load: " + sampleFile);
-            //int rand = ThreadLocalRandom.current().nextInt(1, 9 + 1);
             this.sampleFile = sampleFile;
             this.type = type;
+            
             switch (type) {
                 case PLAY:
+                case CUSTOM:
                     UnitVoice[] voices = new UnitVoice[MAX_VOICES];
                     for (int i = 0; i < MAX_VOICES; i++) {
                         SampleVoice voice = new SampleVoice(sampleFile);
@@ -46,12 +53,18 @@ public class ScopePlayer {
                     break;
                 case ADJUST: {
                     try {
+                        System.err.println("Create SampleVoice for random sample in folder (ADJUST):" + sampleFile);
+                        NumSamplesInDir = new File(sampleFile + "/").listFiles().length;
+                        randomInt = 1 + randomGenerator.nextInt(NumSamplesInDir);
+                        sampleFile = sampleFile + "/" + randomInt + ".wav";
+                        System.out.println("sample: " + sampleFile);
                         sample = SampleLoader.loadFloatSample(new File(sampleFile));
                     } catch (IOException ex) {
 
                         throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
                     }
                 }
+                
 
                 if (sample.getChannelsPerFrame() == 2) {
                     samplePlayer = new VariableRateStereoReader();

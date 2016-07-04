@@ -68,29 +68,27 @@ public class Eveson implements Launchable {
             List<PlayerConfig> configList = new ArrayList<>();
 
             // ###############################################################
-            configList.add(new PlayerConfig("/home/kitchen/floor/", "purr.wav", ADJUST));
-//            configList.add(new PlayerConfig("/home/living/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
-//            configList.add(new PlayerConfig("/home/kitchen/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
-            configList.add(new PlayerConfig("/home/living/temperaturesensor", "purr.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "woodpecker.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/temperaturesensor", "/wind.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "/rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "/rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "/woodpecker.wav", PLAY));
+            configList.add(new PlayerConfig("/home/kitchen/floor/", "Floor", ADJUST));
+            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "PowerConsumption", ADJUST));
+            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "PowerConsumption", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "SoundLocation", ADJUST));
+            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "PowerConsumption", ADJUST));
+            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "PowerConsumption", ADJUST));
+            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "SoundLocation", PLAY));
             // ### mapping of birds to motionsensors
-            configList.add(new PlayerConfig("MOTION_SENSOR_10", "/birds/1/1.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_11", "/birds/2/1.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_12", "/birds/3/1.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_4", "/birds/1/2.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_9", "/birds/1/3.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_6", "/birds/1/4.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_14", "/birds/1/5.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_13", "/birds/3/5.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_8", "/birds/2/5.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_7", "/birds/2/7.wav", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_5", "/birds/2/8.wav", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_10", "MotionSensor/1", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_11", "MotionSensor/2", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_12", "MotionSensor/3", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_4", "MotionSensor/1", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_9", "MotionSensor/1", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_6", "MotionSensor/1", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_14", "MotionSensor/1", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_13", "MotionSensor/3", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_8", "MotionSensor/2", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_7", "MotionSensor/2", CUSTOM));
+            configList.add(new PlayerConfig("MOTION_SENSOR_5", "MotionSensor/2", CUSTOM));
 
             // ###############################################################
             configList.stream().forEach((config) -> {
