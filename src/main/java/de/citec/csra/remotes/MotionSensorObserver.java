@@ -17,7 +17,7 @@ public class MotionSensorObserver implements Observer<MotionSensorType.MotionSen
 
     private ScopePlayer sp;
     private String sampleFile;
-    private String id; 
+    private final String id; 
 
     public MotionSensorObserver(String id) throws InterruptedException, InstantiationException {
         final Map<String, ScopePlayer> scopeSampleMap = EventPlayer.getInstance().getScopeSampleMap();
@@ -31,7 +31,7 @@ public class MotionSensorObserver implements Observer<MotionSensorType.MotionSen
     @Override
     public void update(Observable<MotionSensorType.MotionSensor> source, MotionSensorType.MotionSensor data) throws Exception {
         
-        System.out.println("MotionSensorObserver: " + data.getMotionState().getValue() + " in " + id);
+//        System.out.println("MotionSensorObserver: " + data.getMotionState().getValue() + " in " + id);
         if (data.getMotionState().getValue().equals(MOVEMENT) ) {
             System.out.println("Motion Sensor:" + sampleFile);
             sp.play(1);
