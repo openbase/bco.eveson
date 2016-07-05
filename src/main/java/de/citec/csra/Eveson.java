@@ -12,6 +12,7 @@ import static de.citec.csra.ScopePlayer.Type.PLAY;
 import de.citec.csra.jp.JPAudioOutputDevice;
 import de.citec.csra.jp.JPAudioResoureFolder;
 import de.citec.csra.jp.JPAudioVolume;
+import de.citec.csra.jp.JPThemeFile;
 import de.citec.csra.remotes.Remotes;
 import java.io.File;
 import java.util.ArrayList;
@@ -67,12 +68,11 @@ public class Eveson implements Launchable {
 
             final Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
 
-            final JSonObjectFileProcessor fileProcessor =  new JSonObjectFileProcessor(EvesonConfig.class);
-            
-            EvesonConfig evesonConfig = (EvesonConfig)(fileProcessor.deserialize(new File("eveson.conf")));
-            ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();        
-            
-            
+            final JSonObjectFileProcessor fileProcessor = new JSonObjectFileProcessor(EvesonConfig.class);
+
+            EvesonConfig evesonConfig = (EvesonConfig) (fileProcessor.deserialize(JPService.getProperty(JPThemeFile.class).getValue()));
+            ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();
+
 //            ArrayList<PlayerConfig> configList = new ArrayList<>();
 //            configList.add(new PlayerConfig("/home/kitchen/floor/", "Floor", ADJUST));
 //            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
@@ -95,8 +95,6 @@ public class Eveson implements Launchable {
 //            configList.add(new PlayerConfig("MOTION_SENSOR_8", "MotionSensor/2", CUSTOM));
 //            configList.add(new PlayerConfig("MOTION_SENSOR_7", "MotionSensor/2", CUSTOM));
 //            configList.add(new PlayerConfig("MOTION_SENSOR_5", "MotionSensor/2", CUSTOM));
-
-            
             // ###############################################################
             configList.stream().forEach((config) -> {
                 try {
@@ -109,7 +107,7 @@ public class Eveson implements Launchable {
             new EventPlayer(scopeSampleMap).play();
             Remotes remotes = new Remotes();
             remotes.init();
-        } catch (JPNotAvailableException ex) {
+        } catch (JPNotAvailableException | CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not launch eveson!", ex);
         }
     }

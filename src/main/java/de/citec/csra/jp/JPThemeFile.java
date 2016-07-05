@@ -16,11 +16,11 @@ import org.openbase.jps.tools.FileHandler;
  *
  * @author mgao
  */
-public class JPConfigurationFile extends AbstractJPFile {
+public class JPThemeFile extends AbstractJPFile {
 
     public final static String[] COMMAND_IDENTIFIERS = {"--theme"};
     
-    public JPConfigurationFile() {
+    public JPThemeFile() {
         super(COMMAND_IDENTIFIERS, FileHandler.ExistenceHandling.Must, FileHandler.AutoMode.Off);
     }
     

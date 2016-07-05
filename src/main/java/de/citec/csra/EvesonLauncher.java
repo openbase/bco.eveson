@@ -8,6 +8,7 @@ package de.citec.csra;
 import de.citec.csra.jp.JPAudioOutputDevice;
 import de.citec.csra.jp.JPAudioResoureFolder;
 import de.citec.csra.jp.JPAudioVolume;
+import de.citec.csra.jp.JPThemeFile;
 import org.openbase.jps.core.JPService;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
@@ -25,6 +26,7 @@ public class EvesonLauncher {
         JPService.registerProperty(JPAudioResoureFolder.class);
         JPService.registerProperty(JPAudioOutputDevice.class);
         JPService.registerProperty(JPAudioVolume.class);
+        JPService.registerProperty(JPThemeFile.class);
         JPService.parseAndExitOnError(args);
         
         new Eveson().launch();
