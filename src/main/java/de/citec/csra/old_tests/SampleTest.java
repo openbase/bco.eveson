@@ -73,7 +73,7 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
                 remote.init(motionSensorConfig);
                 remote.activate();
                 motionSensorRemotes.add(remote);
-                remote.addObserver(new Observer<MotionSensorType.MotionSensor>() {
+                remote.addDataObserver(new Observer<MotionSensorType.MotionSensor>() {
 
                     @Override
                     public void update(Observable<MotionSensorType.MotionSensor> source, MotionSensorType.MotionSensor data) throws Exception {
@@ -94,7 +94,7 @@ public class SampleTest extends AbstractEventHandler implements KeyListener, Tes
                 tempRemote.init(temperatureSensorConfig);
                 tempRemote.activate();
                 temperatureSensorRemotes.add(tempRemote);
-                tempRemote.addObserver(new Observer<TemperatureSensorType.TemperatureSensor>() {
+                tempRemote.addDataObserver(new Observer<TemperatureSensorType.TemperatureSensor>() {
 
                     @Override
                     public void update(Observable<TemperatureSensorType.TemperatureSensor> source, TemperatureSensorType.TemperatureSensor data) throws Exception {
