@@ -12,6 +12,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <dependency.bco.dal.version>1.1-SNAPSHOT</dependency.bco.dal.version>
         <audio.resource.folder>target/appassembler/share/audio/samples/eveson</audio.resource.folder>
+        <config.folder>target/appassembler/etc/eveson</config.folder>
     </properties>
     <build> 
         <plugins>
@@ -121,6 +122,23 @@
                             <resources>          
                                 <resource>
                                     <directory>res/samples</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                    <execution>
+                        <id>copy-default-config</id>
+                        <!-- here the phase you need -->
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${config.folder}</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>cfg</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>              
