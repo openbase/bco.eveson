@@ -18,7 +18,7 @@ import org.openbase.jps.tools.FileHandler;
  */
 public class JPConfigurationFile extends AbstractJPFile {
 
-    public final static String[] COMMAND_IDENTIFIERS = {"-c", "--theme"};
+    public final static String[] COMMAND_IDENTIFIERS = {"--theme"};
     
     public JPConfigurationFile() {
         super(COMMAND_IDENTIFIERS, FileHandler.ExistenceHandling.Must, FileHandler.AutoMode.Off);
