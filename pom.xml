@@ -112,7 +112,6 @@
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <!-- here the phase you need -->
                         <phase>install</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -129,7 +128,6 @@
                     </execution>
                     <execution>
                         <id>copy-default-config</id>
-                        <!-- here the phase you need -->
                         <phase>install</phase>
                         <goals>
                             <goal>copy-resources</goal>
