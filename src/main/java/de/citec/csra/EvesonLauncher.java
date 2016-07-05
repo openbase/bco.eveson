@@ -28,18 +28,13 @@ public class EvesonLauncher {
         JPService.registerProperty(JPAudioVolume.class);
         JPService.registerProperty(JPThemeFile.class);
         JPService.parseAndExitOnError(args);
-        
-        new Eveson().launch();
 
         try {
-            while (!Thread.currentThread().isInterrupted()) {
-                Thread.sleep(1000);
-            }
-            System.exit(0);
+            new Eveson().launch();
         } catch (final Exception ex) {
             ExceptionPrinter.printHistory(new CouldNotPerformException("Eveson runtime error occured!", ex), System.err);
             System.exit(255);
         }
     }
-    
+
 }
