@@ -10,18 +10,21 @@ package de.citec.csra;
  * @author jplettemeier
  */
 public class PlayerConfig {
-    private final String scope;
-    private final String sampleFile;
-    private final ScopePlayer.Type type;
+    private String id;
+    private String sampleFile;
+    private ScopePlayer.Type type;
 
-    public PlayerConfig(String scope, String sampleFile, ScopePlayer.Type type) {
-        this.scope = scope;
+    public PlayerConfig() {
+    }
+    
+    public PlayerConfig(String id, String sampleFile, ScopePlayer.Type type) {
+        this.id = id;
         this.sampleFile = sampleFile;
         this.type = type;
     }
 
-    public String getScope() {
-        return scope;
+    public String getId() {
+        return id;
     }
 
     public String getSampleFile() {

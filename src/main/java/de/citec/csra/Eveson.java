@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.citec.csra;
 
 import com.jsyn.JSyn;
@@ -12,9 +7,13 @@ import com.jsyn.devices.AudioDeviceManager;
 import static com.jsyn.engine.SynthesisEngine.DEFAULT_FRAME_RATE;
 import com.jsyn.unitgen.LineOut;
 import static de.citec.csra.ScopePlayer.Type.ADJUST;
+import static de.citec.csra.ScopePlayer.Type.CUSTOM;
 import static de.citec.csra.ScopePlayer.Type.PLAY;
 import de.citec.csra.jp.JPAudioOutputDevice;
 import de.citec.csra.jp.JPAudioResoureFolder;
+import de.citec.csra.jp.JPAudioVolume;
+import de.citec.csra.remotes.Remotes;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +24,7 @@ import org.openbase.jps.exception.JPServiceException;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.iface.Launchable;
+import org.openbase.jul.processing.JSonObjectFileProcessor;
 
 /**
  *
@@ -56,45 +56,59 @@ public class Eveson implements Launchable {
 
             // Load setting scope - audio mapping
             final String prefix = JPService.getProperty(JPAudioResoureFolder.class).getValue().getAbsolutePath();
+            float amplitude = JPService.getProperty(JPAudioVolume.class).getValue();
+
+            if (amplitude > 1 || amplitude < 0) {
+                System.out.println("Invalid amplitude!");
+                amplitude = 1.0f;
+            }
+            System.out.println("Setting maximum amplitude to " + amplitude);
+            EventPlayer.setMaxAmplitude(amplitude);
+
             final Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
-            List<PlayerConfig> configList = new ArrayList<>();
 
-            // ###############################################################
-            configList.add(new PlayerConfig("/home/kitchen/floor/", "purr.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
-            configList.add(new PlayerConfig("/home/kitchen/ambientlight/", "sound_beim_anzuenden.wav", PLAY));
-            configList.add(new PlayerConfig("/home/living/temperaturesensor", "purr.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "woodpecker.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/temperaturesensor", "/wind.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "/rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "/rain.wav", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "/woodpecker.wav", PLAY));
-            // ### mapping of birds to motionsensors
-            configList.add(new PlayerConfig("/home/living/motionsensor/couch/", "/birds/1.wav", PLAY));
-            configList.add(new PlayerConfig("/home/living/motionsensor/table/", "/birds/2.wav", PLAY));
-            configList.add(new PlayerConfig("/home/living/motionsensor/media/", "/birds/3.wav", PLAY));
-            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/4.wav", PLAY));
-            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/hallway/", "/birds/5.wav", PLAY));
-            configList.add(new PlayerConfig("/home/wardrobe/motionsensor/entrance/", "/birds/6.wav", PLAY));
-            configList.add(new PlayerConfig("/home/sports/motionsensor/interaction/", "/birds/7.wav", PLAY));
-            configList.add(new PlayerConfig("/home/sports/motionsensor/pathway/", "/birds/8.wav", PLAY));
-            configList.add(new PlayerConfig("/home/kitchen/motionsensor/global/", "/birds/9.wav", PLAY));
-            configList.add(new PlayerConfig("/home/bath/motionsensor/global/", "/birds/10.wav", PLAY));
-            configList.add(new PlayerConfig("/home/bath/motionsensor/entrance/", "/birds/11.wav", PLAY));
-            // ###############################################################
+            final JSonObjectFileProcessor fileProcessor =  new JSonObjectFileProcessor(EvesonConfig.class);
+            
+            EvesonConfig evesonConfig = (EvesonConfig)(fileProcessor.deserialize(new File("eveson.conf")));
+            ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();        
+            
+            
+//            ArrayList<PlayerConfig> configList = new ArrayList<>();
+//            configList.add(new PlayerConfig("/home/kitchen/floor/", "Floor", ADJUST));
+//            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
+//            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "PowerConsumption", ADJUST));
+//            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "PowerConsumption", ADJUST));
+//            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "SoundLocation", ADJUST));
+//            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
+//            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "PowerConsumption", ADJUST));
+//            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "PowerConsumption", ADJUST));
+//            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "SoundLocation", PLAY));
+//            // ### mapping of birds to motionsensors
+//            configList.add(new PlayerConfig("MOTION_SENSOR_10", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_11", "MotionSensor/2", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_12", "MotionSensor/3", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_4", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_9", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_6", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_14", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_13", "MotionSensor/3", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_8", "MotionSensor/2", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_7", "MotionSensor/2", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_5", "MotionSensor/2", CUSTOM));
 
-            // Init player
+            
+            // ###############################################################
             configList.stream().forEach((config) -> {
                 try {
-                    scopeSampleMap.put(config.getScope(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType()));
+                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType()));
                 } catch (CouldNotPerformException ex) {
                     ExceptionPrinter.printHistory(new CouldNotPerformException("error occured... skipping sample " + config.getSampleFile(), ex), System.err);
                 }
             });
 
             new EventPlayer(scopeSampleMap).play();
+            Remotes remotes = new Remotes();
+            remotes.init();
         } catch (JPNotAvailableException ex) {
             throw new CouldNotPerformException("Could not launch eveson!", ex);
         }
@@ -102,7 +116,7 @@ public class Eveson implements Launchable {
 
     private int loadAudioDevice(final AudioDeviceManager audioManager) throws CouldNotPerformException {
         try {
-            System.out.println("load audio device: " + JPService.getProperty(JPAudioOutputDevice.class).getValue() + " ["+JPService.getProperty(JPAudioOutputDevice.class).getAudioOutputDeviceId()+"]");
+            System.out.println("load audio device: " + JPService.getProperty(JPAudioOutputDevice.class).getValue() + " [" + JPService.getProperty(JPAudioOutputDevice.class).getAudioOutputDeviceId() + "]");
             int selectedDeviceId = JPService.getProperty(JPAudioOutputDevice.class).getAudioOutputDeviceId();
             System.out.println(audioManager.getMaxInputChannels(selectedDeviceId) + " input and " + audioManager.getMaxOutputChannels(selectedDeviceId) + " output channels found.");
             return selectedDeviceId;
@@ -118,4 +132,5 @@ public class Eveson implements Launchable {
     public static LineOut getLineOut() {
         return lineOut;
     }
+
 }
