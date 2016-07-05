@@ -53,10 +53,12 @@ public class ScopePlayer {
                     break;
                 case ADJUST: {
                     try {
-                        System.err.println("Create SampleVoice for random sample in folder (ADJUST):" + sampleFile);
-                        NumSamplesInDir = new File(sampleFile + "/").listFiles().length;
-                        randomInt = 1 + randomGenerator.nextInt(NumSamplesInDir);
-                        sampleFile = sampleFile + "/" + randomInt + ".wav";
+                        System.err.println("Create SampleVoice for random sample in folder:" + sampleFile);
+                        File[] files  = new File(sampleFile).listFiles();
+                        NumSamplesInDir = files.length;
+                        //System.out.println("Number of Samples in Directory [" + sampleFile + "] is " + NumSamplesInDir);             
+                        randomInt = randomGenerator.nextInt(NumSamplesInDir);
+                        sampleFile = files[randomInt].toString();
                         System.out.println("sample: " + sampleFile);
                         sample = SampleLoader.loadFloatSample(new File(sampleFile));
                     } catch (IOException ex) {

@@ -39,14 +39,15 @@ public class SampleVoice implements UnitVoice {
         try {
             int randomInt;
             System.err.println("Create SampleVoice for random sample in folder:" + sampleFile);
-            NumSamplesInDir = new File(sampleFile + "/").listFiles().length;
+            File[] files  = new File(sampleFile).listFiles();
+            NumSamplesInDir = files.length;
             //System.out.println("Number of Samples in Directory [" + sampleFile + "] is " + NumSamplesInDir);
   
             Synthesizer s = Eveson.getSynthesizer();
             LineOut l = Eveson.getLineOut();
             try {
-                randomInt = 1 + randomGenerator.nextInt(NumSamplesInDir);
-                sampleFile = sampleFile + "/" + randomInt + ".wav";
+                randomInt = randomGenerator.nextInt(NumSamplesInDir);
+                sampleFile = files[randomInt].toString();
                 System.out.println("sample: " + sampleFile);
                 sample = SampleLoader.loadFloatSample(new File(sampleFile));
             } catch (IOException ex) {

@@ -13,6 +13,7 @@ import de.citec.csra.jp.JPAudioOutputDevice;
 import de.citec.csra.jp.JPAudioResoureFolder;
 import de.citec.csra.jp.JPAudioVolume;
 import de.citec.csra.remotes.Remotes;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.openbase.jps.exception.JPServiceException;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.iface.Launchable;
+import org.openbase.jul.processing.JSonObjectFileProcessor;
 
 /**
  *
@@ -65,31 +67,36 @@ public class Eveson implements Launchable {
 
             final Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
 
-            List<PlayerConfig> configList = new ArrayList<>();
+            final JSonObjectFileProcessor fileProcessor =  new JSonObjectFileProcessor(EvesonConfig.class);
+            
+            EvesonConfig evesonConfig = (EvesonConfig)(fileProcessor.deserialize(new File("eveson.conf")));
+            ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();        
+            
+            
+//            ArrayList<PlayerConfig> configList = new ArrayList<>();
+//            configList.add(new PlayerConfig("/home/kitchen/floor/", "Floor", ADJUST));
+//            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
+//            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "PowerConsumption", ADJUST));
+//            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "PowerConsumption", ADJUST));
+//            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "SoundLocation", ADJUST));
+//            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
+//            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "PowerConsumption", ADJUST));
+//            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "PowerConsumption", ADJUST));
+//            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "SoundLocation", PLAY));
+//            // ### mapping of birds to motionsensors
+//            configList.add(new PlayerConfig("MOTION_SENSOR_10", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_11", "MotionSensor/2", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_12", "MotionSensor/3", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_4", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_9", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_6", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_14", "MotionSensor/1", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_13", "MotionSensor/3", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_8", "MotionSensor/2", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_7", "MotionSensor/2", CUSTOM));
+//            configList.add(new PlayerConfig("MOTION_SENSOR_5", "MotionSensor/2", CUSTOM));
 
-            // ###############################################################
-            configList.add(new PlayerConfig("/home/kitchen/floor/", "Floor", ADJUST));
-            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "PowerConsumption", ADJUST));
-            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "PowerConsumption", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "SoundLocation", ADJUST));
-            configList.add(new PlayerConfig("/home/living/temperaturesensor", "TemperatureSensor", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/powerconsumptionsensor", "PowerConsumption", ADJUST));
-            configList.add(new PlayerConfig("/home/living/powerconsumptionsensor", "PowerConsumption", ADJUST));
-            configList.add(new PlayerConfig("/home/kitchen/soundlocation", "SoundLocation", PLAY));
-            // ### mapping of birds to motionsensors
-            configList.add(new PlayerConfig("MOTION_SENSOR_10", "MotionSensor/1", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_11", "MotionSensor/2", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_12", "MotionSensor/3", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_4", "MotionSensor/1", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_9", "MotionSensor/1", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_6", "MotionSensor/1", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_14", "MotionSensor/1", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_13", "MotionSensor/3", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_8", "MotionSensor/2", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_7", "MotionSensor/2", CUSTOM));
-            configList.add(new PlayerConfig("MOTION_SENSOR_5", "MotionSensor/2", CUSTOM));
-
+            
             // ###############################################################
             configList.stream().forEach((config) -> {
                 try {
