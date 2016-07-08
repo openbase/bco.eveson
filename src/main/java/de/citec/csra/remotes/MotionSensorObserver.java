@@ -33,7 +33,7 @@ public class MotionSensorObserver implements Observer<MotionSensorType.MotionSen
         
 //        System.out.println("MotionSensorObserver: " + data.getMotionState().getValue() + " in " + id);
         if (data.getMotionState().getValue().equals(MOVEMENT) ) {
-            System.out.println("Motion Sensor:" + sampleFile);
+//            System.out.println("Motion Sensor:" + sampleFile);
             sp.play(1);
         }
     }

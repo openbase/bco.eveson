@@ -6,18 +6,13 @@ import com.jsyn.devices.AudioDeviceFactory;
 import com.jsyn.devices.AudioDeviceManager;
 import static com.jsyn.engine.SynthesisEngine.DEFAULT_FRAME_RATE;
 import com.jsyn.unitgen.LineOut;
-import static de.citec.csra.ScopePlayer.Type.ADJUST;
-import static de.citec.csra.ScopePlayer.Type.CUSTOM;
-import static de.citec.csra.ScopePlayer.Type.PLAY;
 import de.citec.csra.jp.JPAudioOutputDevice;
 import de.citec.csra.jp.JPAudioResoureFolder;
 import de.citec.csra.jp.JPAudioVolume;
 import de.citec.csra.jp.JPThemeFile;
 import de.citec.csra.remotes.Remotes;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.openbase.jps.core.JPService;
 import org.openbase.jps.exception.JPNotAvailableException;
@@ -84,6 +79,8 @@ public class Eveson implements Launchable {
             new EventPlayer(scopeSampleMap).play();
             Remotes remotes = new Remotes();
             remotes.init();
+//            new PowerTest().setVisible(true);
+            
         } catch (JPNotAvailableException | CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not launch eveson!", ex);
         }
