@@ -5,3 +5,4 @@ build
 **/*/nbactions.xml
 /target/
 nbaction*
+convert_to_mono.sh
