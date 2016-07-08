@@ -10,7 +10,9 @@ import de.citec.csra.jp.JPAudioOutputDevice;
 import de.citec.csra.jp.JPAudioResoureFolder;
 import de.citec.csra.jp.JPAudioVolume;
 import de.citec.csra.jp.JPThemeFile;
+import de.citec.csra.remotes.LocationObserver;
 import de.citec.csra.remotes.Remotes;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +68,12 @@ public class Eveson implements Launchable {
             final JSonObjectFileProcessor fileProcessor = new JSonObjectFileProcessor(EvesonConfig.class);
 
             EvesonConfig evesonConfig = (EvesonConfig) (fileProcessor.deserialize(JPService.getProperty(JPThemeFile.class).getValue()));
+            evesonConfig.setPowerConsumptionThresholdNormal(150);
+            evesonConfig.setPowerConsumptionThresholdHigh(600);
+            evesonConfig.setPowerConsumptionThresholdExtreme(3000);
+            LocationObserver.setThresholds(evesonConfig.PowerConsumptionThresholdNormal, 
+                    evesonConfig.PowerConsumptionThresholdHigh, evesonConfig.PowerConsumptionThresholdExtreme);
+
             ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();
 
             configList.stream().forEach((config) -> {
@@ -79,8 +87,8 @@ public class Eveson implements Launchable {
             new EventPlayer(scopeSampleMap).play();
             Remotes remotes = new Remotes();
             remotes.init();
-//            new PowerTest().setVisible(true);
-            
+            new PowerTest().setVisible(true);
+
         } catch (JPNotAvailableException | CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not launch eveson!", ex);
         }
