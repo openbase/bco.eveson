@@ -5,14 +5,10 @@
  */
 package de.citec.csra;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import rsb.Event;
 import rsb.Factory;
-import rsb.Handler;
-import rsb.InitializeException;
 import rsb.Listener;
 import rsb.RSBException;
 

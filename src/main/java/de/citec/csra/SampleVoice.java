@@ -54,6 +54,7 @@ public class SampleVoice implements UnitVoice {
                 throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
             }
             if (sample.getChannelsPerFrame() == 2) {
+                System.out.println("Warning: " + sampleFile + " is stereo!");
                 this.samplePlayer = new VariableRateStereoReader();
                 s.add(samplePlayer);
                 samplePlayer.output.connect(0, l.input, 0);

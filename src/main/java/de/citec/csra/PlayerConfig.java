@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package de.citec.csra;
 
 /**
@@ -16,7 +12,6 @@ public class PlayerConfig {
 
     public PlayerConfig() {
     }
-    
     public PlayerConfig(String id, String sampleFile, ScopePlayer.Type type) {
         this.id = id;
         this.sampleFile = sampleFile;
