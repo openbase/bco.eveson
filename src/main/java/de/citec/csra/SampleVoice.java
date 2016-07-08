@@ -13,6 +13,7 @@ import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 
@@ -25,6 +26,8 @@ public class SampleVoice implements UnitVoice {
 
     private final VariableRateDataReader samplePlayer;
     private FloatSample sample;
+    Random randomGenerator = new Random();
+    private int NumSamplesInDir;
 
     /**
      * Constructor.
@@ -34,9 +37,18 @@ public class SampleVoice implements UnitVoice {
      */
     public SampleVoice(String sampleFile) throws org.openbase.jul.exception.InstantiationException {
         try {
+            int randomInt;
+            System.err.println("Create SampleVoice for random sample in folder:" + sampleFile);
+            File[] files  = new File(sampleFile).listFiles();
+            NumSamplesInDir = files.length;
+            //System.out.println("Number of Samples in Directory [" + sampleFile + "] is " + NumSamplesInDir);
+  
             Synthesizer s = Eveson.getSynthesizer();
             LineOut l = Eveson.getLineOut();
             try {
+                randomInt = randomGenerator.nextInt(NumSamplesInDir);
+                sampleFile = files[randomInt].toString();
+                System.out.println("sample: " + sampleFile);
                 sample = SampleLoader.loadFloatSample(new File(sampleFile));
             } catch (IOException ex) {
                 throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
@@ -65,7 +77,7 @@ public class SampleVoice implements UnitVoice {
      * @param ts TimeStamp
      */
     @Override
-    public void noteOn(double d, double d1, TimeStamp ts) {
+    public void noteOn(double d, double d1, TimeStamp ts) {   
         samplePlayer.rate.set(sample.getFrameRate());
         samplePlayer.dataQueue.queue(sample);
         samplePlayer.amplitude.set(d1);
