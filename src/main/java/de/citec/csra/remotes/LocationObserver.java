@@ -29,12 +29,12 @@ public class LocationObserver implements Observer<LocationData> {
 
     @Override
     public void update(Observable<LocationData> source, LocationData data) throws Exception {
-        play(data.getPowerConsumptionState().getCurrent());
+        play(data.getPowerConsumptionState().getConsumption());
 
     }
 
     public void play(double consumption) {
-        System.out.println("consumption: " + consumption + "thresholds: " + THRESHOLD_NORMAL + " " +THRESHOLD_HIGH + " " +THRESHOLD_EXTREME);
+        System.out.println("consumption: " + consumption);
         if (consumption < THRESHOLD_NORMAL) {
             sp_normal.play(0);
             sp_high.play(0);
