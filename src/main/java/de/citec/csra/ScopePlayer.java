@@ -29,18 +29,17 @@ public class ScopePlayer {
     private VariableRateDataReader samplePlayer;
     private FloatSample sample;
     private int counter = 0; // Voice Allocators need a unique number for each note played
-   
+
     int randomInt;
     Random randomGenerator = new Random();
     private int NumSamplesInDir;
-    
-    
+
     public ScopePlayer(String sampleFile, Type type) throws org.openbase.jul.exception.InstantiationException {
         try {
             System.out.println("Load: " + sampleFile);
             this.sampleFile = sampleFile;
             this.type = type;
-            
+
             switch (type) {
                 case PLAY:
                 case CUSTOM:
@@ -51,12 +50,12 @@ public class ScopePlayer {
                     }
                     allocator = new VoiceAllocator(voices);
                     break;
-                case ADJUST: {
+                case ADJUST:
+                case BACKGROUND: {
                     try {
                         System.err.println("Create SampleVoice for random sample in folder:" + sampleFile);
-                        File[] files  = new File(sampleFile).listFiles();
+                        File[] files = new File(sampleFile).listFiles();
                         NumSamplesInDir = files.length;
-                        //System.out.println("Number of Samples in Directory [" + sampleFile + "] is " + NumSamplesInDir);             
                         randomInt = randomGenerator.nextInt(NumSamplesInDir);
                         sampleFile = files[randomInt].toString();
                         System.out.println("sample: " + sampleFile);
@@ -66,18 +65,15 @@ public class ScopePlayer {
                         throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
                     }
                 }
-                
 
-                if (sample.getChannelsPerFrame() == 2) {
-                    samplePlayer = new VariableRateStereoReader();
-                    samplePlayer.output.connect(0, Eveson.getLineOut().input, 0);
-                    samplePlayer.output.connect(1, Eveson.getLineOut().input, 1);
-                } else {
-
-                    samplePlayer = new VariableRateMonoReader();
-                    samplePlayer.output.connect(0, Eveson.getLineOut().input, 0);
-                    samplePlayer.output.connect(0, Eveson.getLineOut().input, 1);
-                }
+//                if (sample.getChannelsPerFrame() == 2) {
+//                    samplePlayer = new VariableRateStereoReader();
+//                    samplePlayer.output.connect(0, Eveson.getLineOut().input, 0);
+//                    samplePlayer.output.connect(1, Eveson.getLineOut().input, 1);
+//                } else {
+                samplePlayer = new VariableRateMonoReader();
+                samplePlayer.output.connect(0, Eveson.getLineOut().input, 0);
+                samplePlayer.output.connect(0, Eveson.getLineOut().input, 1);
 
                 Eveson.getSynthesizer().add(samplePlayer);
                 samplePlayer.rate.set(sample.getFrameRate());
@@ -104,6 +100,10 @@ public class ScopePlayer {
             case PLAY:
                 allocator.noteOn(counter, 1, amplitude, Eveson.getSynthesizer().createTimeStamp());
                 counter++;
+                break;
+            case BACKGROUND:
+                samplePlayer.amplitude.set(amplitude);
+                samplePlayer.dataQueue.queueLoop( sample, 0, sample.getNumFrames() );   
         }
     }
 
@@ -115,7 +115,7 @@ public class ScopePlayer {
      */
     public enum Type {
 
-        PLAY, ADJUST, CUSTOM;
+        PLAY, ADJUST, CUSTOM, BACKGROUND;
     }
 
     public String getSampleFile() {

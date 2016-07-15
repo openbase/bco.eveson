@@ -1,5 +1,6 @@
 package de.citec.csra;
 
+import static de.citec.csra.ScopePlayer.Type.BACKGROUND;
 import static de.citec.csra.ScopePlayer.Type.CUSTOM;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class EventPlayer {
         try {
             GenericListener listener;
             for (Map.Entry<String, ScopePlayer> config : scopeSampleMap.entrySet()) {
-                if (config.getValue().getType().equals(CUSTOM)) {
+                if (config.getValue().getType().equals(CUSTOM) || config.getValue().getType().equals(BACKGROUND)) {
                     continue;
                 }
                 listener = new GenericListener(config.getKey(), config.getValue());
