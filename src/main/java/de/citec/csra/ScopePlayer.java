@@ -58,7 +58,7 @@ public class ScopePlayer {
                         NumSamplesInDir = files.length;
                         randomInt = randomGenerator.nextInt(NumSamplesInDir);
                         sampleFile = files[randomInt].toString();
-                        System.out.println("sample: " + sampleFile);
+                        System.out.println ("sample: " + sampleFile);
                         sample = SampleLoader.loadFloatSample(new File(sampleFile));
                     } catch (IOException ex) {
 

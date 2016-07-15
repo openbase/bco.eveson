@@ -36,20 +36,19 @@ public class LocationObserver implements Observer<LocationData> {
     public void play(double consumption) {
         System.out.println("consumption: " + consumption);
         if (consumption < THRESHOLD_NORMAL) {
-            sp_normal.play(0);
-            sp_high.play(0);
-        } else if (consumption < THRESHOLD_HIGH) {
             sp_normal.play(consumption / THRESHOLD_NORMAL);
             sp_high.play(0);
-        } else if (consumption > THRESHOLD_EXTREME) {
+        } else if (consumption < THRESHOLD_HIGH) {
+            double normalconsumption_amplitude = (THRESHOLD_HIGH - consumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
+            sp_normal.play(normalconsumption_amplitude);
+            sp_high.play(1-normalconsumption_amplitude);
+        } else if (consumption < THRESHOLD_EXTREME) {
+            sp_high.play(1);
+            sp_normal.play(0);
+        } else {
             sp_high.play(1);
             sp_extreme.play(1);
             System.out.println("ROARING THUNDER!");
-        } else {
-            double highconsumption_amplitude = (consumption - THRESHOLD_HIGH) / (THRESHOLD_EXTREME - THRESHOLD_HIGH);
-            System.out.println("blending: " + highconsumption_amplitude);
-            sp_high.play(highconsumption_amplitude);
-            sp_normal.play(1 - highconsumption_amplitude);
         }
     }
 
