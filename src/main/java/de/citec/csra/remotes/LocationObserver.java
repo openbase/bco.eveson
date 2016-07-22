@@ -20,7 +20,7 @@ public class LocationObserver implements Observer<LocationData> {
     private ScopePlayer sp_high;
     private ScopePlayer sp_extreme;
     // parameter and last value for exponential average
-    private double alpha = 0.5;
+    private double alpha = 0.8;
     private double lastValue = 0;
 
     public LocationObserver() throws InstantiationException {
@@ -38,19 +38,20 @@ public class LocationObserver implements Observer<LocationData> {
     public void play(double consumption) {
         consumption = expAverage(consumption);
         if (consumption < THRESHOLD_NORMAL) {
-            sp_normal.play(0);
-            sp_high.play(0);
-        } else if (consumption < THRESHOLD_HIGH) {
             sp_normal.play(consumption / THRESHOLD_NORMAL);
             sp_high.play(0);
-        } else if (consumption > THRESHOLD_EXTREME) {
+        } else if (consumption < THRESHOLD_HIGH) {
+            double normalconsumption_amplitude = (THRESHOLD_HIGH - consumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
+            sp_normal.play(normalconsumption_amplitude);
+            sp_high.play(1 - normalconsumption_amplitude);
+        } else if (consumption < THRESHOLD_EXTREME) {
+            sp_high.play(1);
+            sp_normal.play(0);
+        } else {
             sp_high.play(1);
             sp_extreme.play(1);
-        } else {
-            double highconsumption_amplitude = (consumption - THRESHOLD_HIGH) / (THRESHOLD_EXTREME - THRESHOLD_HIGH);
-            sp_high.play(highconsumption_amplitude);
-            sp_normal.play(1 - highconsumption_amplitude);
         }
+
     }
 
     private double expAverage(double value) {

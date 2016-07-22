@@ -28,6 +28,7 @@ public class SampleVoice implements UnitVoice {
     private FloatSample sample;
     Random randomGenerator = new Random();
     private int NumSamplesInDir;
+    private String sampleFile;
 
     /**
      * Constructor.
@@ -36,38 +37,18 @@ public class SampleVoice implements UnitVoice {
      * @throws org.openbase.jul.exception.InstantiationException
      */
     public SampleVoice(String sampleFile) throws org.openbase.jul.exception.InstantiationException {
-        try {
-            int randomInt;
-            System.err.println("Create SampleVoice for random sample in folder:" + sampleFile);
-            File[] files  = new File(sampleFile).listFiles();
-            NumSamplesInDir = files.length;
-            //System.out.println("Number of Samples in Directory [" + sampleFile + "] is " + NumSamplesInDir);
-  
-            Synthesizer s = Eveson.getSynthesizer();
-            LineOut l = Eveson.getLineOut();
-            try {
-                randomInt = randomGenerator.nextInt(NumSamplesInDir);
-                sampleFile = files[randomInt].toString();
-                System.out.println("sample: " + sampleFile);
-                sample = SampleLoader.loadFloatSample(new File(sampleFile));
-            } catch (IOException ex) {
-                throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
-            }
-            if (sample.getChannelsPerFrame() == 2) {
-                System.out.println("Warning: " + sampleFile + " is stereo!");
-                this.samplePlayer = new VariableRateStereoReader();
-                s.add(samplePlayer);
-                samplePlayer.output.connect(0, l.input, 0);
-                samplePlayer.output.connect(1, l.input, 1);
-            } else {
-                this.samplePlayer = new VariableRateMonoReader();
-                s.add(samplePlayer);
-                samplePlayer.output.connect(0, l.input, 0);
-            }
+        this.sampleFile = sampleFile;
 
-        } catch (CouldNotPerformException ex) {
-            throw new org.openbase.jul.exception.InstantiationException(this, ex);
-        }
+        System.err.println("Create SampleVoice for random sample in folder:" + sampleFile);
+        //System.out.println("Number of Samples in Directory [" + sampleFile + "] is " + NumSamplesInDir);
+
+        Synthesizer s = Eveson.getSynthesizer();
+        LineOut l = Eveson.getLineOut();
+
+        this.samplePlayer = new VariableRateMonoReader();
+        s.add(samplePlayer);
+        samplePlayer.output.connect(0, l.input, 0);
+
     }
 
     /**
@@ -78,7 +59,21 @@ public class SampleVoice implements UnitVoice {
      * @param ts TimeStamp
      */
     @Override
-    public void noteOn(double d, double d1, TimeStamp ts) {   
+    public void noteOn(double d, double d1, TimeStamp ts) {
+        int randomInt;
+        File[] files = new File(sampleFile).listFiles();
+        System.out.println("Files: " + sampleFile + ", " + files);
+        NumSamplesInDir = files.length;
+        String randomSample = null;
+        try {
+            randomInt = randomGenerator.nextInt(NumSamplesInDir);
+            randomSample = files[randomInt].toString();
+            System.out.println("sample: " + randomSample);
+            sample = SampleLoader.loadFloatSample(new File(randomSample));
+        } catch (IOException ex) {
+            System.out.println("Could not load: " + randomSample);
+        }
+
         samplePlayer.rate.set(sample.getFrameRate());
         samplePlayer.dataQueue.queue(sample);
         samplePlayer.amplitude.set(d1);
