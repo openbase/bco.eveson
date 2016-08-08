@@ -54,7 +54,7 @@ public class SampleVoice implements UnitVoice {
     /**
      * Play a sample.
      *
-     * @param d Unused (TODO: use for pitching?)
+     * @param d Unused
      * @param d1 Amplitude
      * @param ts TimeStamp
      */

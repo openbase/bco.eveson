@@ -4,14 +4,12 @@ import com.jsyn.data.FloatSample;
 import com.jsyn.unitgen.UnitVoice;
 import com.jsyn.unitgen.VariableRateDataReader;
 import com.jsyn.unitgen.VariableRateMonoReader;
-import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.jsyn.util.VoiceAllocator;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import org.openbase.jul.exception.CouldNotPerformException;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Handles events for one scope.
@@ -64,12 +62,6 @@ public class ScopePlayer {
                         throw new CouldNotPerformException("Could not load: " + sampleFile, ex);
                     }
                 }
-
-//                if (sample.getChannelsPerFrame() == 2) {
-//                    samplePlayer = new VariableRateStereoReader();
-//                    samplePlayer.output.connect(0, Eveson.getLineOut().input, 0);
-//                    samplePlayer.output.connect(1, Eveson.getLineOut().input, 1);
-//                } else {
                 samplePlayer = new VariableRateMonoReader();
                 samplePlayer.output.connect(0, Eveson.getLineOut().input, 0);
                 samplePlayer.output.connect(0, Eveson.getLineOut().input, 1);
@@ -83,6 +75,10 @@ public class ScopePlayer {
         }
     }
 
+    /**
+     * Play a sample from this player's folder. 
+     * @param amplitude Volume
+     */
     public void play(double amplitude) {
         assert (amplitude >= 0 && amplitude <= 1.0);
         amplitude *= EventPlayer.getMaxAmplitude();
