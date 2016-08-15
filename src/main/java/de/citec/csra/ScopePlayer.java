@@ -12,7 +12,9 @@ import java.util.Random;
 import org.openbase.jul.exception.CouldNotPerformException;
 
 /**
- * Handles events for one scope.
+ * Plays samples that are associated with one scope. Each ScopePlayer has a
+ * fixed behavior type and a fixed set of samples from which it will choose
+ * randomly every time.
  *
  * @author mgao
  */
@@ -28,10 +30,19 @@ public class ScopePlayer {
     private FloatSample sample;
     private int counter = 0; // Voice Allocators need a unique number for each note played
 
-    int randomInt;
-    Random randomGenerator = new Random();
+    private int randomInt;
+    private Random randomGenerator = new Random();
     private int NumSamplesInDir;
 
+    /**
+     * Constructor.
+     *
+     * @param sampleFile Folder with all samples which can be randomly chosen by
+     * this player.
+     * @param type Behavior type of this player.
+     * @see Type
+     * @throws org.openbase.jul.exception.InstantiationException
+     */
     public ScopePlayer(String sampleFile, Type type) throws org.openbase.jul.exception.InstantiationException {
         try {
             System.out.println("Load: " + sampleFile);
@@ -76,11 +87,15 @@ public class ScopePlayer {
     }
 
     /**
-     * Play a sample from this player's folder. 
-     * @param amplitude Volume
+     * Play a sample from this player's folder.
+     *
+     * @param amplitude Volume from 0 to 1. If an invalid value is given, it
+     * will be set to 1.
      */
     public void play(double amplitude) {
-        assert (amplitude >= 0 && amplitude <= 1.0);
+        if (amplitude < 0 || amplitude > 1.0) {
+            amplitude = 1.0;
+        }
         amplitude *= EventPlayer.getMaxAmplitude();
         switch (type) {
             case ADJUST:
@@ -94,6 +109,7 @@ public class ScopePlayer {
                 break;
             case PLAY:
                 allocator.noteOn(counter, 1, amplitude, Eveson.getSynthesizer().createTimeStamp());
+                System.out.println("ScopePlayer: " + sampleFile);
                 counter++;
                 break;
             case BACKGROUND:
@@ -106,8 +122,15 @@ public class ScopePlayer {
     /**
      * Types of events.
      *
-     * 1. Play a sample each time the event takes place 2. Adjust a sample's
-     * amplitude according to event data (or play if no sample is playing)
+     * - Play a sample each time the event takes place <br>
+     *
+     * - Play a sample only if it's not already playing, and set its amplitude
+     * according to event data<br>
+     *
+     * - Loop a sample forever and set its amplitude according to event data<br>
+     *
+     * - Custom behavior that depends on event data that don't use the
+     * GenericListener.
      */
     public enum Type {
 

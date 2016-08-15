@@ -8,7 +8,7 @@ import java.util.Map;
 import org.openbase.jul.exception.CouldNotPerformException;
 
 /**
- *
+ * Handles the mapping from scopes to samples.
  * @author jplettemeier
  */
 public class EventPlayer {

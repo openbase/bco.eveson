@@ -68,11 +68,11 @@ public class Eveson implements Launchable {
             final JSonObjectFileProcessor fileProcessor = new JSonObjectFileProcessor(EvesonConfig.class);
 
             EvesonConfig evesonConfig = (EvesonConfig) (fileProcessor.deserialize(JPService.getProperty(JPThemeFile.class).getValue()));
-            evesonConfig.setPowerConsumptionThresholdNormal(150);
-            evesonConfig.setPowerConsumptionThresholdHigh(600);
-            evesonConfig.setPowerConsumptionThresholdExtreme(3000);
+            
             LocationObserver.setThresholds(evesonConfig.PowerConsumptionThresholdNormal, 
                     evesonConfig.PowerConsumptionThresholdHigh, evesonConfig.PowerConsumptionThresholdExtreme);
+            
+            System.out.println("Thresholds: " + evesonConfig.PowerConsumptionThresholdNormal + ", " + evesonConfig.PowerConsumptionThresholdHigh + ", " + evesonConfig.PowerConsumptionThresholdExtreme);
 
             ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();
 

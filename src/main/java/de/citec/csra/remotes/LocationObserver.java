@@ -36,11 +36,15 @@ public class LocationObserver implements Observer<LocationData> {
     }
 
     public void play(double consumption) {
+//        System.out.println(THRESHOLD_NORMAL);
         consumption = expAverage(consumption);
+//        System.out.println("consumption:" + consumption);
         if (consumption < THRESHOLD_NORMAL) {
+//            System.out.println("normal");
             sp_normal.play(consumption / THRESHOLD_NORMAL);
             sp_high.play(0);
         } else if (consumption < THRESHOLD_HIGH) {
+//            System.out.println("high");
             double normalconsumption_amplitude = (THRESHOLD_HIGH - consumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
             sp_normal.play(normalconsumption_amplitude);
             sp_high.play(1 - normalconsumption_amplitude);
@@ -57,7 +61,7 @@ public class LocationObserver implements Observer<LocationData> {
     private double expAverage(double value) {
         double newValue = lastValue + alpha * (value - lastValue);
         lastValue = newValue;
-        System.out.println("new value:" + value + ", averaged new value: " + newValue);
+//        System.out.println("new value:" + value + ", averaged new value: " + newValue);
         return newValue;
     }
 

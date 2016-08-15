@@ -8,14 +8,11 @@ import com.jsyn.unitgen.UnitGenerator;
 import com.jsyn.unitgen.UnitVoice;
 import com.jsyn.unitgen.VariableRateDataReader;
 import com.jsyn.unitgen.VariableRateMonoReader;
-import com.jsyn.unitgen.VariableRateStereoReader;
 import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import org.openbase.jul.exception.CouldNotPerformException;
-import org.openbase.jul.exception.printer.ExceptionPrinter;
 
 /**
  * A UnitVoice for one sample.
@@ -33,7 +30,7 @@ public class SampleVoice implements UnitVoice {
     /**
      * Constructor.
      *
-     * @param sampleFile File to be played
+     * @param sampleFile Directory with samples for this voice.
      * @throws org.openbase.jul.exception.InstantiationException
      */
     public SampleVoice(String sampleFile) throws org.openbase.jul.exception.InstantiationException {
@@ -54,17 +51,20 @@ public class SampleVoice implements UnitVoice {
     /**
      * Play a sample.
      *
-     * @param d Unused
+     * @param d Pitch (Unused)
      * @param d1 Amplitude
-     * @param ts TimeStamp
+     * @param ts TimeStamp (Unused)
      */
     @Override
     public void noteOn(double d, double d1, TimeStamp ts) {
         int randomInt;
         File[] files = new File(sampleFile).listFiles();
-        System.out.println("Files: " + sampleFile + ", " + files);
+        System.out.println("Note On: " + sampleFile);
         NumSamplesInDir = files.length;
         String randomSample = null;
+
+        // clear the queue before playing to avoid having multiple samples in the queue at once
+        samplePlayer.dataQueue.clear();
         try {
             randomInt = randomGenerator.nextInt(NumSamplesInDir);
             randomSample = files[randomInt].toString();
@@ -80,27 +80,48 @@ public class SampleVoice implements UnitVoice {
 
     }
 
+    /**
+     * Queue off the current sample.
+     *
+     * @param ts Timestamp
+     */
     @Override
     public void noteOff(TimeStamp ts) {
         samplePlayer.dataQueue.queueOff(sample);
     }
 
-    // Unused Stuff
     @Override
     public UnitGenerator getUnitGenerator() {
         return samplePlayer;
     }
 
+    /**
+     * Not implemented!
+     *
+     * @param string
+     * @param d
+     * @param ts
+     */
     @Override
     public void setPort(String string, double d, TimeStamp ts) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Not implemented!
+     *
+     * @param i
+     */
     @Override
     public void usePreset(int i) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Not implemented!
+     *
+     * @return
+     */
     @Override
     public UnitOutputPort getOutput() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

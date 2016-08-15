@@ -1,21 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.citec.csra;
 
 import java.util.ArrayList;
 
 /**
- *
+ * Configuration for Eveson.
  * @author mgao
  */
 public class EvesonConfig {
 
+    /**
+     * List of configurations for individual scopes.
+     */
     private final ArrayList<PlayerConfig> playerConfigList;
+    /**
+     * Threshold for normal power consumption.
+     */
     public  double PowerConsumptionThresholdNormal; 
+    /**
+     * Threshold for high power consumption.
+     */
     public  double PowerConsumptionThresholdHigh; 
+    /**
+     * Threshold for very high power consumption.
+     */
     public  double PowerConsumptionThresholdExtreme; 
     
     
