@@ -8,7 +8,7 @@ import org.openbase.jul.pattern.Observer;
 import rst.spatial.LocationDataType.LocationData;
 
 /**
- *
+ * 
  * @author mgao
  */
 public class LocationObserver implements Observer<LocationData> {

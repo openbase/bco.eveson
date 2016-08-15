@@ -9,6 +9,8 @@ import com.jsyn.util.VoiceAllocator;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openbase.jul.exception.CouldNotPerformException;
 
 /**
@@ -32,7 +34,8 @@ public class ScopePlayer {
 
     private int randomInt;
     private Random randomGenerator = new Random();
-    private int NumSamplesInDir;
+    private int numSamplesInDir;
+    private File[] files;
 
     /**
      * Constructor.
@@ -62,9 +65,9 @@ public class ScopePlayer {
                 case BACKGROUND: {
                     try {
                         System.err.println("Adjust/Background: Create SampleVoice for random sample in folder:" + sampleFile);
-                        File[] files = new File(sampleFile).listFiles();
-                        NumSamplesInDir = files.length;
-                        randomInt = randomGenerator.nextInt(NumSamplesInDir);
+                        files = new File(sampleFile).listFiles();
+                        numSamplesInDir = files.length;
+                        randomInt = randomGenerator.nextInt(numSamplesInDir);
                         sampleFile = files[randomInt].toString();
                         System.out.println("sample: " + sampleFile);
                         sample = SampleLoader.loadFloatSample(new File(sampleFile));
@@ -99,10 +102,19 @@ public class ScopePlayer {
         amplitude *= EventPlayer.getMaxAmplitude();
         switch (type) {
             case ADJUST:
-
                 samplePlayer.amplitude.set(amplitude);
-
                 if (!samplePlayer.dataQueue.hasMore()) {
+                    randomInt = randomGenerator.nextInt(numSamplesInDir);
+                    sampleFile = files[randomInt].toString();
+                    System.out.println("ScopePlayer: PLAY: sample: " + sampleFile);
+                    {
+                        try {
+                            sample = SampleLoader.loadFloatSample(new File(sampleFile));
+                        } catch (IOException ex) {
+                            Logger.getLogger(ScopePlayer.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
                     samplePlayer.dataQueue.queue(sample);
                 }
 
