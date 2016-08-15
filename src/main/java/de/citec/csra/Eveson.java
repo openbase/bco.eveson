@@ -32,6 +32,7 @@ public class Eveson implements Launchable {
 
     private static Synthesizer synthesizer;
     private static LineOut lineOut;
+    private EvesonConfig evesonConfig;
 
     @Override
     public void launch() throws CouldNotPerformException, InterruptedException {
@@ -67,18 +68,23 @@ public class Eveson implements Launchable {
 
             final JSonObjectFileProcessor fileProcessor = new JSonObjectFileProcessor(EvesonConfig.class);
 
-            EvesonConfig evesonConfig = (EvesonConfig) (fileProcessor.deserialize(JPService.getProperty(JPThemeFile.class).getValue()));
-            
-            LocationObserver.setThresholds(evesonConfig.PowerConsumptionThresholdNormal, 
+            evesonConfig = (EvesonConfig) (fileProcessor.deserialize(JPService.getProperty(JPThemeFile.class).getValue()));
+
+            LocationObserver.setThresholds(evesonConfig.PowerConsumptionThresholdNormal,
                     evesonConfig.PowerConsumptionThresholdHigh, evesonConfig.PowerConsumptionThresholdExtreme);
-            
+
             System.out.println("Thresholds: " + evesonConfig.PowerConsumptionThresholdNormal + ", " + evesonConfig.PowerConsumptionThresholdHigh + ", " + evesonConfig.PowerConsumptionThresholdExtreme);
-
+            System.out.println("Default voices: " + evesonConfig.getDefaultVoices());
             ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();
-
+            
             configList.stream().forEach((config) -> {
                 try {
-                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType()));
+                    int maxVoices = config.getMaxVoices();
+                    if (maxVoices == 0) {
+                        maxVoices = evesonConfig.defaultVoices;                    
+                    }
+                    System.out.println(config.getId() + ": " + maxVoices + ", " + evesonConfig.defaultVoices);
+                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType(), maxVoices));
                 } catch (CouldNotPerformException ex) {
                     ExceptionPrinter.printHistory(new CouldNotPerformException("error occured... skipping sample " + config.getSampleFile(), ex), System.err);
                 }
@@ -111,6 +117,10 @@ public class Eveson implements Launchable {
 
     public static LineOut getLineOut() {
         return lineOut;
+    }
+
+    public EvesonConfig getEvesonConfig() {
+        return evesonConfig;
     }
 
 }

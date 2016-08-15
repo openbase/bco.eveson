@@ -24,7 +24,8 @@ public class MotionSensorObserver implements Observer<MotionSensorType.MotionSen
         this.id = id;
         if (scopeSampleMap.containsKey(id)) {
             sampleFile = scopeSampleMap.get(id).getSampleFile();
-            sp = new ScopePlayer(sampleFile, ScopePlayer.Type.PLAY);
+            
+            sp = new ScopePlayer(sampleFile, ScopePlayer.Type.PLAY,scopeSampleMap.get(id).getMAX_VOICES());
         }
     }
 

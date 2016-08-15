@@ -64,7 +64,11 @@ public class SampleVoice implements UnitVoice {
         String randomSample = null;
 
         // clear the queue before playing to avoid having multiple samples in the queue at once
-        samplePlayer.dataQueue.clear();
+//        samplePlayer.dataQueue.clear();
+       
+        if(samplePlayer.dataQueue.hasMore()) return;
+        
+        
         try {
             randomInt = randomGenerator.nextInt(NumSamplesInDir);
             randomSample = files[randomInt].toString();

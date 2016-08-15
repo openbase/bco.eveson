@@ -24,9 +24,10 @@ public class LocationObserver implements Observer<LocationData> {
     private double lastValue = 0;
 
     public LocationObserver() throws InstantiationException {
-        sp_normal = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_NORMAL").getSampleFile(), ScopePlayer.Type.BACKGROUND);
-        sp_high = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_HIGH").getSampleFile(), ScopePlayer.Type.BACKGROUND);
-        sp_extreme = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_EXTREME").getSampleFile(), ScopePlayer.Type.ADJUST);
+        
+        sp_normal = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_NORMAL").getSampleFile(), ScopePlayer.Type.BACKGROUND,1);
+        sp_high = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_HIGH").getSampleFile(), ScopePlayer.Type.BACKGROUND,1);
+        sp_extreme = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_EXTREME").getSampleFile(), ScopePlayer.Type.ADJUST,1);
     }
 
     @Override
@@ -36,15 +37,11 @@ public class LocationObserver implements Observer<LocationData> {
     }
 
     public void play(double consumption) {
-//        System.out.println(THRESHOLD_NORMAL);
         consumption = expAverage(consumption);
-//        System.out.println("consumption:" + consumption);
         if (consumption < THRESHOLD_NORMAL) {
-//            System.out.println("normal");
             sp_normal.play(consumption / THRESHOLD_NORMAL);
             sp_high.play(0);
         } else if (consumption < THRESHOLD_HIGH) {
-//            System.out.println("high");
             double normalconsumption_amplitude = (THRESHOLD_HIGH - consumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
             sp_normal.play(normalconsumption_amplitude);
             sp_high.play(1 - normalconsumption_amplitude);

@@ -22,7 +22,7 @@ import org.openbase.jul.exception.CouldNotPerformException;
  */
 public class ScopePlayer {
 
-    private final int MAX_VOICES = 5;
+    private final int MAX_VOICES;
     private String sampleFile;
     private Type type;
 
@@ -37,6 +37,7 @@ public class ScopePlayer {
     private int numSamplesInDir;
     private File[] files;
 
+    
     /**
      * Constructor.
      *
@@ -46,7 +47,8 @@ public class ScopePlayer {
      * @see Type
      * @throws org.openbase.jul.exception.InstantiationException
      */
-    public ScopePlayer(String sampleFile, Type type) throws org.openbase.jul.exception.InstantiationException {
+    public ScopePlayer(String sampleFile, Type type, int maxVoices) throws org.openbase.jul.exception.InstantiationException {
+        MAX_VOICES = maxVoices;
         try {
             System.out.println("Load: " + sampleFile);
             this.sampleFile = sampleFile;
@@ -155,6 +157,10 @@ public class ScopePlayer {
 
     public Type getType() {
         return type;
+    }
+
+    public int getMAX_VOICES() {
+        return MAX_VOICES;
     }
 
 }

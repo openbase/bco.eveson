@@ -23,8 +23,11 @@ public class EvesonConfig {
     /**
      * Threshold for very high power consumption.
      */
-    public  double PowerConsumptionThresholdExtreme; 
-    
+    public  double PowerConsumptionThresholdExtreme;     
+    /**
+     * Default number of voices.
+     */
+    public int defaultVoices; 
     
     public EvesonConfig() {
         this.playerConfigList = new ArrayList<>();
@@ -57,6 +60,14 @@ public class EvesonConfig {
 
     public void setPowerConsumptionThresholdExtreme(double PowerConsumptionThresholdExtreme) {
         this.PowerConsumptionThresholdExtreme = PowerConsumptionThresholdExtreme;
+    }
+
+    public int getDefaultVoices() {
+        return defaultVoices;
+    }
+
+    public void setDefaultVoices(int defaultVoices) {
+        this.defaultVoices = defaultVoices;
     }
 
 }
