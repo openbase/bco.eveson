@@ -36,6 +36,7 @@ public class ScopePlayer {
     private Random randomGenerator = new Random();
     private int numSamplesInDir;
     private File[] files;
+    private float relativeAmplitude;
 
     
     /**
@@ -44,11 +45,14 @@ public class ScopePlayer {
      * @param sampleFile Folder with all samples which can be randomly chosen by
      * this player.
      * @param type Behavior type of this player.
+     * @param maxVoices
+     * @param relativeAmplitude
      * @see Type
      * @throws org.openbase.jul.exception.InstantiationException
      */
-    public ScopePlayer(String sampleFile, Type type, int maxVoices) throws org.openbase.jul.exception.InstantiationException {
+    public ScopePlayer(String sampleFile, Type type, int maxVoices, float relativeAmplitude) throws org.openbase.jul.exception.InstantiationException {
         MAX_VOICES = maxVoices;
+        this.relativeAmplitude = relativeAmplitude;
         try {
             System.out.println("Load: " + sampleFile);
             this.sampleFile = sampleFile;
@@ -101,7 +105,7 @@ public class ScopePlayer {
         if (amplitude < 0 || amplitude > 1.0) {
             amplitude = 1.0;
         }
-        amplitude *= EventPlayer.getMaxAmplitude();
+        amplitude *= EventPlayer.getMaxAmplitude() * this.relativeAmplitude;
         switch (type) {
             case ADJUST:
                 samplePlayer.amplitude.set(amplitude);
@@ -161,6 +165,10 @@ public class ScopePlayer {
 
     public int getMAX_VOICES() {
         return MAX_VOICES;
+    }
+
+    public float getRelativeAmplitude() {
+        return relativeAmplitude;
     }
 
 }

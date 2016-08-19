@@ -23,9 +23,10 @@ public class MotionSensorObserver implements Observer<MotionSensorType.MotionSen
         final Map<String, ScopePlayer> scopeSampleMap = EventPlayer.getInstance().getScopeSampleMap();
         this.id = id;
         if (scopeSampleMap.containsKey(id)) {
-            sampleFile = scopeSampleMap.get(id).getSampleFile();
+            final ScopePlayer player = scopeSampleMap.get(id);
+            sampleFile = player.getSampleFile();
             
-            sp = new ScopePlayer(sampleFile, ScopePlayer.Type.PLAY,scopeSampleMap.get(id).getMAX_VOICES());
+            sp = new ScopePlayer(sampleFile, ScopePlayer.Type.PLAY,player.getMAX_VOICES(), player.getRelativeAmplitude());
         }
     }
 

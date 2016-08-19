@@ -80,11 +80,15 @@ public class Eveson implements Launchable {
             configList.stream().forEach((config) -> {
                 try {
                     int maxVoices = config.getMaxVoices();
+                    float relativeAmplitude = config.getAmplitude();
                     if (maxVoices == 0) {
                         maxVoices = evesonConfig.defaultVoices;                    
                     }
+                    if(relativeAmplitude == 0){
+                        relativeAmplitude = 1.0f;
+                    }
                     System.out.println(config.getId() + ": " + maxVoices + ", " + evesonConfig.defaultVoices);
-                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType(), maxVoices));
+                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType(), maxVoices, relativeAmplitude));
                 } catch (CouldNotPerformException ex) {
                     ExceptionPrinter.printHistory(new CouldNotPerformException("error occured... skipping sample " + config.getSampleFile(), ex), System.err);
                 }

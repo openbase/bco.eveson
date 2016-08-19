@@ -2,13 +2,14 @@ package de.citec.csra.remotes;
 
 import de.citec.csra.EventPlayer;
 import de.citec.csra.ScopePlayer;
+import java.util.Map;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
 import rst.spatial.LocationDataType.LocationData;
 
 /**
- * 
+ *
  * @author mgao
  */
 public class LocationObserver implements Observer<LocationData> {
@@ -24,10 +25,13 @@ public class LocationObserver implements Observer<LocationData> {
     private double lastValue = 0;
 
     public LocationObserver() throws InstantiationException {
-        
-        sp_normal = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_NORMAL").getSampleFile(), ScopePlayer.Type.BACKGROUND,1);
-        sp_high = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_HIGH").getSampleFile(), ScopePlayer.Type.BACKGROUND,1);
-        sp_extreme = new ScopePlayer(EventPlayer.getInstance().getScopeSampleMap().get("POWER_EXTREME").getSampleFile(), ScopePlayer.Type.ADJUST,1);
+        final Map<String, ScopePlayer> scopeSampleMap = EventPlayer.getInstance().getScopeSampleMap();
+        ScopePlayer normal = scopeSampleMap.get("POWER_NORMAL");
+        ScopePlayer high = scopeSampleMap.get("POWER_HIGH");
+        ScopePlayer extreme = scopeSampleMap.get("POWER_EXTREME");
+        sp_normal = new ScopePlayer(normal.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, normal.getRelativeAmplitude());
+        sp_high = new ScopePlayer(high.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, high.getRelativeAmplitude());
+        sp_extreme = new ScopePlayer(extreme.getSampleFile(), ScopePlayer.Type.ADJUST, 1, extreme.getRelativeAmplitude());
     }
 
     @Override
