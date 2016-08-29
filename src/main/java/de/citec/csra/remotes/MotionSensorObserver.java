@@ -6,14 +6,15 @@ import java.util.Map;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
-import static rst.homeautomation.state.MotionStateType.MotionState.State.MOVEMENT;
-import rst.homeautomation.unit.MotionSensorType;
+import static rst.homeautomation.state.MotionStateType.MotionState.State.MOTION;
+import rst.homeautomation.unit.MotionDetectorDataType;
+import rst.homeautomation.unit.MotionDetectorDataType.MotionDetectorData;
 
 /**
  *
  * @author mgao
  */
-public class MotionSensorObserver implements Observer<MotionSensorType.MotionSensor> {
+public class MotionSensorObserver implements Observer<MotionDetectorDataType.MotionDetectorData> {
 
     private ScopePlayer sp;
     private String sampleFile;
@@ -31,10 +32,10 @@ public class MotionSensorObserver implements Observer<MotionSensorType.MotionSen
     }
 
     @Override
-    public void update(Observable<MotionSensorType.MotionSensor> source, MotionSensorType.MotionSensor data) throws Exception {
+    public void update(Observable<MotionDetectorDataType.MotionDetectorData> source, MotionDetectorData data) throws Exception {
         
 //        System.out.println("MotionSensorObserver: " + data.getMotionState().getValue() + " in " + id);
-        if (data.getMotionState().getValue().equals(MOVEMENT) ) {
+        if (data.getMotionState().getValue().equals(MOTION) ) {
 //            System.out.println("Motion Sensor:" + sampleFile);
             sp.play(1);
         }

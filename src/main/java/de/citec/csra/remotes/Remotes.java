@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.openbase.bco.dal.remote.unit.MotionSensorRemote;
+import org.openbase.bco.dal.remote.unit.MotionDetectorRemote;
 import org.openbase.bco.manager.location.remote.LocationRemote;
 import org.openbase.bco.registry.device.lib.DeviceRegistry;
 import org.openbase.bco.registry.device.remote.CachedDeviceRegistryRemote;
@@ -22,6 +22,7 @@ import rst.homeautomation.unit.UnitTemplateType;
  *
  *
  * @author mgao
+ * @author Divine Threepwood
  */
 public class Remotes {
 
@@ -45,23 +46,23 @@ public class Remotes {
             locationRemote.init(locationRegistry.getRootLocationConfig());
             locationRemote.activate();
             locationRemote.addDataObserver(new LocationObserver());
-            List<UnitConfigType.UnitConfig> motionSensors = deviceRegistry.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.MOTION_SENSOR);
-            List<MotionSensorRemote> motionSensorRemotes = new ArrayList<>();
+            List<UnitConfigType.UnitConfig> motionDetectors = deviceRegistry.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.MOTION_DETECTOR);
+            List<MotionDetectorRemote> motionDetectorRemotes = new ArrayList<>();
 
-            MotionSensorRemote remote;
+            MotionDetectorRemote remote;
 
             int i = 1;
             String id;
-            for (UnitConfigType.UnitConfig motionSensorConfig : motionSensors) {
+            for (UnitConfigType.UnitConfig motionDetectorConfig : motionDetectors) {
 
-                if (!deviceRegistry.getDeviceConfigById(motionSensorConfig.getDeviceId()).getInventoryState().getValue().equals(InventoryStateType.InventoryState.State.INSTALLED)) {
+                if (!deviceRegistry.getDeviceConfigById(motionDetectorConfig.getSystemUnitId()).getInventoryState().getValue().equals(InventoryStateType.InventoryState.State.INSTALLED)) {
                     continue;
                 }
-                remote = new MotionSensorRemote();
-                remote.init(motionSensorConfig);
+                remote = new MotionDetectorRemote();
+                remote.init(motionDetectorConfig);
                 remote.activate();
-                motionSensorRemotes.add(remote);
-                id = motionSensorConfig.getType().name() + "_" + i;
+                motionDetectorRemotes.add(remote);
+                id = motionDetectorConfig.getType().name() + "_" + i;
 //                System.out.println(id + ": Scope: " + motionSensorConfig.getScope().toString());
                 if (EventPlayer.getInstance().getScopeSampleMap().containsKey(id)) {
                     remote.addDataObserver(new MotionSensorObserver(id));
