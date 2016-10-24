@@ -6,7 +6,7 @@ import java.util.Map;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
-import rst.spatial.LocationDataType.LocationData;
+import rst.domotic.unit.location.LocationDataType.LocationData;
 
 /**
  *
