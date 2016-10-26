@@ -15,8 +15,8 @@
         <config.folder>target/appassembler/etc/eveson</config.folder>
     </properties>
     <scm>
-        <connection>http://projects.cit-ec.uni-bielefeld.de/git/csra-stud.eveson</connection>
-        <developerConnection>http://projects.cit-ec.uni-bielefeld.de/git/csra-stud.eveson</developerConnection>
+        <connection>scm:git:https://projects.cit-ec.uni-bielefeld.de/git/csra-stud.eveson.git</connection>
+        <developerConnection>scm:git:https://projects.cit-ec.uni-bielefeld.de/git/csra-stud.eveson.git</developerConnection>
         <url>http://projects.cit-ec.uni-bielefeld.de/git/csra-stud.eveson</url>
     </scm>
     <build> 
