@@ -10,10 +10,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <dependency.bco.dal.version>1.1-SNAPSHOT</dependency.bco.dal.version>
+        <dependency.bco.dal.version>[1.1,1.2-SNAPSHOT)</dependency.bco.dal.version>
         <audio.resource.folder>target/appassembler/share/audio/samples/eveson</audio.resource.folder>
         <config.folder>target/appassembler/etc/eveson</config.folder>
     </properties>
+    <scm>
+        <connection>http://projects.cit-ec.uni-bielefeld.de/git/csra-stud.eveson</connection>
+        <developerConnection>http://projects.cit-ec.uni-bielefeld.de/git/csra-stud.eveson</developerConnection>
+        <url>http://projects.cit-ec.uni-bielefeld.de/git/csra-stud.eveson</url>
+    </scm>
     <build> 
         <plugins>
             <plugin>
