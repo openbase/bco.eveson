@@ -56,7 +56,7 @@ public class Remotes {
             String id;
             for (UnitConfigType.UnitConfig motionDetectorConfig : motionDetectors) {
 
-                if (motionDetectorConfig.getEnablingState().getValue() == EnablingState.State.ENABLED) {
+                if (motionDetectorConfig.getEnablingState().getValue() != EnablingState.State.ENABLED) {
                     continue;
                 }
                 remote = new MotionDetectorRemote();
