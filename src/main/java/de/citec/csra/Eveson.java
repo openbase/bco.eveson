@@ -63,6 +63,7 @@ public class Eveson implements Launchable {
             }
             System.out.println("Setting maximum amplitude to " + amplitude);
             EventPlayer.setMaxAmplitude(amplitude);
+            
 
             final Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
 
@@ -74,6 +75,10 @@ public class Eveson implements Launchable {
                     evesonConfig.PowerConsumptionThresholdHigh, evesonConfig.PowerConsumptionThresholdExtreme);
 
             System.out.println("Thresholds: " + evesonConfig.PowerConsumptionThresholdNormal + ", " + evesonConfig.PowerConsumptionThresholdHigh + ", " + evesonConfig.PowerConsumptionThresholdExtreme);
+            if(evesonConfig.getDefaultVoices() < 0){
+                evesonConfig.setDefaultVoices(5);
+                System.out.println("Invalid default number for voices: setting to 5...");
+            }
             System.out.println("Default voices: " + evesonConfig.getDefaultVoices());
             ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();
             
@@ -84,7 +89,8 @@ public class Eveson implements Launchable {
                     if (maxVoices == 0) {
                         maxVoices = evesonConfig.defaultVoices;                    
                     }
-                    if(relativeAmplitude == 0){
+                    if(relativeAmplitude <= 0){
+                        System.out.println(config.getId() + ": invalid relative amplitude, setting to 1.0...");
                         relativeAmplitude = 1.0f;
                     }
                     System.out.println(config.getId() + ": " + maxVoices + ", " + evesonConfig.defaultVoices);

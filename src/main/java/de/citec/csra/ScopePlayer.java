@@ -112,7 +112,7 @@ public class ScopePlayer {
                 if (!samplePlayer.dataQueue.hasMore()) {
                     randomInt = randomGenerator.nextInt(numSamplesInDir);
                     sampleFile = files[randomInt].toString();
-                    System.out.println("ScopePlayer: PLAY: sample: " + sampleFile);
+//                    System.out.println("ScopePlayer: PLAY: sample: " + sampleFile);
                     {
                         try {
                             sample = SampleLoader.loadFloatSample(new File(sampleFile));
