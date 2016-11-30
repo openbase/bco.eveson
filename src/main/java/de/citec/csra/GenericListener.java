@@ -28,7 +28,6 @@ public class GenericListener {
                 public void run() {
                     shutdown();
                 }
-
             });
 
             this.listener = Factory.getInstance().createListener(scope, RSBGenericConverterConfig.generateConfig());
