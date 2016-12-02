@@ -22,20 +22,25 @@ import org.openbase.jps.exception.JPServiceException;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.iface.Launchable;
+import org.openbase.jul.iface.VoidInitializable;
 import org.openbase.jul.processing.JSonObjectFileProcessor;
 
 /**
  *
  * @author divine
  */
-public class Eveson implements Launchable {
+public class Eveson implements Launchable<Void>, VoidInitializable {
 
     private static Synthesizer synthesizer;
     private static LineOut lineOut;
     private EvesonConfig evesonConfig;
+    private boolean active = false;
 
+    //TODO: proper activation and deactivation should be implemented by cleaning and shutdown instances. Currently its just a hack.
+    
     @Override
-    public void launch() throws CouldNotPerformException, InterruptedException {
+    public void activate() throws CouldNotPerformException, InterruptedException {
+        active = true;
         try {
             // Init audio devices and synthesizer
             AudioDeviceManager audioManager = AudioDeviceFactory.createAudioDeviceManager();
@@ -107,6 +112,16 @@ public class Eveson implements Launchable {
             throw new CouldNotPerformException("Could not launch eveson!", ex);
         }
     }
+    
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public void deactivate() throws CouldNotPerformException, InterruptedException {
+        active = false;
+    }
 
     private int loadAudioDevice(final AudioDeviceManager audioManager) throws CouldNotPerformException {
         try {
@@ -130,5 +145,4 @@ public class Eveson implements Launchable {
     public EvesonConfig getEvesonConfig() {
         return evesonConfig;
     }
-
 }
