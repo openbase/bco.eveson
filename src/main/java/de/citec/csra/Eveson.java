@@ -20,6 +20,7 @@ import org.openbase.jps.core.JPService;
 import org.openbase.jps.exception.JPNotAvailableException;
 import org.openbase.jps.exception.JPServiceException;
 import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.InitializationException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.iface.Launchable;
 import org.openbase.jul.iface.VoidInitializable;
@@ -37,6 +38,11 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
     private boolean active = false;
 
     //TODO: proper activation and deactivation should be implemented by cleaning and shutdown instances. Currently its just a hack.
+
+    @Override
+    public void init() throws InitializationException, InterruptedException {
+        
+    }
     
     @Override
     public void activate() throws CouldNotPerformException, InterruptedException {
