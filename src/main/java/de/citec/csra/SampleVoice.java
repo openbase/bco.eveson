@@ -60,7 +60,7 @@ public class SampleVoice implements UnitVoice {
         if(samplePlayer.dataQueue.hasMore()) return;
         int randomInt;
         File[] files = new File(sampleFile).listFiles();
-        System.out.println("Note On: " + sampleFile);
+//        System.out.println("Note On: " + sampleFile);
         NumSamplesInDir = files.length;
         String randomSample = null;
 
@@ -69,7 +69,7 @@ public class SampleVoice implements UnitVoice {
         try {
             randomInt = randomGenerator.nextInt(NumSamplesInDir);
             randomSample = files[randomInt].toString();
-            System.out.println("sample: " + randomSample);
+//            System.out.println("sample: " + randomSample);
             sample = SampleLoader.loadFloatSample(new File(randomSample));
         } catch (IOException ex) {
             System.out.println("Could not load: " + randomSample);

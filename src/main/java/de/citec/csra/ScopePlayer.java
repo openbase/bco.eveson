@@ -127,7 +127,7 @@ public class ScopePlayer {
                 break;
             case PLAY:
                 allocator.noteOn(counter, 1, amplitude, Eveson.getSynthesizer().createTimeStamp());
-                System.out.println("ScopePlayer: " + sampleFile);
+//                System.out.println("ScopePlayer: " + sampleFile);
                 counter++;
                 break;
             case BACKGROUND:

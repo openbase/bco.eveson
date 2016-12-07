@@ -3,6 +3,8 @@ package de.citec.csra.remotes;
 import de.citec.csra.EventPlayer;
 import de.citec.csra.ScopePlayer;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
@@ -24,6 +26,10 @@ public class LocationObserver implements Observer<LocationData> {
     private double alpha = 0.3;
     private double lastValue = 0;
 
+    Timer time = new Timer();
+    private double consumption;
+//    private double currentValue;
+
     public LocationObserver() throws InstantiationException {
         final Map<String, ScopePlayer> scopeSampleMap = EventPlayer.getInstance().getScopeSampleMap();
         ScopePlayer normal = scopeSampleMap.get("POWER_NORMAL");
@@ -32,28 +38,37 @@ public class LocationObserver implements Observer<LocationData> {
         sp_normal = new ScopePlayer(normal.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, normal.getRelativeAmplitude());
         sp_high = new ScopePlayer(high.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, high.getRelativeAmplitude());
         sp_extreme = new ScopePlayer(extreme.getSampleFile(), ScopePlayer.Type.ADJUST, 1, extreme.getRelativeAmplitude());
+        time.schedule(new SmoothPowerConsumption(), 0, 100);
     }
 
+    // Update actual consumption value
     @Override
     public void update(Observable<LocationData> source, LocationData data) throws Exception {
-        play(data.getPowerConsumptionState().getConsumption());
+//        play(data.getPowerConsumptionState().getConsumption());
+        updateConsumption(data.getPowerConsumptionState().getConsumption());
+    }
 
+    public void updateConsumption(double consumption) {
+        this.consumption = consumption;
+        System.out.println("new consumption value: " + consumption);
     }
 
     public void play(double consumption) {
-        consumption = expAverage(consumption);
+//        System.out.print("new value:" + consumption + ", averaged new value: ");
+//        consumption = expAverage(consumption);
+//        System.out.println(consumption);
         if (consumption < THRESHOLD_NORMAL) {
-            sp_normal.play((consumption / THRESHOLD_NORMAL) * 0.5 + 0.5);
+            sp_normal.play(consumption / THRESHOLD_NORMAL);
             sp_high.play(0);
         } else if (consumption < THRESHOLD_HIGH) {
             double normalconsumption_amplitude = (THRESHOLD_HIGH - consumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
             sp_normal.play(normalconsumption_amplitude);
-            sp_high.play((1 - normalconsumption_amplitude) * 0.5);
+            sp_high.play((1 - normalconsumption_amplitude));
         } else if (consumption < THRESHOLD_EXTREME) {
-            sp_high.play(0.5);
+            sp_high.play(1);
             sp_normal.play(0);
         } else {
-            sp_high.play(0.5);
+            sp_high.play(1);
             sp_extreme.play(1);
         }
 
@@ -62,7 +77,6 @@ public class LocationObserver implements Observer<LocationData> {
     private double expAverage(double value) {
         double newValue = lastValue + alpha * (value - lastValue);
         lastValue = newValue;
-        System.out.println("new value:" + value + ", averaged new value: " + newValue);
         return newValue;
     }
 
@@ -76,4 +90,14 @@ public class LocationObserver implements Observer<LocationData> {
         return lastValue;
     }
 
+    public class SmoothPowerConsumption extends TimerTask {
+
+        @Override
+        public void run() {
+            lastValue = expAverage(consumption);
+            play(lastValue);
+            System.out.println("consumption: " + consumption + ", value: " + lastValue);
+
+        }
+    }
 }

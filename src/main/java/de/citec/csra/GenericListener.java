@@ -33,7 +33,7 @@ public class GenericListener {
             this.listener = Factory.getInstance().createListener(scope, RSBGenericConverterConfig.generateConfig());
 
             listener.addHandler((Event event) -> {
-                System.out.println("Play Sample[" + player.getSampleFile() + "] for Scope[" + scope + "]");
+//                System.out.println("Play Sample[" + player.getSampleFile() + "] for Scope[" + scope + "]");
                 player.play(0.5);
             }, true);
 

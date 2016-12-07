@@ -154,7 +154,7 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
 
     @Override
     public void shutdown() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("shutdown: Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 
