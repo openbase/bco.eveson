@@ -12,7 +12,6 @@ import de.citec.csra.jp.JPAudioVolume;
 import de.citec.csra.jp.JPThemeFile;
 import de.citec.csra.remotes.LocationObserver;
 import de.citec.csra.remotes.Remotes;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +19,8 @@ import org.openbase.jps.core.JPService;
 import org.openbase.jps.exception.JPNotAvailableException;
 import org.openbase.jps.exception.JPServiceException;
 import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.InitializationException;
+import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.iface.Launchable;
 import org.openbase.jul.processing.JSonObjectFileProcessor;
@@ -35,7 +36,7 @@ public class Eveson implements Launchable {
     private EvesonConfig evesonConfig;
 
     @Override
-    public void launch() throws CouldNotPerformException, InterruptedException {
+    public boolean launch() throws CouldNotPerformException, InterruptedException {
         try {
             // Init audio devices and synthesizer
             AudioDeviceManager audioManager = AudioDeviceFactory.createAudioDeviceManager();
@@ -92,6 +93,7 @@ public class Eveson implements Launchable {
                     if(relativeAmplitude <= 0){
                         relativeAmplitude = 1.0f;
                     }
+//                    System.out.println("Max Voices for " + config.getId() + ": " + maxVoices);
                     scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType(), maxVoices, relativeAmplitude));
                 } catch (CouldNotPerformException ex) {
                     ExceptionPrinter.printHistory(new CouldNotPerformException("error occured... skipping sample " + config.getSampleFile(), ex), System.err);
@@ -106,6 +108,7 @@ public class Eveson implements Launchable {
         } catch (JPNotAvailableException | CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not launch eveson!", ex);
         }
+        return true;
     }
 
     private int loadAudioDevice(final AudioDeviceManager audioManager) throws CouldNotPerformException {
@@ -129,6 +132,42 @@ public class Eveson implements Launchable {
 
     public EvesonConfig getEvesonConfig() {
         return evesonConfig;
+    }
+
+
+    @Override
+    public void shutdown() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void activate() throws CouldNotPerformException, InterruptedException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deactivate() throws CouldNotPerformException, InterruptedException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isActive() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void init() throws InitializationException, InterruptedException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getDefaultConfig() throws NotAvailableException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void init(Object config) throws InitializationException, InterruptedException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

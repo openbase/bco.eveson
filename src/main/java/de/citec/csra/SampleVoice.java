@@ -52,23 +52,20 @@ public class SampleVoice implements UnitVoice {
      * Play a sample.
      *
      * @param d Pitch (Unused)
-     * @param d1 Amplitude
+     * @param a Amplitude
      * @param ts TimeStamp (Unused)
      */
     @Override
-    public void noteOn(double d, double d1, TimeStamp ts) {
+    public void noteOn(double d, double a, TimeStamp ts) {
+        if(samplePlayer.dataQueue.hasMore()) return;
         int randomInt;
         File[] files = new File(sampleFile).listFiles();
         System.out.println("Note On: " + sampleFile);
         NumSamplesInDir = files.length;
         String randomSample = null;
 
-        // clear the queue before playing to avoid having multiple samples in the queue at once
-//        samplePlayer.dataQueue.clear();
-       
-        if(samplePlayer.dataQueue.hasMore()) return;
-        
-        
+        samplePlayer.dataQueue.clear();
+               
         try {
             randomInt = randomGenerator.nextInt(NumSamplesInDir);
             randomSample = files[randomInt].toString();
@@ -80,7 +77,7 @@ public class SampleVoice implements UnitVoice {
 
         samplePlayer.rate.set(sample.getFrameRate());
         samplePlayer.dataQueue.queue(sample);
-        samplePlayer.amplitude.set(d1);
+        samplePlayer.amplitude.set(a);
 
     }
 

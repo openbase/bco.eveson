@@ -21,7 +21,7 @@ public class LocationObserver implements Observer<LocationData> {
     private ScopePlayer sp_high;
     private ScopePlayer sp_extreme;
     // parameter and last value for exponential average
-    private double alpha = 0.8;
+    private double alpha = 0.3;
     private double lastValue = 0;
 
     public LocationObserver() throws InstantiationException {
@@ -43,17 +43,17 @@ public class LocationObserver implements Observer<LocationData> {
     public void play(double consumption) {
         consumption = expAverage(consumption);
         if (consumption < THRESHOLD_NORMAL) {
-            sp_normal.play(consumption / THRESHOLD_NORMAL);
+            sp_normal.play((consumption / THRESHOLD_NORMAL) * 0.5 + 0.5);
             sp_high.play(0);
         } else if (consumption < THRESHOLD_HIGH) {
             double normalconsumption_amplitude = (THRESHOLD_HIGH - consumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
             sp_normal.play(normalconsumption_amplitude);
-            sp_high.play(1 - normalconsumption_amplitude);
+            sp_high.play((1 - normalconsumption_amplitude) * 0.5);
         } else if (consumption < THRESHOLD_EXTREME) {
-            sp_high.play(1);
+            sp_high.play(0.5);
             sp_normal.play(0);
         } else {
-            sp_high.play(1);
+            sp_high.play(0.5);
             sp_extreme.play(1);
         }
 
@@ -62,7 +62,7 @@ public class LocationObserver implements Observer<LocationData> {
     private double expAverage(double value) {
         double newValue = lastValue + alpha * (value - lastValue);
         lastValue = newValue;
-//        System.out.println("new value:" + value + ", averaged new value: " + newValue);
+        System.out.println("new value:" + value + ", averaged new value: " + newValue);
         return newValue;
     }
 
@@ -70,6 +70,10 @@ public class LocationObserver implements Observer<LocationData> {
         THRESHOLD_NORMAL = normal;
         THRESHOLD_HIGH = high;
         THRESHOLD_EXTREME = extreme;
+    }
+
+    public double getLastValue() {
+        return lastValue;
     }
 
 }
