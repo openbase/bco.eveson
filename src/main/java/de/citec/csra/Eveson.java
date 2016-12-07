@@ -20,23 +20,32 @@ import org.openbase.jps.exception.JPNotAvailableException;
 import org.openbase.jps.exception.JPServiceException;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InitializationException;
-import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.iface.Launchable;
+import org.openbase.jul.iface.VoidInitializable;
 import org.openbase.jul.processing.JSonObjectFileProcessor;
 
 /**
  *
  * @author divine
  */
-public class Eveson implements Launchable {
+public class Eveson implements Launchable<Void>, VoidInitializable {
 
     private static Synthesizer synthesizer;
     private static LineOut lineOut;
     private EvesonConfig evesonConfig;
+    private boolean active = false;
+
+    //TODO: proper activation and deactivation should be implemented by cleaning and shutdown instances. Currently its just a hack.
 
     @Override
-    public boolean launch() throws CouldNotPerformException, InterruptedException {
+    public void init() throws InitializationException, InterruptedException {
+        
+    }
+    
+    @Override
+    public void activate() throws CouldNotPerformException, InterruptedException {
+        active = true;
         try {
             // Init audio devices and synthesizer
             AudioDeviceManager audioManager = AudioDeviceFactory.createAudioDeviceManager();
@@ -108,7 +117,16 @@ public class Eveson implements Launchable {
         } catch (JPNotAvailableException | CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not launch eveson!", ex);
         }
-        return true;
+    }
+    
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public void deactivate() throws CouldNotPerformException, InterruptedException {
+        active = false;
     }
 
     private int loadAudioDevice(final AudioDeviceManager audioManager) throws CouldNotPerformException {
@@ -134,40 +152,10 @@ public class Eveson implements Launchable {
         return evesonConfig;
     }
 
-
     @Override
     public void shutdown() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void activate() throws CouldNotPerformException, InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void deactivate() throws CouldNotPerformException, InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean isActive() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void init() throws InitializationException, InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object getDefaultConfig() throws NotAvailableException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void init(Object config) throws InitializationException, InterruptedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }
