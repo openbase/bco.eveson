@@ -37,6 +37,7 @@ public class PowerTest extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +69,13 @@ public class PowerTest extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox1.setText("Slider aktivieren");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -76,6 +84,8 @@ public class PowerTest extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(106, 106, 106)
                 .addComponent(jLabel1)
+                .addGap(28, 28, 28)
+                .addComponent(jCheckBox1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton1)
@@ -86,8 +96,10 @@ public class PowerTest extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jCheckBox1))
                 .addGap(18, 18, 18)
                 .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -101,9 +113,13 @@ public class PowerTest extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        double val = l.getLastValue() + 1500;
-//            l.play(val);
+        
+        if(jCheckBox1.isSelected()){
+            double val = l.getLastValue() + 1500;
         jSlider1.setValue((int)Math.round(val));
+        }
+//            l.play(val);
+    
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -114,12 +130,19 @@ public class PowerTest extends javax.swing.JFrame {
 
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
         // TODO add your handling code here:
-        l.updateConsumption(((JSlider) evt.getSource()).getValue());
+        if(jCheckBox1.isSelected()){
+            System.out.println("checkbox is on");
+        l.updateConsumption(((JSlider) evt.getSource()).getValue());}
     }//GEN-LAST:event_jSlider1StateChanged
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSlider jSlider1;
     // End of variables declaration//GEN-END:variables

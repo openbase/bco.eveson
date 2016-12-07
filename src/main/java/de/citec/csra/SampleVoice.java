@@ -12,6 +12,7 @@ import com.jsyn.util.SampleLoader;
 import com.softsynth.shared.time.TimeStamp;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -57,7 +58,11 @@ public class SampleVoice implements UnitVoice {
      */
     @Override
     public void noteOn(double d, double a, TimeStamp ts) {
-        if(samplePlayer.dataQueue.hasMore()) return;
+        System.out.println("sampleVoice: note On" + new Date(System.currentTimeMillis()));
+        if(samplePlayer.dataQueue.hasMore()) {
+            System.out.println("SampleVoice: No voice available, aborting");
+            return;
+        }
         int randomInt;
         File[] files = new File(sampleFile).listFiles();
 //        System.out.println("Note On: " + sampleFile);

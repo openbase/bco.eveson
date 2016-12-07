@@ -25,6 +25,7 @@ public class ScopePlayer {
     private final int MAX_VOICES;
     private String sampleFile;
     private Type type;
+    private String eventFilter;
 
     private VoiceAllocator allocator;
 
@@ -47,12 +48,14 @@ public class ScopePlayer {
      * @param type Behavior type of this player.
      * @param maxVoices
      * @param relativeAmplitude
+     * @param eventFilter
      * @see Type
      * @throws org.openbase.jul.exception.InstantiationException
      */
-    public ScopePlayer(String sampleFile, Type type, int maxVoices, float relativeAmplitude) throws org.openbase.jul.exception.InstantiationException {
+    public ScopePlayer(String sampleFile, Type type, int maxVoices, float relativeAmplitude, String eventFilter) throws org.openbase.jul.exception.InstantiationException {
         MAX_VOICES = maxVoices;
         this.relativeAmplitude = relativeAmplitude;
+        this.eventFilter = eventFilter;
         try {
             System.out.println("Load: " + sampleFile);
             this.sampleFile = sampleFile;
@@ -169,6 +172,10 @@ public class ScopePlayer {
 
     public float getRelativeAmplitude() {
         return relativeAmplitude;
+    }
+
+    public String getEventFilter() {
+        return eventFilter;
     }
 
 }

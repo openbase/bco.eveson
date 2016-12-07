@@ -27,7 +27,7 @@ public class MotionSensorObserver implements Observer<MotionDetectorDataType.Mot
             final ScopePlayer player = scopeSampleMap.get(id);
             sampleFile = player.getSampleFile();
 
-            sp = new ScopePlayer(sampleFile, ScopePlayer.Type.PLAY, player.getMAX_VOICES(), player.getRelativeAmplitude());
+            sp = new ScopePlayer(sampleFile, ScopePlayer.Type.PLAY, player.getMAX_VOICES(), player.getRelativeAmplitude(), null);
         }
     }
 

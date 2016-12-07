@@ -18,6 +18,7 @@ import java.util.Map;
 import org.openbase.jps.core.JPService;
 import org.openbase.jps.exception.JPNotAvailableException;
 import org.openbase.jps.exception.JPServiceException;
+import org.openbase.jps.preset.JPShowGUI;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InitializationException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
@@ -37,12 +38,11 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
     private boolean active = false;
 
     //TODO: proper activation and deactivation should be implemented by cleaning and shutdown instances. Currently its just a hack.
-
     @Override
     public void init() throws InitializationException, InterruptedException {
-        
+
     }
-    
+
     @Override
     public void activate() throws CouldNotPerformException, InterruptedException {
         active = true;
@@ -73,7 +73,6 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
             }
             System.out.println("Setting maximum amplitude to " + amplitude);
             EventPlayer.setMaxAmplitude(amplitude);
-            
 
             final Map<String, ScopePlayer> scopeSampleMap = new HashMap<>();
 
@@ -85,25 +84,25 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
                     evesonConfig.PowerConsumptionThresholdHigh, evesonConfig.PowerConsumptionThresholdExtreme);
 
             System.out.println("Thresholds: " + evesonConfig.PowerConsumptionThresholdNormal + ", " + evesonConfig.PowerConsumptionThresholdHigh + ", " + evesonConfig.PowerConsumptionThresholdExtreme);
-            if(evesonConfig.getDefaultVoices() < 0){
+            if (evesonConfig.getDefaultVoices() < 0) {
                 evesonConfig.setDefaultVoices(5);
                 System.out.println("Invalid default number for voices: setting to 5...");
             }
             System.out.println("Default voices: " + evesonConfig.getDefaultVoices());
             ArrayList<PlayerConfig> configList = evesonConfig.getPlayerConfigList();
-            
+
             configList.stream().forEach((config) -> {
                 try {
                     int maxVoices = config.getMaxVoices();
                     float relativeAmplitude = config.getAmplitude();
                     if (maxVoices < 1) {
-                        maxVoices = evesonConfig.defaultVoices;                    
+                        maxVoices = evesonConfig.defaultVoices;
                     }
-                    if(relativeAmplitude <= 0){
+                    if (relativeAmplitude <= 0) {
                         relativeAmplitude = 1.0f;
                     }
 //                    System.out.println("Max Voices for " + config.getId() + ": " + maxVoices);
-                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType(), maxVoices, relativeAmplitude));
+                    scopeSampleMap.put(config.getId(), new ScopePlayer(prefix + "/" + config.getSampleFile(), config.getType(), maxVoices, relativeAmplitude, config.getEventFilter()));
                 } catch (CouldNotPerformException ex) {
                     ExceptionPrinter.printHistory(new CouldNotPerformException("error occured... skipping sample " + config.getSampleFile(), ex), System.err);
                 }
@@ -112,13 +111,15 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
             new EventPlayer(scopeSampleMap).play();
             Remotes remotes = new Remotes();
             remotes.init();
-            new PowerTest().setVisible(true);
+            if (JPService.getProperty(JPShowGUI.class).getValue()) {
+                new PowerTest().setVisible(true);
+            }
 
         } catch (JPNotAvailableException | CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not launch eveson!", ex);
         }
     }
-    
+
     @Override
     public boolean isActive() {
         return active;
@@ -156,6 +157,5 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
     public void shutdown() {
         throw new UnsupportedOperationException("shutdown: Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
 }

@@ -23,7 +23,7 @@ public class LocationObserver implements Observer<LocationData> {
     private ScopePlayer sp_high;
     private ScopePlayer sp_extreme;
     // parameter and last value for exponential average
-    private double alpha = 0.3;
+    private double alpha = 0.2;
     private double lastValue = 0;
 
     Timer time = new Timer();
@@ -35,9 +35,9 @@ public class LocationObserver implements Observer<LocationData> {
         ScopePlayer normal = scopeSampleMap.get("POWER_NORMAL");
         ScopePlayer high = scopeSampleMap.get("POWER_HIGH");
         ScopePlayer extreme = scopeSampleMap.get("POWER_EXTREME");
-        sp_normal = new ScopePlayer(normal.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, normal.getRelativeAmplitude());
-        sp_high = new ScopePlayer(high.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, high.getRelativeAmplitude());
-        sp_extreme = new ScopePlayer(extreme.getSampleFile(), ScopePlayer.Type.ADJUST, 1, extreme.getRelativeAmplitude());
+        sp_normal = new ScopePlayer(normal.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, normal.getRelativeAmplitude(), null);
+        sp_high = new ScopePlayer(high.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, high.getRelativeAmplitude(), null);
+        sp_extreme = new ScopePlayer(extreme.getSampleFile(), ScopePlayer.Type.ADJUST, 1, extreme.getRelativeAmplitude(), null);
         time.schedule(new SmoothPowerConsumption(), 0, 100);
     }
 
@@ -50,7 +50,7 @@ public class LocationObserver implements Observer<LocationData> {
 
     public void updateConsumption(double consumption) {
         this.consumption = consumption;
-        System.out.println("new consumption value: " + consumption);
+//        System.out.println("new consumption value: " + consumption);
     }
 
     public void play(double consumption) {
@@ -96,7 +96,7 @@ public class LocationObserver implements Observer<LocationData> {
         public void run() {
             lastValue = expAverage(consumption);
             play(lastValue);
-            System.out.println("consumption: " + consumption + ", value: " + lastValue);
+//            System.out.println("consumption: " + consumption + ", value: " + lastValue);
 
         }
     }
