@@ -34,8 +34,8 @@ public class FloorModuleStateFilter implements EventFilter<FloorModuleState> {
         if (!(data instanceof FloorModuleState)) {
             return true;
         }
-        System.out.println("ming filterd: "+!((FloorModuleState) data).getSegmentList().stream().anyMatch((seg) -> (seg.getActivationSegment())));
-        System.out.println("marian filterd: "+((FloorModuleState) data).getSegmentList().stream().allMatch((seg) -> (seg.getActivationSegment())));
+//        System.out.println("ming filterd: "+!((FloorModuleState) data).getSegmentList().stream().anyMatch((seg) -> (seg.getActivationSegment())));
+//        System.out.println("marian filterd: "+((FloorModuleState) data).getSegmentList().stream().allMatch((seg) -> (seg.getActivationSegment())));
         return !((FloorModuleState) data).getSegmentList().stream().anyMatch((seg) -> (seg.getActivationSegment()));
     }
 

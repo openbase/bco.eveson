@@ -52,22 +52,39 @@ public class LocationObserver implements Observer<LocationData> {
         this.consumption = consumption;
 //        System.out.println("new consumption value: " + consumption);
     }
-
-    public void play(double consumption) {
+    
+    
+    private double lastSpNormalConsumption = -1;
+    private double lastSpHighConsumption = -1;
+    private double changeStep = 0.2;
+    
+    public synchronized void play(double consumption) {
 //        System.out.print("new value:" + consumption + ", averaged new value: ");
 //        consumption = expAverage(consumption);
 //        System.out.println(consumption);
         if (consumption < THRESHOLD_NORMAL) {
-            sp_normal.play(consumption / THRESHOLD_NORMAL);
-            sp_high.play(0);
+            lastSpNormalConsumption = consumption / THRESHOLD_NORMAL;
+            sp_normal.play(lastSpNormalConsumption);
+            
+            lastSpHighConsumption -= changeStep;
+            sp_high.play(Math.max(0, lastSpHighConsumption));
+            
         } else if (consumption < THRESHOLD_HIGH) {
             double normalconsumption_amplitude = (THRESHOLD_HIGH - consumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
             sp_normal.play(normalconsumption_amplitude);
-            sp_high.play((1 - normalconsumption_amplitude));
+            lastSpHighConsumption = 1 - normalconsumption_amplitude;
+            sp_high.play((lastSpHighConsumption));
         } else if (consumption < THRESHOLD_EXTREME) {
-            sp_high.play(1);
-            sp_normal.play(0);
+//            sp_high.play(1);
+            
+            lastSpHighConsumption += changeStep;
+            sp_normal.play(Math.min(1, lastSpHighConsumption));
+            lastSpNormalConsumption -= changeStep;
+            sp_normal.play(Math.max(0, lastSpNormalConsumption));
         } else {
+            
+            lastSpNormalConsumption -= changeStep;
+            sp_normal.play(Math.max(0, lastSpNormalConsumption));
             sp_high.play(1);
             sp_extreme.play(1);
         }
