@@ -23,8 +23,10 @@ public class LocationObserver implements Observer<LocationData> {
     private ScopePlayer sp_high;
     private ScopePlayer sp_extreme;
     // parameter and last value for exponential average
-    private double alpha = 0.2;
+    private static double ALPHA = 0.2;
     private double lastValue = 0;
+    private static int TIMEFRAME = 100;
+    private static double CHANGESTEP = 0.05;
 
     Timer time = new Timer();
     private double consumption;
@@ -38,7 +40,7 @@ public class LocationObserver implements Observer<LocationData> {
         sp_normal = new ScopePlayer(normal.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, normal.getRelativeAmplitude(), null);
         sp_high = new ScopePlayer(high.getSampleFile(), ScopePlayer.Type.BACKGROUND, 1, high.getRelativeAmplitude(), null);
         sp_extreme = new ScopePlayer(extreme.getSampleFile(), ScopePlayer.Type.ADJUST, 1, extreme.getRelativeAmplitude(), null);
-        time.schedule(new SmoothPowerConsumption(), 0, 100);
+        time.schedule(new SmoothPowerConsumption(), 0, TIMEFRAME);
     }
 
     // Update actual consumption value
@@ -55,7 +57,6 @@ public class LocationObserver implements Observer<LocationData> {
 
     private double lastSpNormalConsumption = 0;
     private double lastSpHighConsumption = 0;
-    private final double changeStep = 0.05;
 
     public synchronized void play(double avgConsumption) {
 
@@ -75,19 +76,19 @@ public class LocationObserver implements Observer<LocationData> {
             }
         }
 
-        if (lastSpNormalConsumption > idealNormal + changeStep) {
-            lastSpNormalConsumption = Math.max(0, lastSpNormalConsumption - changeStep);
-        } else if (lastSpNormalConsumption < idealNormal - changeStep) {
-            lastSpNormalConsumption = Math.min(1, lastSpNormalConsumption + changeStep);
+        if (lastSpNormalConsumption > idealNormal + CHANGESTEP) {
+            lastSpNormalConsumption = Math.max(0, lastSpNormalConsumption - CHANGESTEP);
+        } else if (lastSpNormalConsumption < idealNormal - CHANGESTEP) {
+            lastSpNormalConsumption = Math.min(1, lastSpNormalConsumption + CHANGESTEP);
         } else {
             lastSpNormalConsumption = idealNormal;
         }
         sp_normal.play(lastSpNormalConsumption);
 
-        if (lastSpHighConsumption > idealHigh + changeStep) {
-            lastSpHighConsumption = Math.max(0, lastSpHighConsumption - changeStep);
-        } else if (lastSpHighConsumption < idealHigh - changeStep) {
-            lastSpHighConsumption = Math.min(1, lastSpHighConsumption + changeStep);
+        if (lastSpHighConsumption > idealHigh + CHANGESTEP) {
+            lastSpHighConsumption = Math.max(0, lastSpHighConsumption - CHANGESTEP);
+        } else if (lastSpHighConsumption < idealHigh - CHANGESTEP) {
+            lastSpHighConsumption = Math.min(1, lastSpHighConsumption + CHANGESTEP);
         } else {
             lastSpHighConsumption = idealHigh;
         }
@@ -150,19 +151,23 @@ public class LocationObserver implements Observer<LocationData> {
 //        }
         System.out.println("Avg con: " + avgConsumption + " (ideal: " + consumption + "), normal: " + lastSpNormalConsumption + " (" 
                 + idealNormal + "), high: " + lastSpHighConsumption + "(" + idealHigh + ")");
+        System.out.println(CHANGESTEP + " " + TIMEFRAME + " " + ALPHA);
 
     }
 
     private double expAverage(double value) {
-        double newValue = lastValue + alpha * (value - lastValue);
+        double newValue = lastValue + ALPHA * (value - lastValue);
         lastValue = newValue;
         return newValue;
     }
 
-    public static void setThresholds(double normal, double high, double extreme) {
+    public static void setThresholds(double normal, double high, double extreme, int time, double step, double smoothingFactor) {
         THRESHOLD_NORMAL = normal;
         THRESHOLD_HIGH = high;
         THRESHOLD_EXTREME = extreme;
+        ALPHA = smoothingFactor;
+        CHANGESTEP = step;
+        TIMEFRAME = time;
     }
 
     public double getLastValue() {

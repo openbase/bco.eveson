@@ -29,6 +29,10 @@ public class EvesonConfig {
      */
     public int defaultVoices; 
     
+    public int timeframe; 
+    public double alpha;
+    public double changestep;
+    
     public EvesonConfig() {
         this.playerConfigList = new ArrayList<>();
         
@@ -68,6 +72,18 @@ public class EvesonConfig {
 
     public void setDefaultVoices(int defaultVoices) {
         this.defaultVoices = defaultVoices;
+    }
+
+    public int getTimeframe() {
+        return timeframe;
+    }
+
+    public double getAlpha() {
+        return alpha;
+    }
+
+    public double getChangestep() {
+        return changestep;
     }
 
 }

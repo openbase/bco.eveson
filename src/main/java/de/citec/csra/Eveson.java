@@ -80,8 +80,14 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
 
             evesonConfig = (EvesonConfig) (fileProcessor.deserialize(JPService.getProperty(JPThemeFile.class).getValue()));
 
+            // default values in case of invalid input
+            int timeframe = evesonConfig.getTimeframe() > 0 ? evesonConfig.getTimeframe() : 100;
+            double changestep = evesonConfig.getChangestep() > 0 ? evesonConfig.getChangestep() : 0.05;
+            double alpha = evesonConfig.getAlpha() > 0 ? evesonConfig.getAlpha() : 0.2;
+            
             LocationObserver.setThresholds(evesonConfig.PowerConsumptionThresholdNormal,
-                    evesonConfig.PowerConsumptionThresholdHigh, evesonConfig.PowerConsumptionThresholdExtreme);
+                    evesonConfig.PowerConsumptionThresholdHigh, evesonConfig.PowerConsumptionThresholdExtreme,
+                    timeframe, changestep, alpha);
 
             System.out.println("Thresholds: " + evesonConfig.PowerConsumptionThresholdNormal + ", " + evesonConfig.PowerConsumptionThresholdHigh + ", " + evesonConfig.PowerConsumptionThresholdExtreme);
             if (evesonConfig.getDefaultVoices() < 0) {
