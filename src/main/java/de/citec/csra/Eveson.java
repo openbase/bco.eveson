@@ -111,9 +111,6 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
             new EventPlayer(scopeSampleMap).play();
             Remotes remotes = new Remotes();
             remotes.init();
-            if (JPService.getProperty(JPShowGUI.class).getValue()) {
-                new PowerTest().setVisible(true);
-            }
 
         } catch (JPNotAvailableException | CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not launch eveson!", ex);

@@ -19,9 +19,9 @@ public class PowerTest extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    public PowerTest() throws org.openbase.jul.exception.InstantiationException {
+    public PowerTest(LocationObserver l) throws org.openbase.jul.exception.InstantiationException {
         initComponents();
-        l = new LocationObserver();
+        this.l = l;
     }
 
     /**
@@ -115,6 +115,7 @@ public class PowerTest extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         if(jCheckBox1.isSelected()){
+            System.out.println("Wasserkocher an");
             double val = l.getLastValue() + 1500;
         jSlider1.setValue((int)Math.round(val));
         }
@@ -124,6 +125,7 @@ public class PowerTest extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
              
+            System.out.println("Wasserkocher aus");
         double val = l.getLastValue() - 1500;
 //            l.play(val);
         jSlider1.setValue((int)Math.round(val));    }//GEN-LAST:event_jButton2ActionPerformed
@@ -131,7 +133,6 @@ public class PowerTest extends javax.swing.JFrame {
     private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
         // TODO add your handling code here:
         if(jCheckBox1.isSelected()){
-            System.out.println("checkbox is on");
         l.updateConsumption(((JSlider) evt.getSource()).getValue());}
     }//GEN-LAST:event_jSlider1StateChanged
 

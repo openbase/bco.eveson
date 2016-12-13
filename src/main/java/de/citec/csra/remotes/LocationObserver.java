@@ -54,40 +54,43 @@ public class LocationObserver implements Observer<LocationData> {
     }
     
     
-    private double lastSpNormalConsumption = -1;
-    private double lastSpHighConsumption = -1;
-    private double changeStep = 0.2;
+    private double lastSpNormalConsumption = 0;
+    private double lastSpHighConsumption = 0;
+    private double changeStep = 0.1;
     
-    public synchronized void play(double consumption) {
+    public synchronized void play(double avgConsumption) {
 //        System.out.print("new value:" + consumption + ", averaged new value: ");
 //        consumption = expAverage(consumption);
 //        System.out.println(consumption);
-        if (consumption < THRESHOLD_NORMAL) {
-            lastSpNormalConsumption = consumption / THRESHOLD_NORMAL;
+        if (avgConsumption < THRESHOLD_NORMAL) {
+            lastSpNormalConsumption = avgConsumption / THRESHOLD_NORMAL;
             sp_normal.play(lastSpNormalConsumption);
             
-            lastSpHighConsumption -= changeStep;
-            sp_high.play(Math.max(0, lastSpHighConsumption));
+            lastSpHighConsumption = Math.max(0,lastSpHighConsumption - changeStep);
+            sp_high.play(lastSpHighConsumption);
             
-        } else if (consumption < THRESHOLD_HIGH) {
-            double normalconsumption_amplitude = (THRESHOLD_HIGH - consumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
-            sp_normal.play(normalconsumption_amplitude);
-            lastSpHighConsumption = 1 - normalconsumption_amplitude;
-            sp_high.play((lastSpHighConsumption));
-        } else if (consumption < THRESHOLD_EXTREME) {
+        } else if (avgConsumption < THRESHOLD_HIGH) {
+            lastSpNormalConsumption = (THRESHOLD_HIGH - avgConsumption) / (THRESHOLD_HIGH - THRESHOLD_NORMAL);
+            sp_normal.play(lastSpNormalConsumption);
+            lastSpHighConsumption = 1 - lastSpNormalConsumption;
+            sp_high.play(lastSpHighConsumption);
+            
+        } else if (avgConsumption < THRESHOLD_EXTREME) {
 //            sp_high.play(1);
             
-            lastSpHighConsumption += changeStep;
+            lastSpHighConsumption = Math.min(1, lastSpHighConsumption + changeStep);
             sp_normal.play(Math.min(1, lastSpHighConsumption));
-            lastSpNormalConsumption -= changeStep;
-            sp_normal.play(Math.max(0, lastSpNormalConsumption));
+            lastSpNormalConsumption = Math.max(0, lastSpNormalConsumption - changeStep);
+            sp_normal.play(lastSpNormalConsumption);
+            
         } else {
             
-            lastSpNormalConsumption -= changeStep;
-            sp_normal.play(Math.max(0, lastSpNormalConsumption));
+            lastSpNormalConsumption = Math.max(0, lastSpNormalConsumption - changeStep);
+            sp_normal.play(lastSpNormalConsumption);
             sp_high.play(1);
             sp_extreme.play(1);
         }
+            System.out.println("Consumption: " + avgConsumption + " (real value: " + consumption + ", normal: " + lastSpNormalConsumption + ", high: " + lastSpHighConsumption);
 
     }
 

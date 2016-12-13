@@ -1,6 +1,7 @@
 package de.citec.csra.remotes;
 
 import de.citec.csra.EventPlayer;
+import de.citec.csra.PowerTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -12,6 +13,9 @@ import org.openbase.bco.registry.location.lib.LocationRegistry;
 import org.openbase.bco.registry.location.remote.CachedLocationRegistryRemote;
 import org.openbase.bco.registry.unit.lib.UnitRegistry;
 import org.openbase.bco.registry.unit.remote.CachedUnitRegistryRemote;
+import org.openbase.jps.core.JPService;
+import org.openbase.jps.exception.JPNotAvailableException;
+import org.openbase.jps.preset.JPShowGUI;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InitializationException;
 import org.openbase.jul.exception.InstantiationException;
@@ -46,7 +50,11 @@ public class Remotes {
             LocationRemote locationRemote = new LocationRemote();
             locationRemote.init(locationRegistry.getRootLocationConfig());
             locationRemote.activate();
-            locationRemote.addDataObserver(new LocationObserver());
+            final LocationObserver locationObserver = new LocationObserver();
+            locationRemote.addDataObserver(locationObserver);
+            if (JPService.getProperty(JPShowGUI.class).getValue()) {
+                new PowerTest(locationObserver).setVisible(true);
+            }
             List<UnitConfigType.UnitConfig> motionDetectors = unitRegistry.getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.MOTION_DETECTOR);
             List<MotionDetectorRemote> motionDetectorRemotes = new ArrayList<>();
 
@@ -74,6 +82,8 @@ public class Remotes {
         } catch (InstantiationException | InitializationException ex) {
             Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);
         } catch (CouldNotPerformException ex) {
+            Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JPNotAvailableException ex) {
             Logger.getLogger(Remotes.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             unitRegistry.shutdown();
