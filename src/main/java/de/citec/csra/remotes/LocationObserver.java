@@ -55,7 +55,7 @@ public class LocationObserver implements Observer<LocationData> {
 
     private double lastSpNormalConsumption = 0;
     private double lastSpHighConsumption = 0;
-    private final double changeStep = 0.1;
+    private final double changeStep = 0.05;
 
     public synchronized void play(double avgConsumption) {
 
