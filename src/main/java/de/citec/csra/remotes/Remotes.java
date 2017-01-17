@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openbase.bco.dal.remote.unit.MotionDetectorRemote;
-import org.openbase.bco.manager.location.remote.LocationRemote;
-import org.openbase.bco.registry.device.remote.CachedDeviceRegistryRemote;
+import org.openbase.bco.dal.remote.unit.location.LocationRemote;
 import org.openbase.bco.registry.location.lib.LocationRegistry;
 import org.openbase.bco.registry.location.remote.CachedLocationRegistryRemote;
 import org.openbase.bco.registry.unit.lib.UnitRegistry;
@@ -36,7 +35,7 @@ public class Remotes {
 
     public Remotes() throws InstantiationException, InterruptedException {
         try {
-            CachedDeviceRegistryRemote.waitForData();
+            CachedUnitRegistryRemote.waitForData();
             CachedLocationRegistryRemote.waitForData();
             this.unitRegistry = CachedUnitRegistryRemote.getRegistry();
             this.locationRegistry = CachedLocationRegistryRemote.getRegistry();
