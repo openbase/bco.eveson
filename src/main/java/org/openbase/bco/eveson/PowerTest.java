@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.citec.csra;
+package org.openbase.bco.eveson;
 
-import de.citec.csra.remotes.LocationObserver;
+import org.openbase.bco.eveson.remotes.LocationObserver;
 import javax.swing.JSlider;
 
 /**

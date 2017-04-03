@@ -1,4 +1,4 @@
-package de.citec.csra;
+package org.openbase.bco.eveson;
 
 import com.google.protobuf.GeneratedMessage;
 

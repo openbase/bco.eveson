@@ -1,7 +1,7 @@
-package de.citec.csra.remotes;
+package org.openbase.bco.eveson.remotes;
 
-import de.citec.csra.EventPlayer;
-import de.citec.csra.PowerTest;
+import org.openbase.bco.eveson.EventPlayer;
+import org.openbase.bco.eveson.PowerTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

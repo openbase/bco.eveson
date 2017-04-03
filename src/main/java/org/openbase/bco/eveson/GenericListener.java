@@ -1,6 +1,6 @@
-package de.citec.csra;
+package org.openbase.bco.eveson;
 
-import de.citec.csra.eventfilter.EventFilter;
+import org.openbase.bco.eveson.eventfilter.EventFilter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openbase.jul.exception.CouldNotPerformException;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.citec.csra.eventfilter;
+package org.openbase.bco.eveson.eventfilter;
 
 import rsb.converter.DefaultConverterRepository;
 import rsb.converter.ProtocolBufferConverter;

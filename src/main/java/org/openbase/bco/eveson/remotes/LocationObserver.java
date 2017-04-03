@@ -1,7 +1,7 @@
-package de.citec.csra.remotes;
+package org.openbase.bco.eveson.remotes;
 
-import de.citec.csra.EventPlayer;
-import de.citec.csra.ScopePlayer;
+import org.openbase.bco.eveson.EventPlayer;
+import org.openbase.bco.eveson.ScopePlayer;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;

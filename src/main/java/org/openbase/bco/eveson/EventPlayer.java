@@ -1,7 +1,7 @@
-package de.citec.csra;
+package org.openbase.bco.eveson;
 
-import static de.citec.csra.ScopePlayer.Type.BACKGROUND;
-import static de.citec.csra.ScopePlayer.Type.CUSTOM;
+import static org.openbase.bco.eveson.ScopePlayer.Type.BACKGROUND;
+import static org.openbase.bco.eveson.ScopePlayer.Type.CUSTOM;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

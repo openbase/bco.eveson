@@ -1,4 +1,4 @@
-package de.citec.csra.jp;
+package org.openbase.bco.eveson.jp;
 
 import org.openbase.jps.exception.JPBadArgumentException;
 import org.openbase.jps.exception.JPNotAvailableException;

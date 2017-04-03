@@ -1,9 +1,9 @@
-package de.citec.csra;
+package org.openbase.bco.eveson;
 
-import de.citec.csra.jp.JPAudioOutputDevice;
-import de.citec.csra.jp.JPAudioResoureFolder;
-import de.citec.csra.jp.JPAudioVolume;
-import de.citec.csra.jp.JPThemeFile;
+import org.openbase.bco.eveson.jp.JPAudioOutputDevice;
+import org.openbase.bco.eveson.jp.JPAudioResoureFolder;
+import org.openbase.bco.eveson.jp.JPAudioVolume;
+import org.openbase.bco.eveson.jp.JPThemeFile;
 import org.openbase.bco.registry.lib.launch.AbstractLauncher;
 import static org.openbase.bco.registry.lib.launch.AbstractLauncher.main;
 import org.openbase.jps.core.JPService;
