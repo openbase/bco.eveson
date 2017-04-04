@@ -23,13 +23,13 @@ deploy:
   - provider: script
     script: .travis/deploy.sh
     on:
-        repo: openbase/bco.dal
+        repo: openbase/bco.eveson
         branch: master
         jdk: oraclejdk8
   - provider: script
     script: .travis/deploy.sh
     on:
-        repo: openbase/bco.dal
+        repo: openbase/bco.eveson
         tags: true
         jdk: oraclejdk8
         
@@ -41,6 +41,6 @@ after_deploy:
          curl -LO https://raw.github.com/mernst/plume-lib/master/bin/trigger-travis.sh
 
          # trigger upstream projects
-         sh trigger-travis.sh openbase bco.manager $TRAVIS_ACCESS_TOKEN
+         #sh trigger-travis.sh openbase bco.manager $TRAVIS_ACCESS_TOKEN
        fi
 
