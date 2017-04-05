@@ -20,7 +20,7 @@
             <id>mgao</id>
             <name>Ming Gao</name>
             <email>mgao@techfak.uni-bielefeld.de</email>
-            <url>https://github.com/DivineThreepwood</url>
+            <url>https://github.com/</url>
             <organization>openbase.org</organization>
             <organizationUrl>https://github.com/openbase</organizationUrl>
             <roles>
@@ -42,10 +42,10 @@
             <timezone>+1</timezone>
         </developer>
         <developer>
-            <id>Christian Leichsenring</id>
+            <id>mudd1</id>
             <name>Christian Leichsenring</name>
             <email>cmertes@techfak.uni-bielefeld.de</email>
-            <url>https://github.com/</url>
+            <url>https://github.com/mudd1</url>
             <roles>
                 <role>architect</role>
                 <role>sound designer</role>
@@ -56,7 +56,7 @@
             <id>DivineThreepwood</id>
             <name>Marian Pohling</name>
             <email>divine@openbase.org</email>
-            <url>https://github.com/DivineThreepwood</url>
+            <url>https://github.com/divinethreepwood</url>
             <organization>openbase.org</organization>
             <organizationUrl>https://github.com/openbase</organizationUrl>
             <roles>
@@ -144,6 +144,13 @@
                         <program>
                             <mainClass>org.openbase.bco.eveson.EvesonLauncher</mainClass>
                             <id>eveson</id>
+                            <platforms>
+                                <platform>unix</platform>
+                            </platforms>
+                        </program>
+                        <program>
+                            <mainClass>org.openbase.bco.eveson.EvesonLauncher</mainClass>
+                            <id>bco-eveson</id>
                             <platforms>
                                 <platform>unix</platform>
                             </platforms>
