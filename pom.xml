@@ -314,14 +314,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <audio.resource.folder>target/appassembler/share/audio/samples/eveson</audio.resource.folder>
         <config.folder>target/appassembler/etc/eveson</config.folder>
-        <dependency.bco.dal.version>[1.3,1.4-SNAPSHOT)</dependency.bco.dal.version>
+        <dependency.com.jsyn.version>16.7.3</dependency.com.jsyn.version>
+        <dependency.bco.dal.version>1.4-SNAPSHOT</dependency.bco.dal.version>
     </properties>
     
     <dependencies>
         <dependency>
             <groupId>com.jsyn</groupId>
             <artifactId>jsyn</artifactId>
-            <version>16.7.3</version>
+            <version>${dependency.com.jsyn.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openbase.bco</groupId>

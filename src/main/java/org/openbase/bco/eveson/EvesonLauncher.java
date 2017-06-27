@@ -26,13 +26,9 @@ import org.openbase.bco.eveson.jp.JPAudioOutputDevice;
 import org.openbase.bco.eveson.jp.JPAudioResoureFolder;
 import org.openbase.bco.eveson.jp.JPAudioVolume;
 import org.openbase.bco.eveson.jp.JPThemeFile;
-import org.openbase.bco.registry.lib.launch.AbstractLauncher;
-import static org.openbase.bco.registry.lib.launch.AbstractLauncher.main;
 import org.openbase.jps.core.JPService;
 import org.openbase.jps.preset.JPShowGUI;
-import rsb.converter.DefaultConverterRepository;
-import rsb.converter.ProtocolBufferConverter;
-import rst.devices.sensfloor.FloorModuleStateType;
+import org.openbase.jul.pattern.launch.AbstractLauncher;
 
 /**
  *
