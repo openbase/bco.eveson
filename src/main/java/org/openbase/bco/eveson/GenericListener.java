@@ -31,9 +31,6 @@ import rsb.Event;
 import rsb.Factory;
 import rsb.Listener;
 import rsb.RSBException;
-import rsb.converter.DefaultConverterRepository;
-import rsb.converter.ProtocolBufferConverter;
-import rst.devices.sensfloor.FloorModuleStateType.FloorModuleState;
 
 /**
  *
