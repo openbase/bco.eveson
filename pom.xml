@@ -10,6 +10,8 @@
     <inceptionYear>2014</inceptionYear>
     <description>BCO Event Sonification</description>
     
+    <url>https://github.com/openbase/eveson/wiki</url>
+
     <organization>
         <name>openbase.org</name>
         <url>https://github.com/openbase</url>
