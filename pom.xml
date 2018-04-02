@@ -4,7 +4,7 @@
     
     <groupId>org.openbase.bco</groupId>
     <artifactId>eveson</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.1</version>
     
     <name>BCO Eveson</name>
     <inceptionYear>2014</inceptionYear>
@@ -82,7 +82,7 @@
         <connection>scm:git:https://github.com/openbase/bco.eveson.git</connection>
         <developerConnection>scm:git:https://github.com/openbase/bco.eveson.git</developerConnection>
         <url>https://github.com/openbase/bco.eveson.git</url>
-      <tag>HEAD</tag>
+      <tag>v1.6.1</tag>
   </scm>
     
     <build> 
