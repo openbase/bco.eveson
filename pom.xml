@@ -317,7 +317,7 @@
         <audio.resource.folder>target/appassembler/share/audio/samples/eveson</audio.resource.folder>
         <config.folder>target/appassembler/etc/eveson</config.folder>
         <dependency.com.jsyn.version>16.7.3</dependency.com.jsyn.version>
-        <dependency.bco.dal.version>1.6-SNAPSHOT</dependency.bco.dal.version>
+        <dependency.bco.dal.version>2.0-SNAPSHOT</dependency.bco.dal.version>
     </properties>
     
     <dependencies>
