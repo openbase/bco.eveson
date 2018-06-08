@@ -31,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openbase.bco.dal.remote.unit.MotionDetectorRemote;
 import org.openbase.bco.dal.remote.unit.location.LocationRemote;
-import org.openbase.bco.registry.location.lib.LocationRegistry;
 
 import org.openbase.bco.registry.remote.Registries;
 import org.openbase.bco.registry.unit.lib.UnitRegistry;
@@ -77,7 +76,7 @@ public class Remotes {
 
                 final MotionDetectorRemote remote = Units.getUnit(motionDetectorConfig, false, Units.MOTION_DETECTOR);
 
-                id = motionDetectorConfig.getType().name() + "_" + i;
+                id = motionDetectorConfig.getUnitType().name() + "_" + i;
                 if (EventPlayer.getInstance().getScopeSampleMap().containsKey(id)) {
                     remote.addDataObserver(new MotionSensorObserver(id));
                 }
