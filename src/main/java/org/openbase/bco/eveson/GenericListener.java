@@ -23,17 +23,16 @@ package org.openbase.bco.eveson;
  */
 
 import org.openbase.bco.eveson.eventfilter.EventFilter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openbase.jul.exception.CouldNotPerformException;
+import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
+import org.openbase.jul.extension.rsb.com.exception.RSBResolvedException;
 import rsb.Event;
 import rsb.Factory;
 import rsb.Listener;
 import rsb.RSBException;
 
 /**
- *
  * @author jplettemeier
  */
 public class GenericListener {
@@ -43,33 +42,26 @@ public class GenericListener {
     private Listener listener;
     private EventFilter eventFilter;
 
-    public GenericListener(final String scope, final ScopePlayer player) throws org.openbase.jul.exception.InstantiationException, InterruptedException {
+    public GenericListener(final String scope, final ScopePlayer player) throws InstantiationException, InterruptedException {
         try {
             this.scope = scope;
             this.player = player;
             String filterType = player.getEventFilter();
 
-            if (filterType != null){
-            Class<? extends EventFilter> filterClass = 
-                    (Class<? extends EventFilter>) Class.forName(EventFilter.class.getPackage().getName() + "." + filterType);
-            eventFilter = filterClass.newInstance();
+            if (filterType != null) {
+                Class<? extends EventFilter> filterClass = (Class<? extends EventFilter>) Class.forName(EventFilter.class.getPackage().getName() + "." + filterType);
+                eventFilter = filterClass.newInstance();
             }
 
-            Runtime.getRuntime().addShutdownHook(new Thread() {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown()));
 
-                @Override
-                public void run() {
-                    shutdown();
-                }
-            });
-
-            if(eventFilter != null) {
+            if (eventFilter != null) {
                 this.listener = Factory.getInstance().createListener(scope);
             } else {
                 this.listener = Factory.getInstance().createListener(scope, RSBGenericConverterConfig.generateConfig());
             }
 
-            
+
             listener.addHandler((Event event) -> {
 //                System.out.println("================================");
 //                System.out.println("Data["+scope+"]:"+((FloorModuleState) event.getData()).toString());
@@ -90,13 +82,9 @@ public class GenericListener {
             listener.activate();
             System.out.println("Listener activated for " + this);
         } catch (RSBException ex) {
-            throw new org.openbase.jul.exception.InstantiationException(this, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GenericListener.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(GenericListener.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(GenericListener.class.getName()).log(Level.SEVERE, null, ex);
+            throw new org.openbase.jul.exception.InstantiationException(this, new RSBResolvedException(ex));
+        } catch (ClassNotFoundException | java.lang.InstantiationException | IllegalAccessException ex) {
+            throw new InstantiationException(this, ex);
         }
     }
 
@@ -111,8 +99,10 @@ public class GenericListener {
 
         try {
             listener.deactivate();
-        } catch (RSBException | InterruptedException ex) {
-            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not shutdown " + this), System.out);
+        } catch (RSBException ex) {
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Could not shutdown " + this, new RSBResolvedException(ex)), System.out);
+        } catch (InterruptedException ex) {
+            ExceptionPrinter.printHistory(new CouldNotPerformException("Shutdown of " + this + " was interrupted!"), System.out);
         }
     }
 
