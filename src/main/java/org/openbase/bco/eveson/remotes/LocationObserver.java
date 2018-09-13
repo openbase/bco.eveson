@@ -30,13 +30,14 @@ import java.util.TimerTask;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
+import org.openbase.jul.pattern.provider.DataProvider;
 import rst.domotic.unit.location.LocationDataType.LocationData;
 
 /**
  *
  * @author mgao
  */
-public class LocationObserver implements Observer<LocationData> {
+public class LocationObserver implements Observer<DataProvider<LocationData>, LocationData> {
 
     private static double THRESHOLD_NORMAL;
     private static double THRESHOLD_HIGH;
@@ -67,7 +68,7 @@ public class LocationObserver implements Observer<LocationData> {
 
     // Update actual consumption value
     @Override
-    public void update(Observable<LocationData> source, LocationData data) throws Exception {
+    public void update(DataProvider<LocationData> source, LocationData data) throws Exception {
 //        play(data.getPowerConsumptionState().getConsumption());
         updateConsumption(data.getPowerConsumptionState().getConsumption());
     }
