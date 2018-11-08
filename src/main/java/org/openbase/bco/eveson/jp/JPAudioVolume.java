@@ -22,7 +22,6 @@ package org.openbase.bco.eveson.jp;
  * #L%
  */
 
-import org.openbase.jps.exception.JPBadArgumentException;
 import org.openbase.jps.exception.JPNotAvailableException;
 import org.openbase.jps.preset.AbstractJPFloat;
 
