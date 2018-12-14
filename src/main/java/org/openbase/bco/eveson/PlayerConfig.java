@@ -22,7 +22,7 @@ package org.openbase.bco.eveson;
  * #L%
  */
 
-import com.google.protobuf.GeneratedMessage;
+import com.google.protobuf.Message;
 
 /**
  *
