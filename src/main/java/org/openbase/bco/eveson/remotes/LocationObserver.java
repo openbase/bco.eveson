@@ -31,7 +31,7 @@ import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
 import org.openbase.jul.pattern.provider.DataProvider;
-import rst.domotic.unit.location.LocationDataType.LocationData;
+import org.openbase.type.domotic.unit.location.LocationDataType.LocationData;
 
 /**
  *

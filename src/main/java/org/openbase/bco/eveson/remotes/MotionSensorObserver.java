@@ -31,8 +31,8 @@ import org.openbase.jul.pattern.Observer;
 import static rst.domotic.state.MotionStateType.MotionState.State.MOTION;
 
 import org.openbase.jul.pattern.provider.DataProvider;
-import rst.domotic.unit.dal.MotionDetectorDataType;
-import rst.domotic.unit.dal.MotionDetectorDataType.MotionDetectorData;
+import org.openbase.type.domotic.unit.dal.MotionDetectorDataType;
+import org.openbase.type.domotic.unit.dal.MotionDetectorDataType.MotionDetectorData;
 
 /**
  *
