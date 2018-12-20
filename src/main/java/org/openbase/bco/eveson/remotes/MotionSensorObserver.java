@@ -28,7 +28,7 @@ import java.util.Map;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
-import static rst.domotic.state.MotionStateType.MotionState.State.MOTION;
+import static org.openbase.type.domotic.state.MotionStateType.MotionState.State.MOTION;
 
 import org.openbase.jul.pattern.provider.DataProvider;
 import org.openbase.type.domotic.unit.dal.MotionDetectorDataType;
