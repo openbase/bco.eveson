@@ -26,12 +26,10 @@ import org.openbase.bco.eveson.EventPlayer;
 import org.openbase.bco.eveson.ScopePlayer;
 import java.util.Map;
 import org.openbase.jul.exception.InstantiationException;
-import org.openbase.jul.pattern.Observable;
 import org.openbase.jul.pattern.Observer;
 import static org.openbase.type.domotic.state.MotionStateType.MotionState.State.MOTION;
 
 import org.openbase.jul.pattern.provider.DataProvider;
-import org.openbase.type.domotic.unit.dal.MotionDetectorDataType;
 import org.openbase.type.domotic.unit.dal.MotionDetectorDataType.MotionDetectorData;
 
 /**
