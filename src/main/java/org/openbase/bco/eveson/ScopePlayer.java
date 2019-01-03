@@ -177,7 +177,7 @@ public class ScopePlayer {
      */
     public enum Type {
 
-        PLAY, ADJUST, CUSTOM, BACKGROUND;
+        PLAY, ADJUST, CUSTOM, BACKGROUND
     }
 
     public String getSampleFile() {

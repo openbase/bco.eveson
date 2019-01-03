@@ -49,7 +49,7 @@ public class EvesonLauncher extends AbstractLauncher<Eveson> {
         JPService.registerProperty(JPThemeFile.class);
     }
 
-    public static void main(String args[]) throws Throwable {
+    public static void main(String[] args) throws Throwable {
         main(args, Eveson.class, EvesonLauncher.class);
     }
 }

@@ -33,9 +33,9 @@ package org.openbase.bco.eveson.eventfilter;
  */
 public interface EventFilter<E> {
     
-    public void getDataDefaultInstance();
+    void getDataDefaultInstance();
     
-    public boolean isCompatible(Object o);
+    boolean isCompatible(Object o);
     
-    public boolean filter(final Object event);
+    boolean filter(final Object event);
 }
