@@ -29,8 +29,8 @@ package org.openbase.bco.eveson.eventfilter;
 
 import rsb.converter.DefaultConverterRepository;
 import rsb.converter.ProtocolBufferConverter;
-import org.openbase.type.devices.sensfloor.FloorModuleStateType;
-import org.openbase.type.devices.sensfloor.FloorModuleStateType.FloorModuleState;
+import org.openbase.type.device.sensfloor.FloorModuleStateType;
+import org.openbase.type.device.sensfloor.FloorModuleStateType.FloorModuleState;
 
 /**
  *
