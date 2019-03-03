@@ -45,7 +45,7 @@ import org.openbase.jul.exception.InitializationException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.iface.Launchable;
 import org.openbase.jul.iface.VoidInitializable;
-import org.openbase.jul.processing.JSonObjectFileProcessor;
+import org.openbase.jul.processing.json.JSonObjectFileProcessor;
 
 /**
  *

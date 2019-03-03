@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>org.openbase</groupId>
     <artifactId>bco.eveson</artifactId>
     <version>2.0-SNAPSHOT</version>
-    
+
     <name>BCO Eveson</name>
     <inceptionYear>2014</inceptionYear>
     <description>BCO Event Sonification</description>
-    
+
     <url>https://github.com/openbase/eveson/wiki</url>
 
     <organization>
         <name>openbase.org</name>
         <url>https://github.com/openbase</url>
     </organization>
-    
+
     <developers>
         <developer>
             <id>mgao</id>
@@ -68,23 +69,23 @@
             <timezone>+1</timezone>
         </developer>
     </developers>
-    
+
     <licenses>
         <license>
             <name>GPLv3</name>
             <url>http://www.gnu.org/licenses/gpl.html</url>
         </license>
     </licenses>
-    
+
     <packaging>jar</packaging>
-        
+
     <scm>
         <connection>scm:git:https://github.com/openbase/bco.eveson.git</connection>
         <developerConnection>scm:git:https://github.com/openbase/bco.eveson.git</developerConnection>
         <url>https://github.com/openbase/bco.eveson.git</url>
     </scm>
-    
-    <build> 
+
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -167,7 +168,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix> 
+                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>org.openbase.bco.eveson.EvesonLauncher</mainClass>
                         </manifest>
                     </archive>
@@ -202,13 +203,13 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${audio.resource.folder}</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>res/samples</directory>
                                     <filtering>false</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                            </resources>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>copy-default-config</id>
@@ -218,13 +219,13 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${config.folder}</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>cfg</directory>
                                     <filtering>false</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -241,7 +242,7 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <profiles>
         <profile>
             <id>deploy</id>
@@ -309,7 +310,7 @@
             </build>
         </profile>
     </profiles>
-   
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -317,9 +318,10 @@
         <audio.resource.folder>target/appassembler/share/audio/samples/eveson</audio.resource.folder>
         <config.folder>target/appassembler/etc/eveson</config.folder>
         <dependency.com.jsyn.version>16.7.3</dependency.com.jsyn.version>
-        <dependency.bco.dal.version>2.0-SNAPSHOT</dependency.bco.dal.version>
+        <dependency.bco.version>2.0-SNAPSHOT</dependency.bco.version>
+        <dependency.jul.version>${dependency.bco.version}</dependency.jul.version>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.jsyn</groupId>
@@ -329,10 +331,15 @@
         <dependency>
             <groupId>org.openbase</groupId>
             <artifactId>bco.dal.remote</artifactId>
-            <version>${dependency.bco.dal.version}</version>
+            <version>${dependency.bco.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openbase</groupId>
+            <artifactId>jul.processing.json</artifactId>
+            <version>${dependency.jul.version}</version>
         </dependency>
     </dependencies>
-    
+
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -343,7 +350,7 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-    
+
     <repositories>
         <repository>
             <id>citec-releases</id>
