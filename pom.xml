@@ -145,14 +145,7 @@
                     <programs>
                         <program>
                             <mainClass>org.openbase.bco.eveson.EvesonLauncher</mainClass>
-                            <id>eveson</id>
-                            <platforms>
-                                <platform>unix</platform>
-                            </platforms>
-                        </program>
-                        <program>
-                            <mainClass>org.openbase.bco.eveson.EvesonLauncher</mainClass>
-                            <id>bco-eveson</id>
+                            <id>bco-app-eveson</id>
                             <platforms>
                                 <platform>unix</platform>
                             </platforms>
