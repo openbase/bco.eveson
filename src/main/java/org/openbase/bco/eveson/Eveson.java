@@ -77,7 +77,7 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
             int outputChannles = audioManager.getMaxInputChannels(audioDevice);
 
             if (outputChannles <= 0) {
-                System.out.println("WARN: Audio channel detection failed. Try to force at least to output channels.");
+                System.out.println("WARN: Audio channel detection failed. Try to force at least two output channels.");
                 outputChannles = 2;
             }
             synthesizer.start();
@@ -179,7 +179,7 @@ public class Eveson implements Launchable<Void>, VoidInitializable {
 
     @Override
     public void shutdown() {
-        throw new UnsupportedOperationException("shutdown: Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // todo implement audio device shutdown
     }
 
 }

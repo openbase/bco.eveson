@@ -171,9 +171,9 @@ public class LocationObserver implements Observer<DataProvider<LocationData>, Lo
 //            sp_high.play(1);
 //            sp_extreme.play(1);
 //        }
-        System.out.println("Avg con: " + avgConsumption + " (ideal: " + consumption + "), normal: " + lastSpNormalConsumption + " (" 
-                + idealNormal + "), high: " + lastSpHighConsumption + "(" + idealHigh + ")");
-        System.out.println(CHANGESTEP + " " + TIMEFRAME + " " + ALPHA);
+//        System.out.println("Avg con: " + avgConsumption + " (ideal: " + consumption + "), normal: " + lastSpNormalConsumption + " ("
+//                + idealNormal + "), high: " + lastSpHighConsumption + "(" + idealHigh + ")");
+//        System.out.println(CHANGESTEP + " " + TIMEFRAME + " " + ALPHA);
 
     }
 
