@@ -58,7 +58,7 @@ public class Remotes {
             if (JPService.getProperty(JPShowGUI.class).getValue()) {
                 new PowerTest(locationObserver).setVisible(true);
             }
-            List<UnitConfig> motionDetectorConfigs = Registries.getUnitRegistry(true).getUnitConfigs(UnitTemplateType.UnitTemplate.UnitType.MOTION_DETECTOR);
+            List<UnitConfig> motionDetectorConfigs = Registries.getUnitRegistry(true).getUnitConfigsByUnitType(UnitTemplateType.UnitTemplate.UnitType.MOTION_DETECTOR);
 
             int i = 1;
             String id;
