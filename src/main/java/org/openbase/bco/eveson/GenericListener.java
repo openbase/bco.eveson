@@ -32,6 +32,8 @@ import rsb.Factory;
 import rsb.Listener;
 import rsb.RSBException;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author jplettemeier
  */
@@ -50,7 +52,7 @@ public class GenericListener {
 
             if (filterType != null) {
                 Class<? extends EventFilter> filterClass = (Class<? extends EventFilter>) Class.forName(EventFilter.class.getPackage().getName() + "." + filterType);
-                eventFilter = filterClass.newInstance();
+                eventFilter = filterClass.getConstructor().newInstance();
             }
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown()));
@@ -83,7 +85,7 @@ public class GenericListener {
             System.out.println("Listener activated for " + this);
         } catch (RSBException ex) {
             throw new org.openbase.jul.exception.InstantiationException(this, new RSBResolvedException(ex));
-        } catch (ClassNotFoundException | java.lang.InstantiationException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException | java.lang.InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
             throw new InstantiationException(this, ex);
         }
     }
