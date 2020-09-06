@@ -22,6 +22,7 @@ package org.openbase.bco.eveson;
  * #L%
  */
 
+import org.openbase.bco.authentication.lib.BCO;
 import org.openbase.bco.eveson.jp.JPAudioOutputDevice;
 import org.openbase.bco.eveson.jp.JPAudioResoureFolder;
 import org.openbase.bco.eveson.jp.JPAudioVolume;
@@ -50,6 +51,7 @@ public class EvesonLauncher extends AbstractLauncher<Eveson> {
     }
 
     public static void main(String[] args) throws Throwable {
-        main(args, Eveson.class, EvesonLauncher.class);
+        BCO.printLogo();
+        main(BCO.class, Eveson.class, args, EvesonLauncher.class);
     }
 }
