@@ -310,7 +310,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <audio.resource.folder>target/appassembler/share/audio/samples/eveson</audio.resource.folder>
         <config.folder>target/appassembler/etc/eveson</config.folder>
-        <dependency.com.jsyn.version>16.7.3</dependency.com.jsyn.version>
+        <dependency.com.jsyn.version>16.7.5</dependency.com.jsyn.version>
         <dependency.bco.version>2.0-SNAPSHOT</dependency.bco.version>
         <dependency.jul.version>${dependency.bco.version}</dependency.jul.version>
     </properties>
@@ -346,14 +346,9 @@
 
     <repositories>
         <repository>
-            <id>citec-releases</id>
+            <id>clojars.org</id>
             <name>CITEC Maven Repository Server</name>
-            <url>https://mvn.cit-ec.de/nexus/content/repositories/releases/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-            </releases>
+            <url>https://repo.clojars.org</url>
         </repository>
     </repositories>
 </project>
